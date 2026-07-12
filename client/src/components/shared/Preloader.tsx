@@ -33,14 +33,14 @@ export default function Preloader() {
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" className="w-full h-full filter drop-shadow-[0_0_30px_rgba(0,114,255,0.4)]">
             <defs>
               <linearGradient id="leftGrad" x1="150" y1="50" x2="280" y2="350" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#021E73" />
-                <stop offset="60%" stop-color="#0052D4" />
-                <stop offset="100%" stop-color="#0072FF" />
+                <stop offset="0%" stopColor="#021E73" />
+                <stop offset="60%" stopColor="#0052D4" />
+                <stop offset="100%" stopColor="#0072FF" />
               </linearGradient>
               <linearGradient id="rightGrad" x1="280" y1="350" x2="400" y2="50" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#0052D4" />
-                <stop offset="40%" stop-color="#0072FF" />
-                <stop offset="100%" stop-color="#00D2FF" />
+                <stop offset="0%" stopColor="#0052D4" />
+                <stop offset="40%" stopColor="#0072FF" />
+                <stop offset="100%" stopColor="#00D2FF" />
               </linearGradient>
               <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
                 <feDropShadow dx="-4" dy="6" stdDeviation="8" flood-color="#010A26" flood-opacity="0.6"/>
