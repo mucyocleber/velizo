@@ -23,6 +23,16 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
 // ─── Health Check ─────────────────────────────────────────
+app.get('/', (_req, res) => {
+  res.send(`
+    <div style="font-family: sans-serif; text-align: center; padding: 50px; background: #09090b; color: #fafafa; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0;">
+      <h1 style="color: #6366f1; margin-bottom: 10px;">VELIZO API Server</h1>
+      <p style="color: #a1a1aa; margin-bottom: 20px;">The backend service is running successfully.</p>
+      <a href="/api/health" style="color: #14b8a6; text-decoration: none; font-weight: bold; border: 1px solid #27272a; padding: 10px 20px; rounded: 8px; background: #18181b; border-radius: 8px;">Check API Health</a>
+    </div>
+  `);
+});
+
 app.get('/api/health', (_req, res) => {
   res.json({
     status: 'ok',
