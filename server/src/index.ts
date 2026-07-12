@@ -1,7 +1,7 @@
+import './config/env';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
 import { authRoutes } from './routes/auth.routes';
 import { jobRoutes } from './routes/job.routes';
 import { candidateRoutes } from './routes/candidate.routes';
@@ -9,9 +9,6 @@ import { employerRoutes } from './routes/employer.routes';
 import { aiRoutes } from './routes/ai.routes';
 import { notificationRoutes } from './routes/notification.routes';
 import { errorHandler } from './middleware/errorHandler';
-
-// Load environment variables from root .env
-dotenv.config({ path: '../.env' });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
