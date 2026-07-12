@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
   <!-- Embedded Fonts/Styles -->
   <style>
-    .brand-text { font-family: 'Outfit', 'Inter', sans-serif; font-weight: 800; font-size: 80px; fill: #FFFFFF; letter-spacing: 0.15em; }
-    .tagline-text { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; fill: #8E9AAF; letter-spacing: 0.35em; text-transform: uppercase; }
+    .brand-text { font-family: 'Outfit', 'Inter', sans-serif; font-weight: 800; font-size: 80px; fill: #0B192C; letter-spacing: 0.15em; }
+    .tagline-text { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; fill: #5A6A85; letter-spacing: 0.35em; text-transform: uppercase; }
   </style>
 
   <!-- V logo symbol at the top -->
