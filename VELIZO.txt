@@ -1,0 +1,2050 @@
+VELIZO
+Connecting Global Employers with Exceptional Talent
+Software Requirements Specification (SRS)
+Document ID: VEL-SRS-001
+Version: 1.0
+Document Status: Final Draft for Client Review
+Project Type: AI-Powered International Recruitment Platform (MVP)
+Prepared By: Mucyo Cleberé
+Company: CodeMateRwa LTD
+Classification: Confidential
+Language: English
+________________________________________
+Confidentiality Statement
+This Software Requirements Specification (SRS) contains confidential and proprietary information relating to the design, architecture, implementation strategy, and technical specifications of the VELIZO platform.
+The information contained in this document is intended solely for the project owner, authorized client representatives, and approved development stakeholders. No part of this document may be copied, reproduced, distributed, published, or disclosed to any third party without prior written authorization from the project owner.
+This document shall be used exclusively for the planning, design, development, testing, deployment, and maintenance of the VELIZO platform.
+________________________________________
+Document Control
+Item	Value
+Document Title	VELIZO Software Requirements Specification
+Document ID	VEL-SRS-001
+Version	1.0
+Status	Final Draft for Client Review
+Document Type	Software Requirements Specification (SRS)
+Product Name	VELIZO
+Product Slogan	Connecting Global Employers with Exceptional Talent
+Methodology	Agile Scrum
+Classification	Confidential
+Prepared By	Mucyo Cleberé
+Company	CodeMateRwa LTD
+Language	English
+________________________________________
+Revision History
+Version	Date	Description
+0.1	Initial Planning	Project Concept and Business Analysis
+0.5	Requirements Analysis	Functional Requirements Definition
+0.8	Technical Architecture	AI, Database and System Architecture
+1.0	Final Draft	Complete Software Requirements Specification
+________________________________________
+Preface
+Introduction
+VELIZO is a modern, AI-powered international recruitment platform designed to connect global employers with exceptional talent through a secure, intelligent, and scalable digital ecosystem.
+The platform streamlines international hiring by bringing together candidates, employers, recruitment agencies, and administrators within a single cloud-based environment powered by Artificial Intelligence.
+This Software Requirements Specification (SRS) serves as the official technical blueprint for the design, development, implementation, testing, deployment, and long-term maintenance of the VELIZO platform.
+The document provides a comprehensive description of the project's business objectives, functional requirements, artificial intelligence capabilities, system architecture, database design, implementation strategy, security requirements, and overall technical direction.
+Its primary purpose is to establish a shared understanding among all project stakeholders before software development begins, thereby minimizing implementation risks, improving planning accuracy, and ensuring consistency throughout the Software Development Life Cycle (SDLC).
+This document represents the agreed technical foundation upon which the VELIZO platform will be designed, developed, and continuously enhanced.
+________________________________________
+Purpose of this Document
+The purpose of this Software Requirements Specification is to provide a complete, structured, and authoritative definition of the VELIZO platform.
+This document is intended to:
+•	Define the overall business vision and project objectives.
+•	Describe the functional and non-functional requirements.
+•	Establish the complete software architecture.
+•	Define the Artificial Intelligence ecosystem.
+•	Present the database architecture and data model.
+•	Describe the implementation strategy and project roadmap.
+•	Establish development standards and engineering best practices.
+•	Serve as the single source of truth for all project stakeholders.
+•	Support future maintenance, scalability, and continuous platform enhancement.
+This document will remain the primary technical reference throughout the entire software development lifecycle.
+________________________________________
+Intended Audience
+This document is intended for individuals and organizations directly involved in the planning, development, management, deployment, and future maintenance of the VELIZO platform.
+The intended audience includes:
+•	Product Owner
+•	Client Representatives
+•	Software Architects
+•	Software Engineers
+•	Backend Developers
+•	Frontend Developers
+•	UI/UX Designers
+•	Database Engineers
+•	AI Engineers
+•	DevOps Engineers
+•	Quality Assurance Engineers
+•	Technical Consultants
+•	Future Development Teams
+•	Investors and Strategic Partners
+Each stakeholder may refer to different sections of this document according to their responsibilities while maintaining a unified understanding of the project.
+________________________________________
+Document Objectives
+The primary objectives of this document are to:
+•	Establish clear business requirements.
+•	Define the project scope.
+•	Describe all functional capabilities.
+•	Define non-functional quality standards.
+•	Present the complete software architecture.
+•	Define database structures and relationships.
+•	Document AI-powered platform capabilities.
+•	Describe the implementation methodology.
+•	Support accurate development planning.
+•	Minimize project risks.
+•	Improve collaboration among stakeholders.
+•	Ensure long-term scalability, maintainability, and security.
+________________________________________
+How to Read this Document
+This Software Requirements Specification has been organized according to internationally recognized software engineering documentation standards.
+The document begins with the overall business vision before progressing through functional requirements, artificial intelligence architecture, software architecture, database design, quality attributes, implementation planning, and finally the executive summary and project conclusion.
+Each chapter builds upon the previous one, providing readers with a complete understanding of the platform from both business and technical perspectives.
+Readers may either study the document sequentially or navigate directly to chapters relevant to their specific responsibilities.
+________________________________________
+Table of Contents
+Front Matter
+•	Confidentiality Statement
+•	Document Control
+•	Revision History
+•	Preface
+•	Purpose of this Document
+•	Intended Audience
+•	Document Objectives
+•	How to Read this Document
+•	Table of Contents
+________________________________________
+Chapter 1 — Project Overview
+This chapter introduces the VELIZO platform by presenting the business problem, product vision, mission, objectives, target users, business scope, and overall solution concept.
+It provides stakeholders with a comprehensive understanding of why the platform is being developed, the challenges it aims to solve, and the value it intends to deliver to candidates, employers, recruitment agencies, and administrators.
+________________________________________
+Chapter 2 — Functional Requirements
+This chapter defines all functional capabilities of the platform.
+It describes every major module, including authentication, candidate management, employer management, recruitment agency operations, job management, applications, notifications, premium services, payments, administration, and Career Passport functionality.
+This chapter answers the fundamental question:
+"What should the system do?"
+________________________________________
+Chapter 3 — Artificial Intelligence Architecture
+This chapter presents the complete Artificial Intelligence ecosystem powering VELIZO.
+It explains how AI enhances recruitment through intelligent job recommendations, candidate matching, resume analysis, ATS scoring, AI career coaching, employer assistance, smart search, document validation, salary intelligence, and conversational AI.
+It also distinguishes between publicly available AI services and premium AI capabilities.
+________________________________________
+Chapter 4 — System Architecture
+This chapter describes the complete technical architecture of the platform.
+It explains the frontend architecture, backend architecture, API design, authentication, storage, search engine integration, security model, document verification workflow, Career Passport architecture, cloud infrastructure, and third-party service integrations.
+This chapter illustrates how every component works together to create a secure, scalable, and enterprise-ready recruitment platform.
+________________________________________
+Chapter 5 — Database Design & Data Model
+This chapter presents the complete database architecture supporting the platform.
+It defines database entities, relationships, normalization strategy, indexing, AI-related tables, Career Passport storage, Countries Intelligence, Skills Intelligence, Salary Intelligence, Recommendation Engine, Search Analytics, and future scalability considerations.
+It establishes the technical foundation for secure, efficient, and scalable data management.
+________________________________________
+Chapter 6 — Non-Functional Requirements
+This chapter defines the quality standards expected from the platform.
+Topics include performance, scalability, reliability, availability, security, privacy, accessibility, monitoring, backup strategy, disaster recovery, API quality, DevOps practices, AI reliability, and operational resilience.
+These requirements ensure that VELIZO performs efficiently, securely, and reliably in production environments.
+________________________________________
+Chapter 7 — Project Implementation Roadmap & Delivery Plan
+This chapter outlines the complete implementation strategy for the project.
+It describes the Agile development methodology, implementation phases, development milestones, MVP scope, testing strategy, deployment plan, maintenance activities, project deliverables, long-term roadmap, and overall execution approach.
+This roadmap provides a structured plan for successfully delivering the VELIZO platform from concept to production.
+________________________________________
+Chapter 8 — Executive Summary, Final Recommendation & Project Conclusion
+The final chapter summarizes the complete Software Requirements Specification.
+It presents the overall business value, technology stack, platform innovations, competitive advantages, project readiness assessment, implementation recommendations, approval information, and official project conclusion.
+This chapter formally concludes the Software Requirements Specification and confirms the platform's readiness to proceed into the design and development phases.
+________________________________________
+Document Structure Overview
+The Software Requirements Specification has been organized according to internationally recognized software engineering documentation practices.
+The document progresses through the following structure:
+Front Matter
+↓
+Project Overview
+↓
+Functional Requirements
+↓
+Artificial Intelligence Architecture
+↓
+System Architecture
+↓
+Database Design
+↓
+Non-Functional Requirements
+↓
+Project Implementation Roadmap
+↓
+Executive Summary & Project Conclusion
+Each chapter contributes to a complete understanding of the project, ensuring that business objectives, technical requirements, implementation strategies, and quality standards are clearly documented before software development begins.
+This structured approach minimizes ambiguity, improves collaboration among stakeholders, establishes a single source of truth for the development team, and provides a reliable foundation for the successful delivery and long-term evolution of the VELIZO platform.
+Chapter 1 – Executive Summary & Business Analysis
+1.1 Executive Summary
+The global recruitment industry is evolving rapidly, creating a growing demand for secure, intelligent, and efficient hiring solutions. VELIZO is designed to address this need by providing an AI-powered international recruitment platform that connects global employers with exceptional talent through a modern, scalable, and cloud-based ecosystem.
+Rather than operating as a traditional job board, VELIZO integrates recruitment management, candidate services, Artificial Intelligence, Career Passport, document verification, and employer tools into a unified platform that simplifies international hiring while improving efficiency, transparency, and trust.
+________________________________________
+1.2 Business Vision
+To become a trusted global recruitment platform that connects employers with exceptional talent through innovative technology and intelligent recruitment solutions.
+________________________________________
+1.3 Mission Statement
+To simplify international recruitment by delivering a secure, AI-driven platform that empowers employers to hire qualified professionals efficiently while enabling candidates to build successful global careers.
+________________________________________
+1.4 Project Purpose
+The purpose of VELIZO is to centralize and modernize the international recruitment process by integrating candidate management, employer services, document verification, AI assistance, communication, and analytics into a single digital ecosystem.
+________________________________________
+1.5 Business Challenges
+The current recruitment market faces several common challenges:
+•	Difficulty identifying verified international job opportunities.
+•	Large volumes of unqualified job applications.
+•	Limited candidate verification and document validation.
+•	Fragmented recruitment workflows.
+•	Basic search systems with poor matching accuracy.
+•	Limited AI-powered career guidance.
+•	Time-consuming recruitment processes.
+These challenges reduce recruitment efficiency, increase operational costs, and negatively impact hiring outcomes.
+________________________________________
+1.6 Proposed Solution
+VELIZO addresses these challenges through a comprehensive AI-powered recruitment ecosystem featuring:
+•	Intelligent job discovery
+•	AI-powered search and recommendations
+•	Career Passport
+•	Secure document management
+•	Resume management
+•	Employer recruitment tools
+•	Recruitment agency management
+•	AI Career Assistant
+•	Recruitment analytics
+•	Secure cloud infrastructure
+The platform is designed to support both current business requirements and future global expansion.
+________________________________________
+1.7 Business Objectives
+The primary objectives of VELIZO are to:
+•	Simplify international recruitment.
+•	Improve hiring quality.
+•	Reduce recruitment time.
+•	Increase successful job placements.
+•	Provide verified professional identities.
+•	Deliver AI-powered recruitment services.
+•	Support premium subscription services.
+•	Build a scalable international recruitment ecosystem.
+________________________________________
+1.8 Business Value
+Candidates
+•	Verified professional profile
+•	Faster job applications
+•	AI career guidance
+•	Personalized job recommendations
+Employers
+•	Faster hiring
+•	Better candidate matching
+•	AI-assisted recruitment
+•	Reduced hiring costs
+Recruitment Agencies
+•	Centralized recruitment management
+•	Improved operational efficiency
+•	Better candidate tracking
+Platform Owner
+•	Subscription-based revenue
+•	Premium AI services
+•	International business scalability
+________________________________________
+1.9 Project Scope (MVP)
+The Minimum Viable Product (MVP) includes:
+•	Public Website
+•	Candidate Portal
+•	Employer Portal
+•	Recruitment Agency Portal
+•	Administrator Portal
+•	Career Passport
+•	Job Management
+•	Application Management
+•	AI Search
+•	AI Chat Assistant
+•	Resume Management
+•	Premium Membership
+•	Notifications
+•	Messaging
+•	Analytics Dashboard
+•	Payment Integration
+•	Document Management
+The platform architecture has been designed to support future enhancements without major system redesign.
+________________________________________
+1.10 Target Users
+VELIZO serves the following user groups:
+•	Public Visitors
+•	Candidates
+•	Premium Candidates
+•	Employers
+•	Recruitment Agencies
+•	Platform Administrators
+Each user role is provided with dedicated features and permissions tailored to its operational responsibilities.
+________________________________________
+1.11 Success Metrics
+Project success will be measured using key performance indicators, including:
+•	Registered users
+•	Verified employers
+•	Job postings
+•	Successful placements
+•	AI recommendation accuracy
+•	Search performance
+•	Premium subscriptions
+•	Monthly recurring revenue
+•	Platform uptime
+•	User satisfaction
+________________________________________
+1.12 Chapter Summary
+This chapter establishes the business foundation of the VELIZO platform by defining its vision, objectives, business challenges, proposed solution, project scope, and expected value.
+The next chapter presents the complete functional requirements, detailing every module, workflow, and feature that will be implemented within the platform.
+
+
+
+Chapter 2 – Functional Requirements
+2.1 Functional Overview
+This chapter defines the functional requirements of the VELIZO platform. It describes the core system capabilities, user roles, workflows, and business modules that collectively deliver a secure, intelligent, and efficient international recruitment experience.
+The platform adopts a role-based architecture, ensuring that each user interacts only with features relevant to their responsibilities while maintaining centralized administration and data security.
+________________________________________
+2.2 User Roles & Permissions
+VELIZO supports multiple user roles, each with dedicated permissions and responsibilities.
+Public Visitor
+Public visitors can:
+•	Browse available job opportunities.
+•	Search jobs and employers.
+•	View company profiles.
+•	Read career resources and announcements.
+•	Register a new account.
+________________________________________
+Candidate
+Candidates can:
+•	Create and manage professional profiles.
+•	Build a Career Passport.
+•	Upload resumes and supporting documents.
+•	Search and apply for jobs.
+•	Track application status.
+•	Receive AI-powered recommendations.
+•	Communicate with employers.
+•	Manage account settings.
+________________________________________
+Premium Candidate
+Premium candidates receive all standard candidate features plus:
+•	AI Resume Analysis.
+•	ATS Resume Score.
+•	AI Career Coach.
+•	Interview Preparation Assistant.
+•	Advanced Job Recommendations.
+•	Personalized Career Insights.
+•	Premium Learning Resources.
+________________________________________
+Employer
+Employers can:
+•	Create company profiles.
+•	Publish and manage job vacancies.
+•	Search qualified candidates.
+•	Review applications.
+•	Schedule interviews.
+•	Communicate with candidates.
+•	Access recruitment analytics.
+•	Use AI-powered hiring tools.
+________________________________________
+Recruitment Agency
+Recruitment agencies can:
+•	Manage employer accounts.
+•	Manage candidate pipelines.
+•	Track placements.
+•	Coordinate recruitment activities.
+•	Monitor recruitment performance.
+•	Generate recruitment reports.
+________________________________________
+Administrator
+Administrators have complete system control, including:
+•	User management.
+•	Employer verification.
+•	Recruitment agency approval.
+•	Content moderation.
+•	AI monitoring.
+•	Subscription management.
+•	Analytics monitoring.
+•	Platform configuration.
+•	Security management.
+________________________________________
+2.3 Authentication & Authorization
+The platform shall provide secure authentication and authorization services.
+Core functionality includes:
+•	User Registration
+•	Secure Login
+•	Email Verification
+•	Password Reset
+•	Two-Factor Authentication (Optional)
+•	Social Authentication (Future)
+•	Role-Based Access Control (RBAC)
+•	Session Management
+•	Device Management
+Authentication must be implemented using secure industry-standard practices.
+________________________________________
+2.4 Public Website
+The public website serves as the primary entry point for visitors.
+Core pages include:
+•	Home
+•	About
+•	Services
+•	Job Listings
+•	Companies
+•	Career Resources
+•	Blog
+•	Contact
+•	Frequently Asked Questions (FAQ)
+The public website must be fully responsive and optimized for search engines (SEO).
+________________________________________
+2.5 Chapter Summary
+This chapter introduced the core functional structure of the VELIZO platform by defining user roles, permissions, authentication mechanisms, and the foundational public-facing components.
+The following sections expand on each business module, including candidate services, employer management, recruitment agencies, Career Passport, job management, AI-powered functionality, communication services, payment systems, and analytics, providing a complete functional specification for the platform.
+
+2.6 Candidate Portal
+The Candidate Portal is designed to help job seekers manage their professional profiles, apply for jobs, and monitor their career progress through a centralized dashboard.
+Core Features
+•	Dashboard Overview
+•	Profile Management
+•	Career Passport
+•	Resume & CV Management
+•	Skills & Certifications
+•	Education History
+•	Employment History
+•	Job Search
+•	Job Applications
+•	Saved Jobs
+•	AI Job Recommendations
+•	Application Tracking
+•	Interview Invitations
+•	Notifications
+•	Messaging
+•	Account Settings
+Candidate Dashboard
+The dashboard shall display:
+•	Profile Completion
+•	Career Passport Status
+•	Recent Applications
+•	Recommended Jobs
+•	Upcoming Interviews
+•	Notifications
+•	AI Career Insights
+Profile Management
+Candidates shall be able to:
+•	Edit personal information.
+•	Upload profile photo.
+•	Update contact details.
+•	Add professional summary.
+•	Manage work preferences.
+•	Set preferred countries.
+•	Select preferred job categories.
+Resume Management
+Candidates shall be able to:
+•	Upload multiple resumes.
+•	Create resumes online.
+•	Replace existing resumes.
+•	Download resumes.
+•	Set a default resume.
+•	Share resumes securely.
+Career Passport
+The Career Passport shall include:
+•	Personal Information
+•	Education
+•	Employment History
+•	Skills
+•	Certifications
+•	Languages
+•	Professional References
+•	Verified Documents
+•	Career Score
+•	Trust Score
+Job Search
+Candidates shall be able to:
+•	Search jobs.
+•	Filter results.
+•	Save searches.
+•	Receive AI search suggestions.
+•	View similar jobs.
+•	Apply instantly.
+Job Applications
+Candidates shall be able to:
+•	Submit applications.
+•	Track application status.
+•	Withdraw applications.
+•	View interview invitations.
+•	Receive employer feedback.
+Messaging
+Candidates shall be able to communicate securely with employers and recruitment agencies through the platform messaging system.
+Premium Features
+Premium candidates shall receive access to:
+•	AI Resume Analysis
+•	ATS Resume Score
+•	AI Career Coach
+•	Interview Preparation
+•	Resume Optimization
+•	Advanced Job Matching
+•	Personalized Career Roadmap
+•	Salary Insights
+•	Priority Application Visibility
+________________________________________
+2.7 Chapter Continuation
+The next section defines the Employer Portal and its complete recruitment management capabilities.
+
+
+
+
+2.7 Employer Portal
+The Employer Portal enables organizations to manage recruitment activities through a centralized and intelligent hiring dashboard.
+Core Features
+•	Employer Dashboard
+•	Company Profile Management
+•	Job Posting
+•	Job Management
+•	Candidate Search
+•	Candidate Shortlisting
+•	Application Management
+•	Interview Scheduling
+•	AI Candidate Matching
+•	Team Management
+•	Messaging
+•	Notifications
+•	Recruitment Analytics
+•	Subscription Management
+•	Account Settings
+Employer Dashboard
+The dashboard shall display:
+•	Active Jobs
+•	Total Applications
+•	Shortlisted Candidates
+•	Interview Schedule
+•	Recruitment Performance
+•	AI Hiring Insights
+•	Recent Activities
+Company Profile
+Employers shall be able to:
+•	Create and edit company profiles.
+•	Upload company logo.
+•	Manage company information.
+•	Add office locations.
+•	Manage company documents.
+•	Verify company identity.
+Job Management
+Employers shall be able to:
+•	Create job postings.
+•	Edit published jobs.
+•	Pause or close vacancies.
+•	Duplicate existing jobs.
+•	Manage application deadlines.
+•	Define job requirements.
+•	Publish featured jobs.
+Candidate Search
+Employers shall be able to:
+•	Search candidates.
+•	Filter by skills.
+•	Filter by experience.
+•	Filter by education.
+•	Filter by location.
+•	Filter by availability.
+•	Save search criteria.
+Application Management
+Employers shall be able to:
+•	View applications.
+•	Shortlist candidates.
+•	Reject applications.
+•	Schedule interviews.
+•	Record interview outcomes.
+•	Update recruitment status.
+Interview Management
+The platform shall support:
+•	Interview invitations.
+•	Interview scheduling.
+•	Calendar integration.
+•	Candidate reminders.
+•	Interview feedback.
+•	Hiring decisions.
+AI Recruitment Tools
+Employers shall have access to:
+•	AI Candidate Matching
+•	Resume Analysis
+•	ATS Compatibility Score
+•	Candidate Ranking
+•	AI Hiring Assistant
+•	Smart Candidate Recommendations
+•	Recruitment Insights
+Team Management
+Organizations shall be able to:
+•	Invite recruiters.
+•	Assign user roles.
+•	Manage permissions.
+•	Monitor recruiter activities.
+Recruitment Analytics
+Employers shall have access to:
+•	Job Performance
+•	Application Statistics
+•	Hiring Success Rate
+•	Recruitment Timeline
+•	Candidate Source Analytics
+•	AI Recommendation Performance
+Premium Employer Features
+Premium employer accounts shall include:
+•	Unlimited Job Posts
+•	Advanced Candidate Search
+•	AI Talent Discovery
+•	Priority Candidate Matching
+•	Premium Company Branding
+•	Advanced Recruitment Analytics
+•	Team Collaboration Tools
+•	Dedicated Employer Support
+________________________________________
+
+
+2.8 Recruitment Agency Portal
+The Recruitment Agency Portal enables licensed recruitment agencies to manage employers, candidates, and recruitment operations from a centralized workspace.
+Core Features
+•	Agency Dashboard
+•	Agency Profile Management
+•	Employer Management
+•	Candidate Management
+•	Job Assignment
+•	Placement Management
+•	Interview Coordination
+•	Document Verification
+•	Messaging
+•	Notifications
+•	Performance Analytics
+•	Team Management
+•	Subscription Management
+•	Account Settings
+Agency Dashboard
+The dashboard shall display:
+•	Active Employers
+•	Active Candidates
+•	Open Vacancies
+•	Placements
+•	Pending Verifications
+•	Recruitment Performance
+•	Recent Activities
+Agency Profile
+Recruitment agencies shall be able to:
+•	Create and manage agency profiles.
+•	Upload company branding.
+•	Manage office information.
+•	Verify agency credentials.
+•	Update contact information.
+Employer Management
+Recruitment agencies shall be able to:
+•	Register employers.
+•	Manage employer accounts.
+•	Publish vacancies on behalf of employers.
+•	Monitor recruitment progress.
+•	Maintain employer relationships.
+Candidate Management
+Recruitment agencies shall be able to:
+•	Register candidates.
+•	Manage candidate profiles.
+•	Upload candidate documents.
+•	Verify candidate information.
+•	Track candidate progress.
+Placement Management
+The platform shall support:
+•	Candidate placement tracking.
+•	Placement history.
+•	Placement status updates.
+•	Placement reports.
+•	Placement success metrics.
+Interview Coordination
+Recruitment agencies shall be able to:
+•	Schedule interviews.
+•	Coordinate interview sessions.
+•	Share interview feedback.
+•	Monitor interview progress.
+Document Verification
+Recruitment agencies shall be able to:
+•	Verify candidate documents.
+•	Review certifications.
+•	Validate supporting documents.
+•	Submit verification reports.
+Team Management
+Agency administrators shall be able to:
+•	Invite recruiters.
+•	Assign roles.
+•	Manage permissions.
+•	Monitor staff activities.
+Performance Analytics
+The platform shall provide:
+•	Placement Reports
+•	Recruiter Performance
+•	Employer Activity
+•	Candidate Statistics
+•	Revenue Reports
+•	AI Recruitment Insights
+Premium Agency Features
+Premium agencies shall receive:
+•	Unlimited Employer Accounts
+•	Unlimited Candidate Management
+•	Advanced AI Matching
+•	AI Recruitment Assistant
+•	Priority Candidate Recommendations
+•	Advanced Analytics
+•	Multi-Branch Management
+•	Dedicated Support
+________________________________________
+2.9 Chapter Continuation
+The next section defines the Administrator Portal and platform management capabilities.
+
+
+
+2.9 Administrator Portal
+The Administrator Portal provides complete control over platform operations, user management, security, and system configuration.
+Core Features
+•	Admin Dashboard
+•	User Management
+•	Employer Verification
+•	Recruitment Agency Management
+•	Job Management
+•	Content Management
+•	AI Management
+•	Subscription Management
+•	Payment Management
+•	Reports & Analytics
+•	System Settings
+•	Security Management
+•	Notification Management
+•	Audit Logs
+Admin Dashboard
+The dashboard shall display:
+•	Total Users
+•	Active Employers
+•	Registered Candidates
+•	Recruitment Agencies
+•	Active Jobs
+•	Applications
+•	Revenue Overview
+•	AI Usage Statistics
+•	Platform Performance
+•	Recent Activities
+User Management
+Administrators shall be able to:
+•	View all users.
+•	Create user accounts.
+•	Edit user information.
+•	Suspend or activate accounts.
+•	Assign user roles.
+•	Reset user credentials.
+Employer Verification
+Administrators shall be able to:
+•	Review employer registrations.
+•	Verify company documents.
+•	Approve or reject employers.
+•	Monitor employer compliance.
+Recruitment Agency Management
+Administrators shall be able to:
+•	Approve agency registrations.
+•	Verify agency licenses.
+•	Manage agency accounts.
+•	Monitor agency performance.
+Job Management
+Administrators shall be able to:
+•	Review job postings.
+•	Approve or reject vacancies.
+•	Remove inappropriate content.
+•	Feature selected job listings.
+Content Management
+The platform shall support management of:
+•	Career Resources
+•	Blog Articles
+•	FAQs
+•	Announcements
+•	Help Center
+•	Static Website Pages
+AI Management
+Administrators shall be able to:
+•	Monitor AI usage.
+•	Manage AI configurations.
+•	Review AI-generated content.
+•	Track AI performance.
+•	Monitor API consumption.
+Subscription & Payment Management
+Administrators shall be able to:
+•	Manage subscription plans.
+•	Review transactions.
+•	Process refunds.
+•	Generate invoices.
+•	Monitor recurring payments.
+Reports & Analytics
+The platform shall provide:
+•	User Reports
+•	Recruitment Reports
+•	Financial Reports
+•	AI Performance Reports
+•	Search Analytics
+•	Platform Usage Reports
+Security Management
+Administrators shall be able to:
+•	Monitor login activities.
+•	Review audit logs.
+•	Manage permissions.
+•	Configure security policies.
+•	Block suspicious accounts.
+System Configuration
+Administrators shall be able to manage:
+•	General Settings
+•	Platform Branding
+•	Email Configuration
+•	SMS Configuration
+•	Payment Gateways
+•	AI Configuration
+•	Search Configuration
+•	Notification Settings
+Premium Administration Features
+The platform shall support:
+•	Advanced Analytics
+•	Multi-Administrator Roles
+•	Enterprise Audit Logs
+•	System Health Monitoring
+•	Backup Management
+•	API Management
+•	AI Usage Dashboard
+•	Infrastructure Monitoring
+________________________________________
+2.10 Chapter Continuation
+The next section defines the Career Passport module and its role in creating a verified digital professional identity for every candidate.
+
+
+2.10 Career Passport
+The Career Passport provides every candidate with a verified digital professional identity that simplifies international recruitment and increases employer confidence.
+Core Features
+•	Personal Profile
+•	Professional Summary
+•	Education Records
+•	Employment History
+•	Skills & Competencies
+•	Certifications
+•	Language Proficiency
+•	Professional References
+•	Resume Management
+•	Verified Documents
+•	Career Score
+•	Trust Score
+•	Shareable Career Passport
+Personal Information
+Candidates shall be able to:
+•	Manage personal information.
+•	Upload profile photo.
+•	Update contact details.
+•	Manage nationality and location.
+•	Configure work preferences.
+Education
+Candidates shall be able to:
+•	Add educational qualifications.
+•	Upload academic certificates.
+•	Record institutions attended.
+•	Track academic history.
+Employment History
+Candidates shall be able to:
+•	Add work experience.
+•	Record previous employers.
+•	Define responsibilities.
+•	Upload employment evidence.
+Skills & Certifications
+Candidates shall be able to:
+•	Add professional skills.
+•	Upload certifications.
+•	Organize technical competencies.
+•	Update skill proficiency levels.
+Document Management
+The Career Passport shall support:
+•	Passport Upload
+•	National ID
+•	Academic Certificates
+•	Professional Licenses
+•	Employment Certificates
+•	Recommendation Letters
+•	Other Supporting Documents
+Verification
+The platform shall support:
+•	Identity Verification
+•	Document Verification
+•	Education Verification
+•	Employment Verification
+•	Certification Verification
+Career Score
+The system shall generate a Career Score based on:
+•	Profile Completeness
+•	Education
+•	Work Experience
+•	Skills
+•	Certifications
+•	Verification Status
+•	Platform Activity
+Trust Score
+The system shall generate a Trust Score using:
+•	Identity Verification
+•	Document Authenticity
+•	Profile Consistency
+•	Employment Verification
+•	User Reputation
+Shareable Career Passport
+Candidates shall be able to:
+•	Share a public profile link.
+•	Download Career Passport as PDF.
+•	Control profile visibility.
+•	Generate secure sharing links.
+Premium Features
+Premium candidates shall receive:
+•	AI Career Assessment
+•	AI Profile Optimization
+•	Advanced Career Insights
+•	Personalized Career Roadmap
+•	AI Skill Gap Analysis
+•	Global Employability Score
+•	Priority Verification
+________________________________________
+2.11 Chapter Continuation
+The next section defines the Job Management and Application Management modules, including job publishing, application workflows, and recruitment lifecycle management.
+
+2.11 Job & Application Management
+The Job & Application Management module provides a complete workflow for publishing vacancies, managing applications, and monitoring the recruitment process from job creation to candidate placement.
+Job Management
+The platform shall support:
+•	Job Creation
+•	Job Publishing
+•	Job Editing
+•	Job Expiration
+•	Job Suspension
+•	Job Archiving
+•	Featured Jobs
+•	Draft Management
+•	Job Categories
+•	Job Types
+•	Salary Information
+•	Application Deadlines
+Job Information
+Each job posting shall include:
+•	Job Title
+•	Company
+•	Location
+•	Employment Type
+•	Salary Range
+•	Experience Level
+•	Education Requirements
+•	Required Skills
+•	Job Description
+•	Responsibilities
+•	Benefits
+•	Application Deadline
+Job Search
+Users shall be able to:
+•	Search jobs.
+•	Filter by country.
+•	Filter by city.
+•	Filter by category.
+•	Filter by salary.
+•	Filter by experience.
+•	Filter by employment type.
+•	Sort search results.
+•	Save searches.
+AI Search
+The search engine shall provide:
+•	Smart Suggestions
+•	Typo Tolerance
+•	Semantic Search
+•	Related Jobs
+•	Personalized Recommendations
+•	Popular Searches
+Application Management
+Candidates shall be able to:
+•	Apply for jobs.
+•	Submit supporting documents.
+•	Track application status.
+•	Withdraw applications.
+•	Receive interview invitations.
+•	Receive hiring decisions.
+Application Workflow
+The recruitment workflow shall include:
+1.	Application Submitted
+2.	Under Review
+3.	Shortlisted
+4.	Interview Scheduled
+5.	Interview Completed
+6.	Final Evaluation
+7.	Offer Extended
+8.	Hired / Rejected
+Employer Actions
+Employers shall be able to:
+•	Review applications.
+•	Shortlist candidates.
+•	Reject applications.
+•	Schedule interviews.
+•	Send offers.
+•	Close recruitment.
+Recruitment Status
+The platform shall support the following statuses:
+•	Draft
+•	Published
+•	Open
+•	Closed
+•	Archived
+Application statuses shall include:
+•	Submitted
+•	Reviewing
+•	Shortlisted
+•	Interview
+•	Offered
+•	Hired
+•	Rejected
+•	Withdrawn
+Premium Features
+Premium employers shall receive:
+•	AI Candidate Ranking
+•	AI Resume Screening
+•	AI Job Performance Insights
+•	Priority Job Listings
+•	Advanced Candidate Filters
+•	Recruitment Forecasting
+________________________________________
+2.12 Communication & Notifications
+The platform shall provide secure communication between candidates, employers, recruitment agencies, and administrators.
+Messaging
+The messaging system shall support:
+•	Direct Messages
+•	Conversation History
+•	File Attachments
+•	Read Receipts
+•	Message Search
+•	Conversation Management
+Notifications
+Users shall receive notifications for:
+•	New Job Matches
+•	Application Updates
+•	Interview Invitations
+•	Employer Messages
+•	Document Verification
+•	Subscription Updates
+•	System Announcements
+Notification Channels
+The platform shall support:
+•	In-App Notifications
+•	Email Notifications
+•	SMS Notifications
+•	Push Notifications (Future)
+Email Services
+The platform shall deliver:
+•	Account Verification
+•	Password Reset
+•	Job Alerts
+•	Interview Invitations
+•	Recruitment Updates
+•	Subscription Notifications
+SMS Services
+SMS notifications shall be used for:
+•	OTP Verification
+•	Interview Reminders
+•	Important Alerts
+•	Security Notifications
+________________________________________
+2.13 Chapter Continuation
+The next section defines Payment, Subscription Management, AI-powered features, Reporting, and Analytics.
+
+
+2.13 Payment & Subscription Management
+The platform shall support secure subscription management and online payment processing for premium services.
+Subscription Plans
+The platform shall provide:
+•	Free Candidate Plan
+•	Premium Candidate Plan
+•	Employer Plan
+•	Premium Employer Plan
+•	Recruitment Agency Plan
+Subscription Features
+Users shall be able to:
+•	Upgrade subscriptions.
+•	Downgrade subscriptions.
+•	Renew subscriptions.
+•	Cancel subscriptions.
+•	View subscription history.
+•	Download invoices.
+Payment Methods
+The platform shall support:
+•	Credit & Debit Cards
+•	Stripe
+•	Flutterwave
+•	Mobile Money (Future)
+•	Bank Transfer (Optional)
+Payment Management
+The system shall provide:
+•	Secure Payment Processing
+•	Automatic Invoice Generation
+•	Payment History
+•	Transaction Tracking
+•	Refund Management
+•	Subscription Renewal Reminders
+________________________________________
+2.14 Artificial Intelligence Features
+Artificial Intelligence is a core component of the VELIZO platform, enhancing recruitment efficiency and user experience.
+Public AI Features
+Available to all users:
+•	AI Smart Search
+•	Search Suggestions
+•	Related Jobs
+•	AI Chat Assistant
+•	Job Recommendations
+•	Candidate Recommendations
+•	AI Job Matching
+Premium AI Features
+Available to premium subscribers:
+•	AI Resume Analysis
+•	ATS Resume Score
+•	AI Resume Optimization
+•	AI Career Coach
+•	AI Interview Preparation
+•	AI Candidate Ranking
+•	AI Hiring Assistant
+•	AI Skill Gap Analysis
+•	AI Salary Insights
+•	AI Career Roadmap
+•	AI Recruitment Analytics
+________________________________________
+2.15 Reporting & Analytics
+The platform shall provide real-time reporting and business analytics.
+Candidate Reports
+•	Profile Performance
+•	Application History
+•	Career Progress
+•	AI Career Insights
+Employer Reports
+•	Recruitment Performance
+•	Candidate Pipeline
+•	Hiring Statistics
+•	Job Performance
+•	Recruitment Cost Analysis
+Agency Reports
+•	Placement Reports
+•	Recruiter Performance
+•	Employer Activity
+•	Candidate Statistics
+Administrator Reports
+•	User Growth
+•	Revenue Reports
+•	Subscription Reports
+•	AI Usage Reports
+•	Platform Performance
+•	Security Reports
+•	Audit Reports
+Dashboard Analytics
+Dashboards shall include:
+•	Interactive Charts
+•	KPI Monitoring
+•	Real-Time Statistics
+•	Export to PDF
+•	Export to Excel
+•	Custom Date Filters
+________________________________________
+2.16 Chapter Summary
+This chapter defined the complete functional requirements of the VELIZO platform, including user roles, authentication, recruitment workflows, Career Passport, job and application management, communication services, subscription management, AI-powered capabilities, and reporting features.
+These functional requirements establish the operational foundation of the platform and serve as the basis for the system architecture, database design, and Artificial Intelligence implementation described in the following chapters.
+
+
+
+
+
+
+
+Chapter 3 – Artificial Intelligence Architecture
+3.1 AI Overview
+Artificial Intelligence (AI) is a core component of the VELIZO platform. It is designed to improve recruitment accuracy, automate repetitive tasks, enhance decision-making, and provide personalized experiences for both candidates and employers.
+The AI architecture is modular, scalable, and API-driven, allowing future expansion without major system redesign.
+________________________________________
+3.2 AI Objectives
+The AI system aims to:
+•	Improve candidate-job matching.
+•	Personalize user experiences.
+•	Reduce recruitment time.
+•	Automate candidate screening.
+•	Enhance search accuracy.
+•	Support career development.
+•	Generate actionable recruitment insights.
+________________________________________
+3.3 AI Architecture
+The AI ecosystem consists of the following components:
+•	AI Search Engine
+•	AI Recommendation Engine
+•	AI Resume Analyzer
+•	AI Career Coach
+•	AI Hiring Assistant
+•	AI Interview Assistant
+•	AI Chat Assistant
+•	AI Analytics Engine
+Each component operates independently while sharing data securely through centralized APIs.
+________________________________________
+3.4 Public AI Features
+The following AI capabilities are available to all users:
+AI Smart Search
+•	Semantic Search
+•	Typo Correction
+•	Smart Suggestions
+•	Related Results
+•	Auto Complete
+AI Job Recommendations
+•	Personalized Job Suggestions
+•	Similar Jobs
+•	Trending Opportunities
+AI Candidate Recommendations
+•	Intelligent Candidate Matching
+•	Related Candidate Profiles
+AI Chat Assistant
+The AI assistant shall:
+•	Answer platform questions.
+•	Guide users through workflows.
+•	Recommend relevant resources.
+•	Assist with navigation.
+________________________________________
+3.5 Premium AI Features
+Premium subscribers shall receive advanced AI capabilities.
+AI Resume Analyzer
+•	Resume Review
+•	Resume Quality Score
+•	ATS Compatibility Score
+•	Formatting Analysis
+•	Keyword Optimization
+•	Improvement Suggestions
+AI Career Coach
+The AI Career Coach shall provide:
+•	Career Advice
+•	Career Roadmaps
+•	Skill Recommendations
+•	Learning Suggestions
+•	Career Progress Evaluation
+AI Interview Assistant
+The AI Interview Assistant shall provide:
+•	Mock Interviews
+•	Technical Questions
+•	Behavioral Questions
+•	Answer Evaluation
+•	Performance Feedback
+AI Hiring Assistant
+Employers shall receive:
+•	Candidate Ranking
+•	Candidate Summaries
+•	Recruitment Recommendations
+•	Hiring Insights
+•	Candidate Comparison
+AI Skill Gap Analysis
+The system shall:
+•	Compare candidate skills against job requirements.
+•	Identify missing competencies.
+•	Recommend learning paths.
+________________________________________
+3.6 Recommendation Engine
+The recommendation engine shall generate:
+•	Job Recommendations
+•	Candidate Recommendations
+•	Learning Recommendations
+•	Skill Recommendations
+•	Employer Recommendations
+Recommendations shall continuously improve based on user behavior and platform activity.
+________________________________________
+3.7 AI Search Engine
+The search engine shall integrate Meilisearch to provide:
+•	Full-Text Search
+•	Semantic Search
+•	Typo Tolerance
+•	Search Suggestions
+•	Instant Results
+•	Ranking Rules
+•	Filters
+•	Faceted Search
+•	Synonyms
+•	Search Analytics
+________________________________________
+3.8 AI Data Sources
+The AI engine shall analyze:
+•	Candidate Profiles
+•	Career Passport Data
+•	Resumes
+•	Skills
+•	Education
+•	Employment History
+•	Job Descriptions
+•	Recruiter Feedback
+•	Search History
+•	Platform Activity
+________________________________________
+3.9 AI Security & Privacy
+The AI system shall:
+•	Protect user privacy.
+•	Process data securely.
+•	Respect user permissions.
+•	Prevent unauthorized access.
+•	Log AI activities.
+•	Support responsible AI practices.
+________________________________________
+3.10 AI Integrations
+The AI ecosystem shall integrate with:
+•	OpenAI API
+•	Meilisearch
+•	Internal Recommendation Engine
+•	Analytics Engine
+•	Email Services
+•	Notification Services
+The architecture allows additional AI providers to be integrated in future releases.
+________________________________________
+3.11 Future AI Enhancements
+Future versions of the platform may include:
+•	Voice AI Assistant
+•	AI Video Interview Analysis
+•	AI Fraud Detection
+•	AI Salary Prediction
+•	AI Workforce Forecasting
+•	AI Translation
+•	AI CV Generator
+•	AI Job Description Generator
+________________________________________
+3.12 Chapter Summary
+This chapter defined the Artificial Intelligence architecture of the VELIZO platform, including intelligent search, recommendation systems, resume analysis, career coaching, recruitment assistance, chatbot services, and AI integrations. These capabilities establish the intelligent foundation of the platform while ensuring scalability, security, and future extensibility.
+The next chapter presents the complete System Architecture, covering the frontend, backend, APIs, infrastructure, third-party integrations, and overall technical design of the platform.
+
+
+Chapter 4 – System Architecture
+4.1 Architecture Overview
+VELIZO is built using a modern, scalable, and cloud-native architecture designed to support high availability, security, maintainability, and future growth. The platform follows a modular architecture, allowing each component to evolve independently.
+________________________________________
+4.2 System Architecture
+The platform consists of the following layers:
+•	Presentation Layer (Frontend)
+•	Application Layer (Backend APIs)
+•	Business Logic Layer
+•	Artificial Intelligence Layer
+•	Search Engine
+•	Database Layer
+•	Storage Layer
+•	External Services
+________________________________________
+4.3 Frontend Architecture
+The frontend shall provide responsive and user-friendly interfaces for all user roles.
+Technologies
+•	React.js
+•	Next.js
+•	Tailwind CSS
+•	TypeScript
+•	Axios
+•	React Query
+Supported Platforms
+•	Desktop Browsers
+•	Tablets
+•	Mobile Browsers
+•	Progressive Web App (PWA)
+________________________________________
+4.4 Backend Architecture
+The backend manages business logic, authentication, APIs, AI integrations, and data processing.
+Technologies
+•	Node.js
+•	Express.js
+•	TypeScript
+•	RESTful API
+•	JWT Authentication
+Responsibilities
+•	Authentication
+•	Authorization
+•	Business Logic
+•	API Management
+•	Payment Processing
+•	AI Integration
+•	Notification Services
+________________________________________
+4.5 Database Architecture
+The platform shall use Supabase PostgreSQL as the primary relational database.
+The database shall manage:
+•	Users
+•	Employers
+•	Candidates
+•	Recruitment Agencies
+•	Jobs
+•	Applications
+•	Career Passport
+•	Payments
+•	AI Data
+•	Notifications
+•	Analytics
+________________________________________
+4.6 Search Architecture
+VELIZO shall integrate Meilisearch to provide high-speed intelligent search.
+Search capabilities include:
+•	Full-Text Search
+•	Semantic Search
+•	Typo Tolerance
+•	Instant Search
+•	Auto Complete
+•	Ranking Rules
+•	Search Filters
+•	Search Analytics
+________________________________________
+4.7 AI Architecture
+The AI layer shall integrate with:
+•	OpenAI API
+•	Internal AI Services
+•	Recommendation Engine
+•	Resume Analyzer
+•	AI Chat Assistant
+•	AI Analytics
+All AI services shall communicate through secure API endpoints.
+________________________________________
+4.8 Authentication & Security
+The platform shall implement:
+•	JWT Authentication
+•	Role-Based Access Control (RBAC)
+•	Email Verification
+•	Password Encryption
+•	Secure Sessions
+•	Two-Factor Authentication (Future)
+•	API Rate Limiting
+•	Activity Logging
+________________________________________
+4.9 File Storage
+The platform shall securely store:
+•	Profile Photos
+•	Company Logos
+•	Resumes
+•	Certificates
+•	Identity Documents
+•	Career Passport Files
+Storage shall be managed using Supabase Storage.
+________________________________________
+4.10 Notification Services
+The notification system shall support:
+•	Email Notifications
+•	SMS Notifications
+•	In-App Notifications
+•	Push Notifications (Future)
+Third-Party Services
+•	Africa's Talking
+•	SMTP Email Service
+________________________________________
+4.11 Payment Integration
+The platform shall integrate secure payment gateways for subscription management.
+Supported services include:
+•	Stripe
+•	Flutterwave
+Future integrations may include:
+•	MTN Mobile Money
+•	Airtel Money
+________________________________________
+4.12 External Integrations
+VELIZO shall integrate with:
+•	OpenAI API
+•	Meilisearch
+•	Supabase
+•	Africa's Talking
+•	Stripe
+•	Flutterwave
+•	Google Maps API
+•	Google OAuth
+•	LinkedIn Authentication (Future)
+________________________________________
+4.13 Deployment Architecture
+The production environment shall include:
+•	Frontend Hosting
+•	Backend Server
+•	PostgreSQL Database
+•	Meilisearch Server
+•	File Storage
+•	AI Services
+•	Monitoring Services
+•	Backup Services
+Recommended cloud infrastructure:
+•	Stretch Cloud VPS
+•	Supabase Cloud
+________________________________________
+4.14 Scalability
+The architecture shall support:
+•	Horizontal Scaling
+•	Vertical Scaling
+•	Load Balancing
+•	Database Optimization
+•	CDN Integration
+•	Multi-Region Deployment
+•	High Availability
+________________________________________
+4.15 Security Architecture
+Security measures include:
+•	HTTPS Encryption
+•	SSL Certificates
+•	Data Encryption
+•	Secure File Uploads
+•	SQL Injection Protection
+•	XSS Protection
+•	CSRF Protection
+•	Audit Logs
+•	Daily Backups
+________________________________________
+4.16 System Workflow
+The platform workflow follows these stages:
+1.	User Registration
+2.	Identity Verification
+3.	Profile Completion
+4.	Career Passport Creation
+5.	Job Publishing
+6.	AI Matching
+7.	Job Application
+8.	Interview Process
+9.	Hiring Decision
+10.	Recruitment Analytics
+________________________________________
+4.17 Chapter Summary
+This chapter defined the technical architecture of the VELIZO platform, including the frontend, backend, database, AI services, search engine, storage, security, payment systems, third-party integrations, and deployment infrastructure. The architecture provides a secure, scalable, and maintainable foundation for delivering enterprise-grade recruitment services.
+The next chapter presents the complete Database Design and Data Model, defining the core entities, relationships, and data structures that power the platform.
+
+
+Chapter 5 – Database Design & Data Model
+5.1 Database Overview
+VELIZO uses Supabase PostgreSQL as its primary relational database, providing secure, scalable, and high-performance data management for all platform operations.
+The database is designed using relational principles to ensure data consistency, integrity, and future scalability.
+________________________________________
+5.2 Database Objectives
+The database shall:
+•	Store platform data securely.
+•	Maintain data integrity.
+•	Support high-performance queries.
+•	Enable AI-powered features.
+•	Support future scalability.
+•	Ensure reliable backup and recovery.
+________________________________________
+5.3 Core Database Modules
+The database shall include the following modules:
+•	User Management
+•	Candidate Management
+•	Employer Management
+•	Recruitment Agency Management
+•	Career Passport
+•	Job Management
+•	Application Management
+•	AI Services
+•	Payment Management
+•	Notification Management
+•	Analytics
+•	Audit Logs
+________________________________________
+5.4 Core Entities
+The primary database entities include:
+•	Users
+•	Roles
+•	Candidates
+•	Employers
+•	Recruitment Agencies
+•	Company Profiles
+•	Jobs
+•	Applications
+•	Career Passports
+•	Education Records
+•	Employment History
+•	Skills
+•	Certifications
+•	Documents
+•	Interviews
+•	Messages
+•	Notifications
+•	Subscriptions
+•	Payments
+•	Reports
+•	Audit Logs
+________________________________________
+5.5 Entity Relationships
+The database shall support relationships including:
+•	One User → One Role
+•	One Candidate → One Career Passport
+•	One Employer → Many Jobs
+•	One Job → Many Applications
+•	One Candidate → Many Applications
+•	One Employer → Many Recruiters
+•	One Agency → Many Candidates
+•	One Candidate → Many Documents
+•	One Candidate → Many Skills
+•	One Candidate → Many Certifications
+________________________________________
+5.6 Career Passport Data Model
+The Career Passport shall store:
+•	Personal Information
+•	Contact Information
+•	Education
+•	Employment History
+•	Skills
+•	Certifications
+•	Languages
+•	References
+•	Verification Status
+•	Career Score
+•	Trust Score
+________________________________________
+5.7 Job Data Model
+Each job record shall include:
+•	Job Title
+•	Employer
+•	Location
+•	Category
+•	Employment Type
+•	Salary Range
+•	Experience Level
+•	Education Requirement
+•	Required Skills
+•	Job Description
+•	Benefits
+•	Status
+•	Published Date
+•	Expiration Date
+________________________________________
+5.8 Application Data Model
+Each application shall include:
+•	Candidate
+•	Job
+•	Resume
+•	Cover Letter
+•	Application Date
+•	Current Status
+•	Interview Schedule
+•	Employer Feedback
+•	Final Decision
+________________________________________
+5.9 AI Data Model
+The AI module shall store:
+•	Search History
+•	Recommendation History
+•	Resume Analysis
+•	ATS Scores
+•	Career Insights
+•	AI Conversations
+•	Candidate Rankings
+•	Employer Recommendations
+•	AI Usage Statistics
+________________________________________
+5.10 Search Index
+Meilisearch shall index:
+•	Jobs
+•	Candidates
+•	Employers
+•	Skills
+•	Companies
+•	Career Resources
+Indexed data shall support:
+•	Full-Text Search
+•	Semantic Search
+•	Typo Tolerance
+•	Auto Complete
+•	Filtering
+•	Ranking
+________________________________________
+5.11 Document Storage
+The platform shall manage:
+•	CVs
+•	Resumes
+•	Passports
+•	National IDs
+•	Certificates
+•	Professional Licenses
+•	Recommendation Letters
+•	Company Documents
+Files shall be securely stored using Supabase Storage, while metadata remains in PostgreSQL.
+________________________________________
+5.12 Audit & Activity Logs
+The system shall record:
+•	Login Activities
+•	Account Changes
+•	Job Updates
+•	Application Events
+•	Payment Activities
+•	AI Requests
+•	Administrative Actions
+•	Security Events
+________________________________________
+5.13 Backup & Recovery
+The database shall support:
+•	Automatic Daily Backups
+•	Point-in-Time Recovery
+•	Disaster Recovery
+•	Data Replication
+•	Backup Verification
+________________________________________
+5.14 Database Performance
+The database shall implement:
+•	Index Optimization
+•	Query Optimization
+•	Connection Pooling
+•	Data Caching
+•	Pagination
+•	Soft Deletes
+•	Data Archiving
+________________________________________
+5.15 Data Security
+Database security shall include:
+•	Data Encryption
+•	Password Hashing
+•	Row-Level Security (RLS)
+•	Secure API Access
+•	Access Control Policies
+•	SQL Injection Protection
+•	Regular Security Audits
+________________________________________
+5.16 Chapter Summary
+This chapter defined the database architecture and data model of the VELIZO platform, including core entities, relationships, Career Passport, job and application data, AI datasets, search indexing, document storage, security, backup, and performance optimization.
+The next chapter defines the Non-Functional Requirements, including performance, scalability, security, reliability, usability, availability, and compliance standards required for enterprise deployment.
+
+
+Chapter 6 – Non-Functional Requirements
+6.1 Overview
+This chapter defines the quality attributes and operational standards required to ensure the VELIZO platform is secure, reliable, scalable, and performant under real-world conditions.
+________________________________________
+6.2 Performance
+The platform shall:
+•	Load pages within acceptable response times.
+•	Process API requests efficiently.
+•	Support fast job searches.
+•	Handle concurrent users without service degradation.
+•	Optimize database queries and caching.
+________________________________________
+6.3 Scalability
+The platform shall support:
+•	Horizontal scaling.
+•	Vertical scaling.
+•	Multi-server deployment.
+•	Database scaling.
+•	Future microservices adoption.
+•	Global expansion.
+________________________________________
+6.4 Availability
+The platform shall provide:
+•	High system availability.
+•	Minimal service interruptions.
+•	Automatic service recovery.
+•	Continuous monitoring.
+•	Planned maintenance procedures.
+________________________________________
+6.5 Reliability
+The system shall:
+•	Process transactions accurately.
+•	Prevent data corruption.
+•	Recover gracefully from failures.
+•	Ensure consistent service delivery.
+•	Maintain data integrity.
+________________________________________
+6.6 Security
+The platform shall implement:
+•	HTTPS encryption.
+•	JWT authentication.
+•	Role-Based Access Control (RBAC).
+•	Secure password hashing.
+•	Multi-Factor Authentication (Future).
+•	API rate limiting.
+•	Secure file uploads.
+•	Activity logging.
+•	Audit trails.
+________________________________________
+6.7 Privacy & Data Protection
+The platform shall:
+•	Protect personal information.
+•	Encrypt sensitive data.
+•	Respect user privacy.
+•	Control access to confidential records.
+•	Support secure data deletion.
+•	Comply with applicable data protection regulations.
+________________________________________
+6.8 Usability
+The platform shall provide:
+•	Responsive user interfaces.
+•	Simple navigation.
+•	Consistent user experience.
+•	Accessibility support.
+•	Mobile-friendly layouts.
+•	Clear validation messages.
+________________________________________
+6.9 Maintainability
+The system shall be:
+•	Modular.
+•	Well documented.
+•	Easily testable.
+•	Easy to update.
+•	Easy to extend.
+•	Easy to monitor.
+________________________________________
+6.10 Compatibility
+The platform shall support:
+•	Modern web browsers.
+•	Desktop devices.
+•	Tablets.
+•	Mobile devices.
+•	Progressive Web Application (PWA).
+________________________________________
+6.11 Backup & Disaster Recovery
+The platform shall provide:
+•	Automatic backups.
+•	Point-in-time recovery.
+•	Disaster recovery procedures.
+•	Secure backup storage.
+•	Backup verification.
+________________________________________
+6.12 Monitoring & Logging
+The system shall monitor:
+•	Server health.
+•	API performance.
+•	Database performance.
+•	AI service usage.
+•	Search performance.
+•	Error logs.
+•	Security events.
+________________________________________
+6.13 API Standards
+All APIs shall:
+•	Follow REST standards.
+•	Return consistent responses.
+•	Validate requests.
+•	Handle errors gracefully.
+•	Require authentication where necessary.
+•	Support API versioning.
+________________________________________
+6.14 AI Reliability
+Artificial Intelligence services shall:
+•	Produce consistent results.
+•	Respond within acceptable time limits.
+•	Handle invalid inputs gracefully.
+•	Log AI interactions.
+•	Support continuous improvement.
+________________________________________
+6.15 Compliance
+The platform shall comply with:
+•	Industry security best practices.
+•	Secure software development standards.
+•	Data privacy requirements.
+•	Payment security requirements.
+•	Internal governance policies.
+________________________________________
+6.16 Chapter Summary
+This chapter defined the non-functional requirements that ensure the VELIZO platform meets enterprise standards for performance, scalability, availability, reliability, security, usability, maintainability, monitoring, compliance, and operational excellence.
+The following chapter presents the implementation roadmap, development methodology, project milestones, deployment strategy, and delivery plan for the VELIZO platform.
+
+Chapter 7 – Project Implementation Roadmap & Delivery Plan
+7.1 Overview
+This chapter outlines the implementation strategy for the VELIZO platform, defining the development phases, project milestones, testing activities, deployment process, and delivery approach.
+________________________________________
+7.2 Development Methodology
+The project shall follow the Agile Scrum methodology to ensure continuous delivery, flexibility, and regular client feedback throughout the development lifecycle.
+________________________________________
+7.3 Project Phases
+Phase 1 — Project Planning
+Activities include:
+•	Requirements Analysis
+•	System Planning
+•	Technical Architecture
+•	Database Design
+•	UI/UX Design
+•	Development Environment Setup
+Deliverable:
+•	Approved Project Plan
+________________________________________
+Phase 2 — Core Development
+Development includes:
+•	Authentication System
+•	Public Website
+•	Candidate Portal
+•	Employer Portal
+•	Recruitment Agency Portal
+•	Administrator Portal
+•	Career Passport
+•	Job Management
+•	Application Management
+Deliverable:
+•	Functional Core Platform
+________________________________________
+Phase 3 — AI Integration
+Implementation includes:
+•	AI Smart Search
+•	AI Chat Assistant
+•	AI Job Matching
+•	AI Candidate Matching
+•	AI Resume Analysis
+•	AI Career Coach
+•	AI Hiring Assistant
+•	Recommendation Engine
+Deliverable:
+•	Intelligent Recruitment Platform
+________________________________________
+Phase 4 — Third-Party Integrations
+Integrations include:
+•	OpenAI API
+•	Meilisearch
+•	Supabase
+•	Stripe
+•	Flutterwave
+•	Africa's Talking
+•	Email Services
+Deliverable:
+•	Fully Integrated Platform
+________________________________________
+Phase 5 — Testing & Quality Assurance
+Testing activities include:
+•	Unit Testing
+•	Integration Testing
+•	User Acceptance Testing (UAT)
+•	Performance Testing
+•	Security Testing
+•	Bug Fixing
+Deliverable:
+•	Production-Ready System
+________________________________________
+Phase 6 — Deployment
+Deployment includes:
+•	Production Server Setup
+•	Database Deployment
+•	Domain Configuration
+•	SSL Installation
+•	Production Release
+•	Final Verification
+Deliverable:
+•	Live Production Platform
+________________________________________
+7.4 MVP Deliverables
+The MVP shall include:
+•	Public Website
+•	Candidate Portal
+•	Employer Portal
+•	Recruitment Agency Portal
+•	Administrator Portal
+•	Career Passport
+•	AI Search
+•	AI Chat Assistant
+•	Resume Management
+•	Job & Application Management
+•	Payment System
+•	Notification System
+•	Analytics Dashboard
+________________________________________
+7.5 Post-Launch Activities
+Following deployment, the project shall include:
+•	Platform Monitoring
+•	Bug Fixes
+•	Performance Optimization
+•	Security Updates
+•	AI Improvements
+•	User Support
+________________________________________
+7.6 Future Roadmap
+Future platform enhancements may include:
+•	Native Mobile Applications
+•	Multi-Language Support
+•	Video Interviews
+•	AI Video Analysis
+•	Employer CRM
+•	HR Management Modules
+•	Payroll Integration
+•	International Recruitment Marketplace
+•	Public APIs
+•	Enterprise Integrations
+________________________________________
+7.7 Project Success Criteria
+The project shall be considered successfully delivered when:
+•	All MVP features are completed.
+•	Functional requirements are satisfied.
+•	AI services operate successfully.
+•	Third-party integrations function correctly.
+•	Security requirements are achieved.
+•	Performance targets are met.
+•	User Acceptance Testing is approved.
+•	Production deployment is completed.
+________________________________________
+7.8 Risks & Mitigation
+Risk	Mitigation
+API service interruptions	Implement fallback mechanisms and monitoring
+AI usage cost growth	Optimize prompts, caching, and usage limits
+Security threats	Apply secure coding standards and regular audits
+Performance bottlenecks	Optimize database queries and infrastructure
+Scope changes	Follow formal change management procedures
+________________________________________
+7.9 Recommended Technology Stack
+Layer	Technology
+Frontend	Next.js, React, TypeScript, Tailwind CSS
+Backend	Node.js, Express.js
+Database	Supabase PostgreSQL
+Authentication	Supabase Auth + JWT
+Storage	Supabase Storage
+Search Engine	Meilisearch
+Artificial Intelligence	OpenAI API
+SMS	Africa's Talking
+Payments	Stripe, Flutterwave
+Deployment	Stretch Cloud VPS
+Version Control	Git & GitHub
+________________________________________
+7.10 Chapter Summary
+This chapter presented the implementation strategy for the VELIZO platform, including the development methodology, project phases, MVP deliverables, deployment plan, technology stack, post-launch activities, future roadmap, and project success criteria.
+The next chapter concludes this Software Requirements Specification by summarizing the overall project vision, strategic value, implementation readiness, and final recommendations for successful execution.
+
+
+Chapter 8 – Executive Conclusion & Final Recommendation
+8.1 Project Overview
+VELIZO is a next-generation AI-powered international recruitment platform developed to simplify global hiring by connecting employers with exceptional talent through secure, intelligent, and scalable technology.
+The platform combines recruitment management, Career Passport, Artificial Intelligence, intelligent search, employer services, and candidate management into a single digital ecosystem designed for long-term growth.
+________________________________________
+8.2 Strategic Value
+VELIZO provides significant value to all stakeholders by:
+•	Simplifying international recruitment.
+•	Improving hiring efficiency.
+•	Reducing recruitment costs.
+•	Enhancing candidate experience.
+•	Supporting data-driven hiring decisions.
+•	Creating new revenue opportunities through premium services.
+________________________________________
+8.3 Technical Summary
+The platform is built using a modern technology stack to ensure security, scalability, and maintainability.
+Core Technologies
+•	Next.js & React
+•	Node.js & Express.js
+•	Supabase PostgreSQL
+•	Supabase Storage
+•	Meilisearch
+•	OpenAI API
+•	Stripe
+•	Flutterwave
+•	Africa's Talking
+This architecture enables reliable performance while supporting future expansion.
+________________________________________
+8.4 Artificial Intelligence Summary
+Artificial Intelligence is integrated throughout the platform to improve both user experience and recruitment outcomes.
+Key AI capabilities include:
+•	Smart Search
+•	AI Job Matching
+•	AI Candidate Matching
+•	Resume Analysis
+•	ATS Scoring
+•	AI Career Coach
+•	AI Hiring Assistant
+•	AI Chat Assistant
+•	Recommendation Engine
+•	Recruitment Analytics
+These capabilities position VELIZO as an intelligent recruitment platform rather than a traditional job board.
+________________________________________
+8.5 Scalability & Future Readiness
+The platform architecture supports future enhancements, including:
+•	Mobile Applications
+•	Multi-Language Support
+•	Multi-Country Expansion
+•	Enterprise Services
+•	Public APIs
+•	Additional AI Services
+•	HR Ecosystem Integrations
+No major architectural redesign will be required for future growth.
+________________________________________
+8.6 Expected Outcomes
+Following successful implementation, the platform is expected to:
+•	Increase recruitment efficiency.
+•	Improve candidate quality.
+•	Reduce hiring timelines.
+•	Enhance user satisfaction.
+•	Support international recruitment operations.
+•	Generate recurring subscription revenue.
+________________________________________
+8.7 Final Recommendation
+The proposed architecture, technology stack, and implementation strategy provide a strong foundation for delivering a secure, scalable, and intelligent recruitment platform.
+Adopting an Agile development approach, combined with cloud-native infrastructure and AI-powered services, will ensure continuous improvement while allowing the platform to adapt to future business and market requirements.
+________________________________________
+8.8 Conclusion
+This Software Requirements Specification defines the complete business, functional, technical, and architectural foundation for the VELIZO platform.
+It establishes a clear roadmap for the successful design, development, deployment, and future evolution of the system while ensuring alignment between business objectives and technical implementation.
+Upon approval of this document, the project will proceed to the UI/UX design, detailed system design, software development, testing, and production deployment phases.
+________________________________________
+End of Document
+Document Title: VELIZO Software Requirements Specification (SRS)
+Version: 1.0
+Status: Ready for Development
+Prepared By: CodeMateRwa LTD
+Copyright © 2026. All Rights Reserved.
+
+

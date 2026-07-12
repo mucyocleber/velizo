@@ -1,0 +1,38 @@
+{
+  "name": "velizo-server",
+  "version": "1.0.0",
+  "description": "VELIZO Backend API — AI-Powered International Recruitment Platform",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:setup": "tsx src/scripts/setup-db.ts"
+  },
+  "keywords": [
+    "velizo",
+    "recruitment",
+    "ai",
+    "api"
+  ],
+  "author": "Mucyo Cleberé — CodeMateRwa LTD",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@supabase/supabase-js": "^2.110.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "helmet": "^8.3.0",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.1.1",
+    "@types/pg": "^8.20.0",
+    "tsx": "^4.23.0",
+    "typescript": "^7.0.2"
+  }
+}

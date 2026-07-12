@@ -1,0 +1,232 @@
+VELIZO — Complete Pre-Coding Briefing
+Prepared for: Mucyo Clebere
+Date: July 12, 2026
+
+================================================================================
+1. YOUR LAPTOP SPECIFICATIONS
+================================================================================
+
+Component           | Specification                                    | Verdict
+--------------------|--------------------------------------------------|----------------
+OS                  | Windows 11 Pro (Build 26200)                     | EXCELLENT
+CPU                 | Intel Core i3-6100U @ 2.30GHz (2 cores/4 threads)| Entry-level
+RAM                 | 8 GB                                             | Tight but works
+Storage             | 512 GB NVMe SSD (Kioxia) — 367 GB free           | Great
+GPU                 | Intel HD Graphics 520 (1 GB)                     | Not needed
+Architecture        | x64                                              | Good
+
+Can Your Laptop Handle VELIZO Development? YES — with cloud services strategy.
+
+RAM Budget During Development:
+  Windows 11 OS ................. ~2.0 GB
+  VS Code / IDE ................. ~0.8 GB
+  Browser (testing) ............. ~1.0 GB
+  Next.js dev server ............ ~0.8 GB
+  Node.js/Express backend ....... ~0.3 GB
+  Meilisearch (if local) ........ ~0.5 GB
+  Buffer ........................ ~2.6 GB (Comfortable)
+
+Key Strategy: Use cloud services (Supabase, Meilisearch Cloud) — don't run databases locally.
+
+================================================================================
+2. DEVELOPMENT TOOLS STATUS
+================================================================================
+
+Tool                | Status              | Action Needed
+--------------------|---------------------|---------------------------
+Node.js v24.18.0    | INSTALLED           | Ready
+npm v11.16.0        | INSTALLED           | Ready
+npx v11.16.0        | INSTALLED           | Ready
+Git                 | NOT INSTALLED       | MUST INSTALL
+PowerShell Policy   | Restricted          | MUST FIX
+
+================================================================================
+3. PROJECT COMPLETENESS ASSESSMENT
+================================================================================
+
+WELL DEFINED (Ready to Build):
+  [x] User roles & permissions (5 roles)
+  [x] All 4 portals (Candidate, Employer, Agency, Admin)
+  [x] Career Passport with scoring system
+  [x] Job & Application management with 8-step workflow
+  [x] Authentication & Authorization (JWT + RBAC)
+  [x] Payment system (Stripe + Flutterwave)
+  [x] Notification system (Email, SMS, In-App)
+  [x] AI features list (public vs. premium)
+  [x] Tech stack selection
+  [x] Database entities & relationships
+  [x] Non-functional requirements
+  [x] Implementation phases
+
+MISSING / NEEDS CLARIFICATION:
+  - UI/UX Wireframes (will design as we build)
+  - Detailed API Endpoints (I'll design during development)
+  - Database Schema SQL (I'll design the full schema)
+  - Environment Variables List (I'll create .env.example)
+  - File/Folder Structure (I'll architect this)
+  - Subscription Pricing (YOU need to decide)
+  - Career Score Algorithm (we need to define)
+  - Trust Score Algorithm (we need to define)
+  - Target Country/Region Focus (affects payments & SMS)
+
+================================================================================
+4. AI INTEGRATION — COMPLETE BREAKDOWN
+================================================================================
+
+How AI Works in VELIZO:
+  User Action -> Your Backend (Node.js) -> OpenAI API (cloud) -> Response -> User
+  (NO AI runs on your laptop — it's all cloud API calls)
+
+APIs NEEDED:
+
+Service             | Purpose                              | Cost                    | Priority
+--------------------|--------------------------------------|-------------------------|----------
+OpenAI API          | Resume analysis, coaching, chat      | ~$0.01-0.03/request     | ESSENTIAL
+Meilisearch Cloud   | Smart search, auto-complete          | Free tier (10K docs)    | ESSENTIAL
+Supabase            | Database, Auth, Storage              | Free tier               | ESSENTIAL
+Stripe              | International payments               | Free setup, % per txn   | Phase 4
+Flutterwave         | African payments                     | Free setup, % per txn   | Phase 4
+Africa's Talking    | SMS notifications                    | ~$0.02/SMS              | Phase 4
+Google Maps API     | Location services                    | Free tier               | Optional
+
+AI FEATURES BY TIER:
+
+Tier 1 — OpenAI API:
+  - AI Chat Assistant (Easy)
+  - AI Resume Analysis (Medium)
+  - ATS Score (Medium)
+  - AI Career Coach (Easy)
+  - AI Interview Prep (Medium)
+  - AI Hiring Assistant (Medium)
+  - AI Resume Optimization (Easy)
+  - AI Skill Gap Analysis (Easy)
+
+Tier 2 — Meilisearch:
+  - Smart Search (Medium)
+  - Typo Tolerance (Easy — automatic)
+  - Auto-Complete (Easy)
+  - Filters & Facets (Medium)
+
+Tier 3 — Custom Logic (No API):
+  - Job Recommendations (Hard)
+  - Candidate Matching (Hard)
+  - Career Score (Medium)
+  - Trust Score (Medium)
+  - Recommendation Engine (Hard)
+
+Cost Strategy: Use GPT-4o-mini (~20x cheaper than GPT-4o). Dev cost: < $5/month.
+
+================================================================================
+5. DIFFICULTY ANALYSIS
+================================================================================
+
+EASY (Build Quickly):
+  - Public Website .................. 3-4 days
+  - Authentication .................. 2-3 days
+  - User Profile Management ......... 2-3 days
+  - Company Profile ................. 1-2 days
+  - AI Chat Assistant ............... 1 day
+  - AI Resume Analysis .............. 1-2 days
+  - AI Career Coach ................. 1 day
+  - Notification System (In-App) .... 2-3 days
+  - Basic Job CRUD .................. 2-3 days
+  - Account Settings ................ 1 day
+
+MEDIUM (Careful Design Needed):
+  - Career Passport ................. 5-7 days
+  - Job Search + Filters ............ 3-4 days
+  - Application Workflow ............ 4-5 days
+  - Employer Dashboard .............. 3-4 days
+  - Admin Portal .................... 7-10 days
+  - Payment Integration ............. 4-5 days
+  - Messaging System ................ 4-5 days
+  - Email/SMS Notifications ......... 3-4 days
+  - Document Upload & Verification .. 3-4 days
+  - Interview Scheduling ............ 3-4 days
+
+HARD (Most Complex):
+  - Recommendation Engine ........... 7-10 days
+  - AI Candidate Matching ........... 5-7 days
+  - Recruitment Agency Portal ....... 7-10 days
+  - Analytics & Reporting ........... 5-7 days
+  - RBAC System ..................... 3-5 days
+  - ATS Scoring System .............. 4-5 days
+
+================================================================================
+6. KEY CHALLENGES & RISKS
+================================================================================
+
+1. RAM Limitations -> Solution: Use cloud services
+2. AI API Costs -> Solution: GPT-4o-mini + caching + usage limits
+3. Project Size (15+ modules) -> Solution: Phased MVP approach
+4. Complex Role System (5 roles) -> Solution: Build RBAC middleware first
+5. Real-Time Features -> Solution: Supabase Realtime (built-in)
+6. Payment in Africa -> Solution: Flutterwave for Africa, Stripe for international
+7. No Git Installed -> Solution: Install Git ASAP
+
+================================================================================
+7. RECOMMENDATIONS
+================================================================================
+
+MVP Phase 1 (Build First):
+  - Public Website
+  - Auth System
+  - Candidate Portal
+  - Employer Portal
+  - Admin Portal
+  - AI Chat Assistant
+  - AI Smart Search
+  - Basic Notifications
+
+MVP Phase 2 (After Phase 1):
+  - AI Resume Analysis + ATS Score
+  - Payment System
+  - Messaging System
+  - Email Notifications
+  - Recruitment Agency Portal
+  - Career Score + Trust Score
+
+MVP Phase 3 (Polish & Scale):
+  - AI Career Coach + Interview Prep
+  - Recommendation Engine
+  - Advanced Analytics
+  - SMS Notifications
+  - Flutterwave Integration
+  - Premium Features
+
+Tech Stack: Keep everything from SRS. Use GPT-4o-mini for AI.
+
+================================================================================
+8. ESTIMATED TIMELINE
+================================================================================
+
+Phase                    | Duration    | What Gets Built
+-------------------------|-------------|----------------------------------
+Setup & Foundation       | 2-3 days    | Project structure, DB, auth
+Public Website           | 3-4 days    | Landing, about, jobs, contact
+Candidate Portal         | 7-10 days   | Profile, Career Passport, search
+Employer Portal          | 7-10 days   | Company, jobs, applications
+AI Integration           | 5-7 days    | Chat, search, resume analysis
+Admin Portal             | 7-10 days   | User mgmt, verification, dashboard
+Agency Portal            | 5-7 days    | Agency management, placements
+Payments & Premium       | 4-5 days    | Stripe, subscriptions
+Communication            | 4-5 days    | Messaging, email, SMS
+Analytics & Polish       | 5-7 days    | Reports, dashboards
+Testing & Fixes          | 5-7 days    | QA, bugs, performance
+TOTAL                    | ~8-12 weeks | Full MVP
+
+================================================================================
+9. QUICK SUMMARY
+================================================================================
+
+Can your laptop handle it?     YES — with cloud services
+Is the SRS complete enough?    YES — I'll fill in technical details
+Can we build this together?    YES — you decide, I code
+What AI APIs do we need?       OpenAI + Meilisearch (primary)
+Biggest challenge?             Project size -> phased approach
+Estimated dev cost?            $0-10/month (free tiers + minimal OpenAI)
+Estimated timeline?            8-12 weeks for full MVP
+
+================================================================================
+END OF PRE-CODING BRIEFING
+================================================================================
