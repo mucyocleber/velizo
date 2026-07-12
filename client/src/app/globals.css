@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
-  --foreground: #fafafa;
-  --card: #09090b;
-  --card-foreground: #fafafa;
-  --popover: #09090b;
-  --popover-foreground: #fafafa;
-  --primary: #6366f1;
-  --primary-foreground: #e0e7ff;
-  --secondary: #14b8a6;
-  --secondary-foreground: #f0fdfa;
-  --muted: #18181b;
-  --muted-foreground: #a1a1aa;
-  --accent: #27272a;
-  --accent-foreground: #fafafa;
+  --background: #ffffff;
+  --foreground: #0f172a; /* Slate 900 */
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #0a66c2; /* LinkedIn Corporate Blue */
+  --primary-foreground: #ffffff;
+  --secondary: #0f172a; /* Slate 900 for dark accents */
+  --secondary-foreground: #ffffff;
+  --muted: #f8fafc; /* Slate 50 */
+  --muted-foreground: #64748b; /* Slate 500 */
+  --accent: #f1f5f9; /* Slate 100 */
+  --accent-foreground: #0f172a;
   --destructive: #ef4444;
-  --destructive-foreground: #fafafa;
-  --border: #27272a;
-  --input: #27272a;
-  --ring: #6366f1;
-  --radius: 0.75rem;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0; /* Slate 200 */
+  --input: #e2e8f0;
+  --ring: #0a66c2;
+  --radius: 0.5rem;
 }
 
 @theme inline {
@@ -56,24 +56,40 @@ body {
   overflow-x: hidden;
 }
 
-/* Custom Utilities for Premium Look */
+/* Custom Utilities for Premium Light Look */
 .glassmorphism {
-  background: rgba(15, 15, 20, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.08);
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #6366f1 0%, #14b8a6 100%);
+  background: linear-gradient(135deg, #0a66c2 0%, #00d2ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, #6366f1 0%, #14b8a6 100%);
+  background: linear-gradient(135deg, #0a66c2 0%, #00b0f0 100%);
 }
 
 .glow-effect {
-  box-shadow: 0 0 40px -10px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 10px 30px -10px rgba(10, 102, 194, 0.15);
+}
+
+.input-style {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background-color: #ffffff;
+  color: var(--foreground);
+  outline: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.input-style:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(10, 102, 194, 0.15);
 }

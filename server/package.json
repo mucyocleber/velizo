@@ -7,7 +7,8 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "db:setup": "tsx src/scripts/setup-db.ts"
+    "db:setup": "tsx src/scripts/setup-db.ts",
+    "db:update": "tsx src/scripts/update-db.ts"
   },
   "keywords": [
     "velizo",
