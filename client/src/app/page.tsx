@@ -64,9 +64,7 @@ export default function Home() {
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl gradient-bg shadow-lg glow-effect">
-              <Briefcase className="h-6 w-6 text-white" />
-            </div>
+            <img src="/logo-v.svg" alt="VELIZO" className="h-9 w-auto filter drop-shadow-[0_2px_8px_rgba(99,102,241,0.3)]" />
             <span className="text-xl font-bold tracking-tight text-white">
               VELI<span className="text-primary font-black">ZO</span>
             </span>
@@ -387,9 +385,7 @@ export default function Home() {
       <footer className="mt-auto border-t border-border/40 bg-zinc-950 py-12">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
-            <div className="p-1.5 rounded-lg gradient-bg">
-              <Briefcase className="h-4 w-4 text-white" />
-            </div>
+            <img src="/logo-v.svg" alt="VELIZO" className="h-7 w-auto filter drop-shadow-[0_2px_8px_rgba(99,102,241,0.3)]" />
             <span className="text-base font-bold text-white">
               VELI<span className="text-primary font-black">ZO</span>
             </span>

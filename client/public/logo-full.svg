@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <!-- Embedded Fonts/Styles -->
+  <style>
+    .brand-text { font-family: 'Outfit', 'Inter', sans-serif; font-weight: 800; font-size: 80px; fill: #FFFFFF; letter-spacing: 0.15em; }
+    .tagline-text { font-family: 'Inter', sans-serif; font-weight: 500; font-size: 15px; fill: #8E9AAF; letter-spacing: 0.35em; text-transform: uppercase; }
+  </style>
+
+  <!-- V logo symbol at the top -->
+  <g transform="translate(170, 60)">
+    <defs>
+      <linearGradient id="fullLeftGrad" x1="100" y1="50" x2="200" y2="280" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#021E73" />
+        <stop offset="100%" stop-color="#0072FF" />
+      </linearGradient>
+      <linearGradient id="fullRightGrad" x1="200" y1="280" x2="300" y2="50" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stop-color="#0052D4" />
+        <stop offset="100%" stop-color="#00D2FF" />
+      </linearGradient>
+      <filter id="fullShadow" x="-10%" y="-10%" width="120%" height="120%">
+        <feDropShadow dx="-4" dy="4" stdDeviation="6" flood-color="#010A26" flood-opacity="0.5"/>
+      </filter>
+    </defs>
+    <!-- V Icon -->
+    <path d="M 120 60 C 140 60, 200 170, 235 250 C 242 265, 245 280, 230 280 C 215 280, 175 200, 150 150 Z" fill="url(#fullLeftGrad)" />
+    <path d="M 230 280 C 245 280, 260 250, 275 210 C 295 150, 330 60, 350 60 L 300 60 C 285 90, 250 180, 230 220 C 222 235, 220 260, 230 280 Z" fill="url(#fullRightGrad)" filter="url(#fullShadow)" />
+  </g>
+
+  <!-- Brand Typography -->
+  <text x="400" y="440" text-anchor="middle" class="brand-text">VELIZO</text>
+  
+  <!-- Underline accent bar -->
+  <rect x="365" y="475" width="70" height="6" rx="3" fill="#0072FF" />
+
+  <!-- Tagline -->
+  <text x="400" y="530" text-anchor="middle" class="tagline-text">Connecting Global Employers</text>
+  <text x="400" y="555" text-anchor="middle" class="tagline-text">With Exceptional Talent</text>
+</svg>

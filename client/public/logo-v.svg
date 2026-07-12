@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" fill="none">
+  <defs>
+    <!-- Left Ribbon: Dark Navy to Royal Blue -->
+    <linearGradient id="leftRibbonGrad" x1="150" y1="50" x2="280" y2="350" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#021E73" />
+      <stop offset="60%" stop-color="#0052D4" />
+      <stop offset="100%" stop-color="#0072FF" />
+    </linearGradient>
+    
+    <!-- Right Ribbon: Electric Blue to Cyan -->
+    <linearGradient id="rightRibbonGrad" x1="280" y1="350" x2="400" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0052D4" />
+      <stop offset="40%" stop-color="#0072FF" />
+      <stop offset="100%" stop-color="#00D2FF" />
+    </linearGradient>
+
+    <!-- Overlay Shadow for 3D ribbon fold depth -->
+    <filter id="foldShadow" x="-10%" y="-10%" width="120%" height="120%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="-4" dy="6" stdDeviation="8" flood-color="#010A26" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <!-- Left Ribbon Part (Sits in back) -->
+  <path d="M 160 80 
+           C 180 80, 240 180, 275 270 
+           C 285 295, 290 320, 270 320
+           C 250 320, 210 240, 185 190 
+           Z" 
+        fill="url(#leftRibbonGrad)" />
+
+  <!-- Right Ribbon Part (Folded over front with drop shadow for 3D look) -->
+  <path d="M 270 320
+           C 290 320, 310 280, 325 240 
+           C 350 170, 390 80, 410 80
+           L 360 80
+           C 340 120, 300 220, 275 270
+           C 265 290, 260 320, 270 320 Z" 
+        fill="url(#rightRibbonGrad)" 
+        filter="url(#foldShadow)" />
+</svg>
