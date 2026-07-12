@@ -15,6 +15,8 @@ import {
   MessageSquare
 } from 'lucide-react';
 import Link from 'next/link';
+import Header from '@/components/layout/Header';
+import Preloader from '@/components/shared/Preloader';
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -57,33 +59,10 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-900 selection:bg-primary selection:text-white">
       
+      <Preloader />
+
       {/* ─── NAVIGATION ─────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src="/logo-v.svg" alt="VELIZO" className="h-9 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.15)]" />
-            <span className="text-xl font-bold tracking-tight text-slate-900">
-              VELI<span className="text-primary font-black">ZO</span>
-            </span>
-          </div>
-
-          <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
-            <a href="#jobs" className="hover:text-primary transition-colors">Find Jobs</a>
-            <a href="#passport" className="hover:text-primary transition-colors">Career Passport</a>
-            <a href="#ai" className="hover:text-primary transition-colors">AI Coaching</a>
-            <a href="#employers" className="hover:text-primary transition-colors">For Employers</a>
-          </nav>
-
-          <div className="flex items-center gap-4">
-            <Link href="/auth/login" className="text-sm font-semibold text-slate-700 hover:text-primary transition-colors">
-              Sign In
-            </Link>
-            <Link href="/auth/register" className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-primary hover:bg-[#084e96] transition-all shadow-md">
-              Create Account
-            </Link>
-          </div>
-        </div>
-      </header>
+      <Header />
 
       {/* ─── HERO SECTION ─────────────────────────────────────────── */}
       <section className="relative py-20 md:py-28 overflow-hidden flex items-center justify-center bg-white border-b border-slate-200">
