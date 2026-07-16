@@ -215,7 +215,7 @@ export default function Home() {
 
           {/* 🇨🇦🇺🇸🇬🇧🇩🇪 Animated Country Flags Infinite Marquee */}
           <div className="w-full overflow-hidden py-3.5 bg-white/40 border-y border-slate-200/40 backdrop-blur-sm relative">
-            <div className="flex w-[200%] gap-12 animate-[marquee_25s_linear_infinite]">
+            <div className="flex w-[200%] gap-12 marquee-track">
               {/* Track 1 */}
               <div className="flex justify-around items-center min-w-full shrink-0 gap-8">
                 {countries.map((country, idx) => (
@@ -311,23 +311,23 @@ export default function Home() {
       </div>
 
       {/* ─── RIGHT PANEL (Sleek Account Forms - Desktop & Mobile) ─── */}
-      <div className="w-full lg:w-[45%] flex flex-col justify-between min-h-screen p-4 sm:p-8 md:p-12 lg:p-16 bg-[#F8FAFC] relative dot-grid">
+      <div className="w-full lg:w-[45%] flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 md:p-10 bg-[#F8FAFC] relative dot-grid gap-6">
         
         {/* Mobile Header Logo */}
-        <div className="flex items-center justify-between lg:justify-end w-full mb-6 lg:mb-0">
+        <div className="flex items-center justify-between w-full max-w-md">
           <div className="flex items-center gap-2.5 lg:hidden">
             <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.12)]" />
             <span className="text-lg font-bold tracking-tight">VELI<span className="text-primary font-black">ZO</span></span>
           </div>
           
-          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold uppercase tracking-widest bg-white border border-slate-200/50 px-3 py-1.5 rounded-xl shadow-sm">
+          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold uppercase tracking-widest bg-white border border-slate-200/50 px-3 py-1.5 rounded-xl shadow-sm ml-auto">
             <Globe className="h-3.5 w-3.5 text-teal-600 animate-spin" style={{ animationDuration: '6s' }} />
             <span>Global Gateway</span>
           </div>
         </div>
 
         {/* Main Form Center Card (Floating White Box) */}
-        <div className="w-full max-w-md mx-auto my-auto bg-white border border-slate-200/80 p-8 md:p-10 rounded-[28px] shadow-[0_20px_50px_rgba(15,23,42,0.04)] hover:border-slate-300/60 transition-colors">
+        <div className="w-full max-w-md bg-white border border-slate-200/80 p-6 sm:p-8 md:p-10 rounded-[28px] shadow-[0_20px_50px_rgba(15,23,42,0.04)] hover:border-slate-300/60 transition-colors relative z-10">
           
           <div className="text-center mb-6">
             <h1 className="text-2xl font-extrabold text-slate-950 tracking-tight">
@@ -350,10 +350,10 @@ export default function Home() {
           <div className="grid grid-cols-2 p-1 bg-slate-100 border border-slate-200/40 rounded-xl mb-6">
             <button
               type="button"
-              className={`py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
+              className={`py-2.5 rounded-lg text-xs font-bold transition-all duration-205 ${
                 activeTab === 'register'
                   ? 'bg-white text-slate-900 shadow-sm font-extrabold'
-                  : 'text-slate-400 hover:text-slate-700'
+                  : 'text-slate-450 hover:text-slate-700'
               }`}
               onClick={() => {
                 setActiveTab('register');
@@ -364,10 +364,10 @@ export default function Home() {
             </button>
             <button
               type="button"
-              className={`py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
+              className={`py-2.5 rounded-lg text-xs font-bold transition-all duration-205 ${
                 activeTab === 'login'
                   ? 'bg-white text-slate-900 shadow-sm font-extrabold'
-                  : 'text-slate-400 hover:text-slate-700'
+                  : 'text-slate-450 hover:text-slate-700'
               }`}
               onClick={() => {
                 setActiveTab('login');
@@ -386,7 +386,7 @@ export default function Home() {
                 className={`py-1.5 rounded-lg text-[10px] font-extrabold tracking-wider uppercase transition-all ${
                   role === 'candidate'
                     ? 'bg-white text-primary shadow-sm'
-                    : 'text-slate-400 hover:text-slate-700'
+                    : 'text-slate-400 hover:text-slate-750'
                 }`}
                 onClick={() => setRole('candidate')}
               >
@@ -397,7 +397,7 @@ export default function Home() {
                 className={`py-1.5 rounded-lg text-[10px] font-extrabold tracking-wider uppercase transition-all ${
                   role === 'employer'
                     ? 'bg-white text-primary shadow-sm'
-                    : 'text-slate-400 hover:text-slate-700'
+                    : 'text-slate-400 hover:text-slate-750'
                 }`}
                 onClick={() => setRole('employer')}
               >
@@ -437,7 +437,7 @@ export default function Home() {
                   Company Name
                 </label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-450">
+                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-455">
                     <Building2 className="h-4 w-4" />
                   </span>
                   <input
@@ -506,7 +506,7 @@ export default function Home() {
               className="w-full py-3 rounded-xl text-xs font-bold tracking-wider uppercase text-white bg-primary hover:bg-[#084e96] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-50 mt-6"
             >
               {loading 
-                ? (activeTab === 'register' ? 'Processing...' : 'Processing...')
+                ? 'Processing...'
                 : (activeTab === 'register' ? 'Create Account' : 'Sign In')}
               <ArrowRight className="h-4 w-4" />
             </button>
@@ -552,7 +552,7 @@ export default function Home() {
         </div>
 
         {/* Footer info */}
-        <div className="text-center text-[10px] text-slate-400 font-semibold mt-6 lg:mt-0">
+        <div className="text-center text-[10px] text-slate-400 font-semibold max-w-md">
           By continuing, you agree to VELIZO's Terms of Service and Privacy Policy.
         </div>
 

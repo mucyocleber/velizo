@@ -98,3 +98,16 @@ body {
   background-image: radial-gradient(rgba(15, 23, 42, 0.05) 1px, transparent 1px);
   background-size: 20px 20px;
 }
+
+.marquee-track {
+  animation: marquee-scroll 25s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
