@@ -160,29 +160,37 @@ export default function Home() {
           <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-100 bg-blue-50/50 text-xs text-primary font-bold">
               <Sparkles className="h-3.5 w-3.5 text-primary" />
-              <span>International Recruitment Standard</span>
+              <span>Global Talent Protocol</span>
             </div>
             <h2 className="text-4xl font-extrabold text-slate-950 tracking-tight leading-tight">
-              An ecosystem built for <span className="gradient-text">verified career placement</span>.
+              Access trusted global roles <span className="gradient-text">verified across borders</span>.
             </h2>
             <p className="text-sm text-slate-500 leading-relaxed max-w-md">
-              Create a verifiable profile, instantly verify compatibility requirements, and connect directly with international hiring managers.
+              Everyone is welcome to apply. Build a verifiable career record, match compatibility requirements instantly, and land placements in Canada or any country of your choice.
             </p>
           </div>
 
-          {/* 👥 Animated Candidate Avatars Group */}
-          <div className="flex items-center gap-4 bg-white/70 p-4 border border-slate-200/40 rounded-2xl shadow-sm backdrop-blur-sm">
-            <div className="flex -space-x-3 overflow-hidden">
-              <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover transition-transform hover:scale-110 duration-200 cursor-pointer" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Candidate" />
-              <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover transition-transform hover:scale-110 duration-200 cursor-pointer" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Candidate" />
-              <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover transition-transform hover:scale-110 duration-200 cursor-pointer" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Candidate" />
-              <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover transition-transform hover:scale-110 duration-200 cursor-pointer" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" alt="Candidate" />
-            </div>
-            <div className="text-xs">
-              <span className="font-extrabold text-slate-800 block">Join 12,000+ global candidates</span>
-              <span className="text-slate-400 font-semibold flex items-center gap-1.5 mt-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-ping"></span> 1,420 verified this week
-              </span>
+          {/* 🇨🇦🇺🇸🇬🇧🇩🇪 Animated Country Flags Infinite Marquee */}
+          <div className="w-full overflow-hidden py-2 bg-white/40 border-y border-slate-200/40 backdrop-blur-sm relative">
+            <div className="flex w-[200%] gap-12 animate-[marquee_20s_linear_infinite]">
+              {/* Track 1 */}
+              <div className="flex justify-around items-center min-w-full shrink-0 gap-8">
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇨🇦</span> Canada</span>
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇺🇸</span> USA</span>
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇬🇧</span> UK</span>
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇩🇪</span> Germany</span>
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇷🇼</span> Rwanda</span>
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇯🇵</span> Japan</span>
+              </div>
+              {/* Track 2 (For seamless loop) */}
+              <div className="flex justify-around items-center min-w-full shrink-0 gap-8">
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇨🇦</span> Canada</span>
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇺🇸</span> USA</span>
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇬🇧</span> UK</span>
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇩🇪</span> Germany</span>
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇷🇼</span> Rwanda</span>
+                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇯🇵</span> Japan</span>
+              </div>
             </div>
           </div>
 
@@ -190,11 +198,11 @@ export default function Home() {
           <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-[0_10px_35px_-10px_rgba(15,23,42,0.06)] relative group hover:border-primary/20 transition-all duration-300">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h4 className="text-base font-bold text-slate-900">Emily Watson</h4>
-                <p className="text-[11px] text-slate-400 font-semibold mt-0.5">Senior Project Manager</p>
+                <h4 className="text-base font-bold text-slate-900">Career Trust Passport</h4>
+                <p className="text-[11px] text-slate-400 font-semibold mt-0.5">Secure Professional Credentials</p>
               </div>
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-50 border border-teal-100 text-[10px] font-bold text-teal-700">
-                <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span> Verified Candidate
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span> Verification Enabled
               </span>
             </div>
 
@@ -205,9 +213,9 @@ export default function Home() {
                   <div className="p-1 rounded-lg bg-teal-50 border border-teal-100 text-teal-600">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span className="font-semibold text-slate-700">M.S. in Operations Management</span>
+                  <span className="font-semibold text-slate-700">Academic Records Validation</span>
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Verified</span>
+                <span className="text-[10px] text-teal-600 font-bold uppercase tracking-wider">✓ Secure</span>
               </div>
 
               <div className="flex items-center justify-between text-xs">
@@ -215,19 +223,19 @@ export default function Home() {
                   <div className="p-1 rounded-lg bg-teal-50 border border-teal-100 text-teal-600">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span className="font-semibold text-slate-700">Employment: Operations Lead at Royal Bank</span>
+                  <span className="font-semibold text-slate-700">Work History & Reference Check</span>
                 </div>
-                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Verified</span>
+                <span className="text-[10px] text-teal-600 font-bold uppercase tracking-wider">✓ Secure</span>
               </div>
 
               {/* Progress: Trust Score */}
               <div className="border-t border-slate-100 pt-4 mt-2">
                 <div className="flex justify-between items-center text-xs mb-1.5">
-                  <span className="text-slate-500 font-semibold">Verification Integrity Level</span>
-                  <span className="text-primary font-bold">96 / 100</span>
+                  <span className="text-slate-500 font-semibold">Validation Integrity Index</span>
+                  <span className="text-primary font-bold">98% Match Rate</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                  <div className="bg-gradient-to-r from-primary to-blue-400 h-full rounded-full" style={{ width: '96%' }} />
+                  <div className="bg-gradient-to-r from-primary to-blue-400 h-full rounded-full" style={{ width: '98%' }} />
                 </div>
               </div>
             </div>
@@ -240,13 +248,13 @@ export default function Home() {
                 <BrainCircuit className="h-5 w-5" />
               </div>
               <div>
-                <h5 className="text-xs font-bold text-slate-800">Career Compatibility Check</h5>
-                <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Analyzed via Match Engine</p>
+                <h5 className="text-xs font-bold text-slate-800">Job Matching Compatibility</h5>
+                <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Automated Credentials Analysis</p>
               </div>
             </div>
             <div className="text-right">
-              <span className="text-lg font-black text-primary">98%</span>
-              <span className="text-[9px] text-teal-600 font-bold block">High Compatibility</span>
+              <span className="text-lg font-black text-primary">Active</span>
+              <span className="text-[9px] text-teal-600 font-bold block">Verified Match</span>
             </div>
           </div>
 
@@ -510,6 +518,10 @@ export default function Home() {
           0%, 100% { transform: translateX(0); }
           25% { transform: translateX(-4px); }
           75% { transform: translateX(4px); }
+        }
+        @keyframes marquee {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
       `}</style>
 
