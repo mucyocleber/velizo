@@ -39,8 +39,8 @@ function VerifyContent() {
     setSuccessMsg('');
     setLoading(true);
 
-    if (otp.length !== 6) {
-      setErrorMsg('Please enter a valid 6-digit verification code.');
+    if (otp.length < 6 || otp.length > 8) {
+      setErrorMsg('Please enter a valid verification code.');
       setLoading(false);
       return;
     }
@@ -111,7 +111,7 @@ function VerifyContent() {
             Enter Verification Code
           </h1>
           <p className="text-xs text-slate-500 mt-2 max-w-xs leading-relaxed">
-            We sent a 6-digit confirmation code to <br />
+            We sent a confirmation code to <br />
             <strong className="text-slate-800 font-bold break-all">{email}</strong>
           </p>
         </div>
@@ -133,16 +133,16 @@ function VerifyContent() {
           {/* OTP Number Input */}
           <div>
             <label className="block text-center text-xs font-bold text-slate-500 mb-3 uppercase tracking-wider">
-              6-Digit Code
+              Verification Code
             </label>
             <input
               type="text"
               pattern="[0-9]*"
               inputMode="numeric"
-              maxLength={6}
+              maxLength={8}
               autoFocus
-              placeholder="0 0 0 0 0 0"
-              className="w-full text-center text-3xl font-extrabold tracking-[0.4em] py-3 border border-slate-200 rounded-2xl bg-slate-50 text-slate-800 focus:bg-white focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none transition-all placeholder:text-slate-300 placeholder:tracking-normal"
+              placeholder="· · · · · ·"
+              className="w-full text-center text-3xl font-extrabold tracking-[0.2em] py-3 border border-slate-200 rounded-2xl bg-slate-50 text-slate-800 focus:bg-white focus:border-primary focus:ring-2 focus:ring-blue-100 outline-none transition-all placeholder:text-slate-300 placeholder:tracking-normal"
               value={otp}
               onChange={(e) => {
                 // Allow only numbers
@@ -155,8 +155,8 @@ function VerifyContent() {
 
           <button
             type="submit"
-            disabled={loading || otp.length !== 6}
-            className="w-full py-3.5 rounded-xl text-sm font-semibold text-white bg-primary hover:bg-[#084e96] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-50"
+            disabled={loading || otp.length < 6 || otp.length > 8}
+            className="w-full py-3.5 rounded-xl text-sm font-semibold text-white bg-primary hover:bg-[#084e96] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-50 cursor-pointer"
           >
             {loading ? 'Verifying Code...' : 'Verify & Continue'} <ArrowRight className="h-4 w-4" />
           </button>
