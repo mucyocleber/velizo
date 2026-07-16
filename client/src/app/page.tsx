@@ -138,8 +138,13 @@ export default function Home() {
       <Preloader />
 
       {/* ─── LEFT PANEL (High-End Interactive Feature Showcase - Desktop Only) ─── */}
-      <div className="hidden lg:flex lg:w-[55%] bg-slate-50 border-r border-slate-200/60 p-16 flex-col justify-between relative overflow-hidden dot-grid">
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-50/30 via-transparent to-transparent -z-10" />
+      <div 
+        className="hidden lg:flex lg:w-[55%] border-r border-slate-200/60 p-16 flex-col justify-between relative overflow-hidden bg-cover bg-center"
+        style={{ 
+          backgroundImage: "linear-gradient(rgba(248, 250, 252, 0.93), rgba(248, 250, 252, 0.93)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80')" 
+        }}
+      >
+        <div className="absolute inset-0 dot-grid opacity-[0.8] -z-10" />
         
         {/* Brand Header */}
         <div className="flex items-center gap-3">
@@ -158,15 +163,15 @@ export default function Home() {
               <span>International Recruitment Standard</span>
             </div>
             <h2 className="text-4xl font-extrabold text-slate-950 tracking-tight leading-tight">
-              An AI-powered gateway to <span className="gradient-text">verified global placement</span>.
+              An ecosystem built for <span className="gradient-text">verified career placement</span>.
             </h2>
             <p className="text-sm text-slate-500 leading-relaxed max-w-md">
-              Create a verifiable profile, instantly match compatibility requirements, and interact directly with international hiring managers.
+              Create a verifiable profile, instantly verify compatibility requirements, and connect directly with international hiring managers.
             </p>
           </div>
 
           {/* 👥 Animated Candidate Avatars Group */}
-          <div className="flex items-center gap-4 bg-white/60 p-4 border border-slate-200/40 rounded-2xl shadow-sm backdrop-blur-sm">
+          <div className="flex items-center gap-4 bg-white/70 p-4 border border-slate-200/40 rounded-2xl shadow-sm backdrop-blur-sm">
             <div className="flex -space-x-3 overflow-hidden">
               <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover transition-transform hover:scale-110 duration-200 cursor-pointer" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Candidate" />
               <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover transition-transform hover:scale-110 duration-200 cursor-pointer" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Candidate" />
@@ -185,8 +190,8 @@ export default function Home() {
           <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-[0_10px_35px_-10px_rgba(15,23,42,0.06)] relative group hover:border-primary/20 transition-all duration-300">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h4 className="text-base font-bold text-slate-900">Sarah Jenkins</h4>
-                <p className="text-[11px] text-slate-400 font-semibold mt-0.5">Senior UX Designer</p>
+                <h4 className="text-base font-bold text-slate-900">Emily Watson</h4>
+                <p className="text-[11px] text-slate-400 font-semibold mt-0.5">Senior Project Manager</p>
               </div>
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-50 border border-teal-100 text-[10px] font-bold text-teal-700">
                 <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span> Verified Candidate
@@ -200,7 +205,7 @@ export default function Home() {
                   <div className="p-1 rounded-lg bg-teal-50 border border-teal-100 text-teal-600">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span className="font-semibold text-slate-700">B.F.A. in Graphic Design</span>
+                  <span className="font-semibold text-slate-700">M.S. in Operations Management</span>
                 </div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Verified</span>
               </div>
@@ -210,7 +215,7 @@ export default function Home() {
                   <div className="p-1 rounded-lg bg-teal-50 border border-teal-100 text-teal-600">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span className="font-semibold text-slate-700">Employment: Design Lead at Shopify</span>
+                  <span className="font-semibold text-slate-700">Employment: Operations Lead at Royal Bank</span>
                 </div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Verified</span>
               </div>
@@ -218,7 +223,7 @@ export default function Home() {
               {/* Progress: Trust Score */}
               <div className="border-t border-slate-100 pt-4 mt-2">
                 <div className="flex justify-between items-center text-xs mb-1.5">
-                  <span className="text-slate-500 font-semibold">Profile Integrity (Trust Score)</span>
+                  <span className="text-slate-500 font-semibold">Verification Integrity Level</span>
                   <span className="text-primary font-bold">96 / 100</span>
                 </div>
                 <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
@@ -235,13 +240,13 @@ export default function Home() {
                 <BrainCircuit className="h-5 w-5" />
               </div>
               <div>
-                <h5 className="text-xs font-bold text-slate-800">Job Fit Score (Toronto, Canada)</h5>
-                <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Calculated using Gemini API</p>
+                <h5 className="text-xs font-bold text-slate-800">Career Compatibility Check</h5>
+                <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Analyzed via Match Engine</p>
               </div>
             </div>
             <div className="text-right">
               <span className="text-lg font-black text-primary">98%</span>
-              <span className="text-[9px] text-teal-600 font-bold block">Strong Match</span>
+              <span className="text-[9px] text-teal-600 font-bold block">High Compatibility</span>
             </div>
           </div>
 
