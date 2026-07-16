@@ -116,18 +116,6 @@ export default function Preloader() {
 
       </div>
 
-      <style jsx global>{`
-        @keyframes drawLogo {
-          to {
-            stroke-dashoffset: 0;
-          }
-        }
-        @keyframes loadingProgress {
-          0% { width: 0%; }
-          100% { width: 100%; }
-        }
-      `}</style>
-
     </div>
   );
 }
