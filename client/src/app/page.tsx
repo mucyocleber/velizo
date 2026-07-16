@@ -20,6 +20,49 @@ import {
 import { useRouter } from 'next/navigation';
 import Preloader from '@/components/shared/Preloader';
 
+const countries = [
+  { code: 'ca', name: 'Canada' },
+  { code: 'us', name: 'USA' },
+  { code: 'gb', name: 'UK' },
+  { code: 'de', name: 'Germany' },
+  { code: 'rw', name: 'Rwanda' },
+  { code: 'jp', name: 'Japan' },
+  { code: 'fr', name: 'France' },
+  { code: 'au', name: 'Australia' },
+  { code: 'sg', name: 'Singapore' },
+  { code: 'ae', name: 'UAE' },
+  { code: 'ke', name: 'Kenya' },
+  { code: 'br', name: 'Brazil' },
+  { code: 'in', name: 'India' },
+  { code: 'za', name: 'South Africa' },
+  { code: 'nl', name: 'Netherlands' },
+  { code: 'ch', name: 'Switzerland' },
+  { code: 'se', name: 'Sweden' },
+  { code: 'ng', name: 'Nigeria' },
+  { code: 'kr', name: 'South Korea' },
+  { code: 'es', name: 'Spain' },
+  { code: 'it', name: 'Italy' },
+  { code: 'nz', name: 'New Zealand' },
+  { code: 'ie', name: 'Ireland' },
+  { code: 'mx', name: 'Mexico' },
+  { code: 'eg', name: 'Egypt' },
+  { code: 'be', name: 'Belgium' },
+  { code: 'at', name: 'Austria' },
+  { code: 'dk', name: 'Denmark' },
+  { code: 'no', name: 'Norway' },
+  { code: 'fi', name: 'Finland' },
+  { code: 'pl', name: 'Poland' },
+  { code: 'tr', name: 'Turkey' },
+  { code: 'sa', name: 'Saudi Arabia' },
+  { code: 'qa', name: 'Qatar' },
+  { code: 'gh', name: 'Ghana' },
+  { code: 'ma', name: 'Morocco' },
+  { code: 'co', name: 'Colombia' },
+  { code: 'ar', name: 'Argentina' },
+  { code: 'pt', name: 'Portugal' },
+  { code: 'vn', name: 'Vietnam' }
+];
+
 export default function Home() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'register' | 'login'>('register');
@@ -172,60 +215,24 @@ export default function Home() {
 
           {/* 🇨🇦🇺🇸🇬🇧🇩🇪 Animated Country Flags Infinite Marquee */}
           <div className="w-full overflow-hidden py-3.5 bg-white/40 border-y border-slate-200/40 backdrop-blur-sm relative">
-            <div className="flex w-[200%] gap-12 animate-[marquee_20s_linear_infinite]">
+            <div className="flex w-[200%] gap-12 animate-[marquee_60s_linear_infinite]">
               {/* Track 1 */}
               <div className="flex justify-around items-center min-w-full shrink-0 gap-8">
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/ca.svg" alt="Canada" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  Canada
-                </span>
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/us.svg" alt="USA" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  USA
-                </span>
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/gb.svg" alt="UK" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  UK
-                </span>
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/de.svg" alt="Germany" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  Germany
-                </span>
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/rw.svg" alt="Rwanda" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  Rwanda
-                </span>
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/jp.svg" alt="Japan" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  Japan
-                </span>
+                {countries.map((country, idx) => (
+                  <span key={`t1-${country.code}-${idx}`} className="flex items-center gap-2.5 text-xs font-bold text-slate-750 shrink-0">
+                    <img src={`https://flagcdn.com/${country.code}.svg`} alt={country.name} className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                    {country.name}
+                  </span>
+                ))}
               </div>
               {/* Track 2 (For seamless loop) */}
               <div className="flex justify-around items-center min-w-full shrink-0 gap-8">
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/ca.svg" alt="Canada" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  Canada
-                </span>
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/us.svg" alt="USA" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  USA
-                </span>
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/gb.svg" alt="UK" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  UK
-                </span>
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/de.svg" alt="Germany" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  Germany
-                </span>
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/rw.svg" alt="Rwanda" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  Rwanda
-                </span>
-                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
-                  <img src="https://flagcdn.com/jp.svg" alt="Japan" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
-                  Japan
-                </span>
+                {countries.map((country, idx) => (
+                  <span key={`t2-${country.code}-${idx}`} className="flex items-center gap-2.5 text-xs font-bold text-slate-750 shrink-0">
+                    <img src={`https://flagcdn.com/${country.code}.svg`} alt={country.name} className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                    {country.name}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
