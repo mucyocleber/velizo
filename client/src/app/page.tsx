@@ -14,8 +14,9 @@ import {
   Briefcase,
   FileCheck,
   CheckCircle2,
-  TrendingUp,
-  BrainCircuit
+  BrainCircuit,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Preloader from '@/components/shared/Preloader';
@@ -69,6 +70,7 @@ export default function Home() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -375,17 +377,17 @@ export default function Home() {
             {/* Full Name (Only on Registration) */}
             {activeTab === 'register' && (
               <div>
-                <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">
+                <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider text-center">
                   Full Name
                 </label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                  <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none">
                     <User className="h-4 w-4" />
                   </span>
                   <input
                     type="text"
                     placeholder="John Doe"
-                    className="input-style pl-10 text-xs focus:ring-2 focus:ring-blue-100"
+                    className="input-style pl-11 pr-11 text-center text-xs focus:ring-2 focus:ring-blue-100"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required
@@ -396,17 +398,17 @@ export default function Home() {
 
             {/* Email Address */}
             <div>
-              <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">
+              <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider text-center">
                 Email Address
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none">
                   <Mail className="h-4 w-4" />
                 </span>
                 <input
                   type="email"
                   placeholder="name@domain.com"
-                  className="input-style pl-10 text-xs focus:ring-2 focus:ring-blue-100"
+                  className="input-style pl-11 pr-11 text-center text-xs focus:ring-2 focus:ring-blue-100"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -416,35 +418,43 @@ export default function Home() {
 
             {/* Password */}
             <div>
-              <div className="flex justify-between items-center mb-1.5">
-                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                  Password
-                </label>
-                {activeTab === 'login' && (
-                  <button type="button" className="text-[10px] text-primary hover:underline font-bold">
-                    Forgot Password?
-                  </button>
-                )}
-              </div>
+              <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider text-center">
+                Password
+              </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                <span className="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-400 pointer-events-none">
                   <Lock className="h-4 w-4" />
                 </span>
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   placeholder={activeTab === 'register' ? 'Min. 8 characters' : 'Enter your password'}
-                  className="input-style pl-10 text-xs focus:ring-2 focus:ring-blue-100"
+                  className="input-style pl-11 pr-11 text-center text-xs focus:ring-2 focus:ring-blue-100"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={8}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors cursor-pointer z-20"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
               
               {activeTab === 'register' && (
-                <p className="text-[10px] text-slate-400 leading-normal mt-3 bg-slate-50 border border-slate-200/50 p-2.5 rounded-lg">
+                <p className="text-[10px] text-slate-400 leading-normal mt-3 bg-slate-50 border border-slate-200/50 p-2.5 rounded-lg text-center">
                   Note: You will complete your professional career passport profile (skills, resume, and experience details) after entering your dashboard.
                 </p>
+              )}
+
+              {activeTab === 'login' && (
+                <div className="text-center mt-2.5">
+                  <button type="button" className="text-[10px] text-primary hover:underline font-bold cursor-pointer">
+                    Forgot Password?
+                  </button>
+                </div>
               )}
             </div>
 
