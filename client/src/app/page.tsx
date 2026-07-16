@@ -165,12 +165,28 @@ export default function Home() {
             </p>
           </div>
 
+          {/* 👥 Animated Candidate Avatars Group */}
+          <div className="flex items-center gap-4 bg-white/60 p-4 border border-slate-200/40 rounded-2xl shadow-sm backdrop-blur-sm">
+            <div className="flex -space-x-3 overflow-hidden">
+              <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover transition-transform hover:scale-110 duration-200 cursor-pointer" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" alt="Candidate" />
+              <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover transition-transform hover:scale-110 duration-200 cursor-pointer" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" alt="Candidate" />
+              <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover transition-transform hover:scale-110 duration-200 cursor-pointer" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Candidate" />
+              <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white object-cover transition-transform hover:scale-110 duration-200 cursor-pointer" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80" alt="Candidate" />
+            </div>
+            <div className="text-xs">
+              <span className="font-extrabold text-slate-800 block">Join 12,000+ global candidates</span>
+              <span className="text-slate-400 font-semibold flex items-center gap-1.5 mt-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-ping"></span> 1,420 verified this week
+              </span>
+            </div>
+          </div>
+
           {/* 📇 Interactive Card 1: The Career Passport Card */}
           <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-[0_10px_35px_-10px_rgba(15,23,42,0.06)] relative group hover:border-primary/20 transition-all duration-300">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <h4 className="text-base font-bold text-slate-900">Mucyo Cleberé</h4>
-                <p className="text-[11px] text-slate-400 font-semibold mt-0.5">Software Engineer & Tech Lead</p>
+                <h4 className="text-base font-bold text-slate-900">Sarah Jenkins</h4>
+                <p className="text-[11px] text-slate-400 font-semibold mt-0.5">Senior UX Designer</p>
               </div>
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-50 border border-teal-100 text-[10px] font-bold text-teal-700">
                 <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span> Verified Candidate
@@ -184,7 +200,7 @@ export default function Home() {
                   <div className="p-1 rounded-lg bg-teal-50 border border-teal-100 text-teal-600">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span className="font-semibold text-slate-700">B.Sc. Software Engineering</span>
+                  <span className="font-semibold text-slate-700">B.F.A. in Graphic Design</span>
                 </div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Verified</span>
               </div>
@@ -194,7 +210,7 @@ export default function Home() {
                   <div className="p-1 rounded-lg bg-teal-50 border border-teal-100 text-teal-600">
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
-                  <span className="font-semibold text-slate-700">Employment: CodeMateRwa LTD</span>
+                  <span className="font-semibold text-slate-700">Employment: Design Lead at Shopify</span>
                 </div>
                 <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Verified</span>
               </div>
@@ -219,7 +235,7 @@ export default function Home() {
                 <BrainCircuit className="h-5 w-5" />
               </div>
               <div>
-                <h5 className="text-xs font-bold text-slate-800">Job Fit Score (Canada Remote)</h5>
+                <h5 className="text-xs font-bold text-slate-800">Job Fit Score (Toronto, Canada)</h5>
                 <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Calculated using Gemini API</p>
               </div>
             </div>
