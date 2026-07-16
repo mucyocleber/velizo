@@ -215,7 +215,7 @@ export default function Home() {
 
           {/* 🇨🇦🇺🇸🇬🇧🇩🇪 Animated Country Flags Infinite Marquee */}
           <div className="w-full overflow-hidden py-3.5 bg-white/40 border-y border-slate-200/40 backdrop-blur-sm relative">
-            <div className="flex w-[200%] gap-12 animate-[marquee_60s_linear_infinite]">
+            <div className="flex w-[200%] gap-12 animate-[marquee_25s_linear_infinite]">
               {/* Track 1 */}
               <div className="flex justify-around items-center min-w-full shrink-0 gap-8">
                 {countries.map((country, idx) => (
