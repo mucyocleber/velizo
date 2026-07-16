@@ -12,7 +12,19 @@ import {
   Globe, 
   ChevronRight,
   Sparkles,
-  CheckCircle2
+  CheckCircle2,
+  Image,
+  Video,
+  Calendar,
+  Newspaper,
+  Plus,
+  Compass,
+  Bookmark,
+  Building2,
+  Users,
+  Search,
+  ExternalLink,
+  Award
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -20,23 +32,24 @@ export default function Home() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
+  const [candidate, setCandidate] = useState<any>(null);
+  const [passport, setPassport] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [postText, setPostText] = useState('');
 
   useEffect(() => {
     const fetchSessionAndProfile = async () => {
-      // 1. Get auth session
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session?.user) {
-        // Redirect to login if unauthenticated
         router.push('/');
         return;
       }
 
       setUser(session.user);
 
-      // 2. Fetch user profile from database
-      const { data: profileData, error } = await supabase
+      // Fetch user profile
+      const { data: profileData } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', session.user.id)
@@ -44,6 +57,23 @@ export default function Home() {
 
       if (profileData) {
         setProfile(profileData);
+
+        // Fetch candidate specifics if candidate
+        if (profileData.role === 'candidate') {
+          const { data: candidateData } = await supabase
+            .from('candidates')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          if (candidateData) setCandidate(candidateData);
+
+          const { data: passportData } = await supabase
+            .from('career_passports')
+            .select('*')
+            .eq('candidate_id', session.user.id)
+            .single();
+          if (passportData) setPassport(passportData);
+        }
       }
       setLoading(false);
     };
@@ -68,142 +98,386 @@ export default function Home() {
   }
 
   const isCandidate = profile?.role === 'candidate';
+  const nameInitial = profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : 'U';
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC] text-slate-900">
+    <div className="min-h-screen flex flex-col bg-[#F3F4F6] font-sans text-slate-900">
       
-      {/* ─── DASHBOARD HEADER ───────────────────────────────────── */}
-      <header className="w-full border-b border-slate-200 bg-white sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.15)]" />
-            <span className="text-lg font-bold tracking-tight">
-              VELI<span className="text-primary font-black">ZO</span>
-            </span>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-right">
-              <span className="text-xs font-bold text-slate-800 block leading-none">{profile?.full_name || 'User'}</span>
-              <span className="text-[10px] font-bold text-slate-400 capitalize block text-left leading-none mt-1">
-                {profile?.role === 'candidate' ? 'Job Seeker' : 'Recruiter'}
+      {/* ─── LINKEDIN-STYLE NAVIGATION HEADER ───────────────────── */}
+      <header className="w-full border-b border-slate-200 bg-white sticky top-0 z-50 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+          
+          {/* Logo & Search Bar */}
+          <div className="flex items-center gap-3 flex-1 max-w-md">
+            <div className="flex items-center gap-1.5 shrink-0">
+              <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.15)]" />
+              <span className="text-base font-extrabold tracking-tight hidden sm:inline-block">
+                VELI<span className="text-primary font-black">ZO</span>
               </span>
             </div>
             
-            <button 
-              onClick={handleSignOut}
-              className="p-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 hover:text-red-600 transition-all flex items-center gap-1.5 text-xs font-semibold"
-            >
-              <LogOut className="h-4 w-4" />
-              <span className="hidden sm:inline">Sign Out</span>
-            </button>
+            {/* Search Input */}
+            <div className="relative w-full hidden md:block">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 pointer-events-none">
+                <Search className="h-4 w-4" />
+              </span>
+              <input
+                type="text"
+                placeholder="Search jobs, skills, companies..."
+                className="w-full bg-[#EDF3F8] pl-9 pr-4 py-1.5 rounded text-xs border-none outline-none focus:bg-white focus:ring-1 focus:ring-primary transition-all text-slate-800"
+              />
+            </div>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="flex items-center gap-2 sm:gap-6">
+            <Link href="/home" className="flex flex-col items-center justify-center text-slate-800 hover:text-slate-950 border-b-2 border-slate-800 px-2 h-14 shrink-0">
+              <Compass className="h-5 w-5" />
+              <span className="text-[10px] font-bold mt-1 hidden md:block">Home</span>
+            </Link>
+            
+            {isCandidate ? (
+              <>
+                <Link href="/passport" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
+                  <FileCheck className="h-5 w-5" />
+                  <span className="text-[10px] font-bold mt-1 hidden md:block">Passport</span>
+                </Link>
+                <Link href="/jobs" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
+                  <Briefcase className="h-5 w-5" />
+                  <span className="text-[10px] font-bold mt-1 hidden md:block">Jobs</span>
+                </Link>
+                <Link href="/coach" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
+                  <Sparkles className="h-5 w-5" />
+                  <span className="text-[10px] font-bold mt-1 hidden md:block">AI Coach</span>
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/employer/jobs" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
+                  <Briefcase className="h-5 w-5" />
+                  <span className="text-[10px] font-bold mt-1 hidden md:block">Manage Jobs</span>
+                </Link>
+                <Link href="/employer/applications" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
+                  <Users className="h-5 w-5" />
+                  <span className="text-[10px] font-bold mt-1 hidden md:block">Candidates</span>
+                </Link>
+              </>
+            )}
+
+            {/* Profile Dropdown & Sign Out */}
+            <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-xs font-bold shrink-0">
+                  {profile?.avatar_url ? (
+                    <img src={profile.avatar_url} alt="avatar" className="h-full w-full rounded-full object-cover" />
+                  ) : nameInitial}
+                </div>
+                <div className="hidden sm:block text-left">
+                  <span className="text-[11px] font-extrabold text-slate-850 block leading-tight truncate max-w-[80px]">
+                    {profile?.full_name || 'User'}
+                  </span>
+                  <span className="text-[9px] font-bold text-slate-400 block capitalize leading-none mt-0.5">
+                    {profile?.role === 'candidate' ? 'Job Seeker' : 'Employer'}
+                  </span>
+                </div>
+              </div>
+              
+              <button 
+                onClick={handleSignOut}
+                className="p-1.5 rounded hover:bg-slate-100 text-slate-500 hover:text-red-600 transition-colors"
+                title="Sign Out"
+              >
+                <LogOut className="h-4.5 w-4.5" />
+              </button>
+            </div>
+
           </div>
         </div>
       </header>
 
-      {/* ─── DASHBOARD CONTAINER ────────────────────────────────── */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-10">
+      {/* ─── THREE COLUMN LAYOUT ────────────────────────────────── */}
+      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
         
-        {/* Welcome Section */}
-        <div className="p-8 rounded-3xl bg-white border border-slate-200/80 shadow-md mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-950 tracking-tight">
-              Hello, {profile?.full_name || 'User'}!
-            </h1>
-            <p className="text-xs text-slate-500 font-semibold mt-1.5 flex items-center gap-1.5">
-              <CheckCircle2 className="h-4 w-4 text-teal-600" />
-              Account active under verified database session
+        {/* ─── COLUMN 1: LEFT USER SIDEBAR CARD (1/4) ──────────────── */}
+        <section className="lg:col-span-1 space-y-4">
+          <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+            {/* Banner Cover */}
+            <div className="h-14 bg-gradient-to-r from-blue-700 to-indigo-800 relative" />
+            
+            {/* Avatar positioning */}
+            <div className="px-6 pb-4 relative flex flex-col items-center text-center">
+              <div className="h-16 w-16 rounded-full bg-white p-0.5 border border-slate-200 -mt-8 mb-3 shadow-sm shrink-0">
+                <div className="h-full w-full rounded-full bg-slate-50 flex items-center justify-center text-primary text-lg font-bold">
+                  {profile?.avatar_url ? (
+                    <img src={profile.avatar_url} alt="avatar" className="h-full w-full rounded-full object-cover" />
+                  ) : nameInitial}
+                </div>
+              </div>
+              
+              <h2 className="text-sm font-extrabold text-slate-900 leading-snug">
+                {profile?.full_name || 'User'}
+              </h2>
+              <p className="text-[11px] text-slate-500 font-bold leading-normal mt-1 min-h-[30px] line-clamp-2">
+                {profile?.headline || (isCandidate 
+                  ? 'Job seeker seeking sponsorship opportunities in Canada' 
+                  : 'Recruiter at VELIZO Verified Partner')}
+              </p>
+            </div>
+
+            {/* Profile Statistics */}
+            <div className="border-t border-slate-100 py-3 text-xs text-slate-500 font-semibold space-y-2">
+              <div className="flex justify-between px-4 hover:bg-slate-50 py-1 transition-colors">
+                <span>Profile views</span>
+                <span className="text-primary font-extrabold">142</span>
+              </div>
+              <div className="flex justify-between px-4 hover:bg-slate-50 py-1 transition-colors">
+                <span>Connection index</span>
+                <span className="text-primary font-extrabold">34</span>
+              </div>
+
+              {isCandidate && passport && (
+                <div className="px-4 pt-2 border-t border-slate-100 space-y-1.5">
+                  <div className="flex justify-between text-[11px]">
+                    <span>Passport Trust Score</span>
+                    <span className="text-teal-600 font-bold">{passport.trust_score}%</span>
+                  </div>
+                  <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                    <div 
+                      className="bg-teal-500 h-full rounded-full" 
+                      style={{ width: `${passport.trust_score}%` }} 
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* My Items Link */}
+            <div className="border-t border-slate-100 p-3 bg-slate-50 hover:bg-slate-100 transition-colors text-center">
+              <Link 
+                href={isCandidate ? "/passport" : "/employer/jobs"} 
+                className="text-[11px] font-bold text-primary flex items-center justify-center gap-1.5"
+              >
+                {isCandidate ? (
+                  <>
+                    <FileCheck className="h-3.5 w-3.5" />
+                    <span>Manage Career Passport</span>
+                  </>
+                ) : (
+                  <>
+                    <Briefcase className="h-3.5 w-3.5" />
+                    <span>Manage Posted Jobs</span>
+                  </>
+                )}
+              </Link>
+            </div>
+          </div>
+
+          {/* Mini-links box */}
+          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm text-xs font-semibold text-slate-500 space-y-2.5">
+            <h4 className="text-slate-800 text-[10px] font-bold uppercase tracking-wider mb-1">shortcuts</h4>
+            <Link href={isCandidate ? "/jobs" : "/employer/applications"} className="flex items-center gap-2 hover:text-primary transition-colors">
+              <Briefcase className="h-4 w-4 text-slate-400" />
+              <span>Explore Active Placements</span>
+            </Link>
+            {isCandidate && (
+              <Link href="/coach" className="flex items-center gap-2 hover:text-primary transition-colors">
+                <Sparkles className="h-4 w-4 text-purple-400" />
+                <span>AI Interview Coaching</span>
+              </Link>
+            )}
+            <div className="pt-2 border-t border-slate-100 flex items-center gap-2 text-[10px] text-slate-400">
+              <Award className="h-4 w-4 text-yellow-600" />
+              <span>Verified Credential Protocol</span>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── COLUMN 2 & 3: CENTER FEED (2/4) ────────────────────── */}
+        <section className="lg:col-span-2 space-y-4">
+          
+          {/* Start a Post Component */}
+          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-primary text-sm font-bold shrink-0">
+                {profile?.avatar_url ? (
+                  <img src={profile.avatar_url} alt="avatar" className="h-full w-full rounded-full object-cover" />
+                ) : nameInitial}
+              </div>
+              <input
+                type="text"
+                placeholder={isCandidate 
+                  ? "Share an update or display your verified trust passport..." 
+                  : "Post a new sponsored job opening or announcement..."}
+                value={postText}
+                onChange={(e) => setPostText(e.target.value)}
+                className="w-full bg-[#EDF3F8]/50 hover:bg-slate-100/80 px-4 py-2.5 rounded-full text-xs font-semibold text-slate-600 border border-slate-200/50 outline-none cursor-pointer transition-colors"
+              />
+            </div>
+            
+            <div className="flex items-center justify-between pt-1 border-t border-slate-100 text-xs font-bold text-slate-500">
+              <button type="button" className="flex items-center gap-2 hover:bg-slate-50 px-3 py-2 rounded-lg transition-colors cursor-pointer">
+                <Image className="h-4 w-4 text-[#378FE9]" />
+                <span>Photo</span>
+              </button>
+              <button type="button" className="flex items-center gap-2 hover:bg-slate-50 px-3 py-2 rounded-lg transition-colors cursor-pointer">
+                <Video className="h-4 w-4 text-[#5F9B41]" />
+                <span>Video</span>
+              </button>
+              <button type="button" className="flex items-center gap-2 hover:bg-slate-50 px-3 py-2 rounded-lg transition-colors cursor-pointer">
+                <Calendar className="h-4 w-4 text-[#C37D16]" />
+                <span>Event</span>
+              </button>
+              <button type="button" className="flex items-center gap-2 hover:bg-slate-50 px-3 py-2 rounded-lg transition-colors cursor-pointer">
+                <Newspaper className="h-4 w-4 text-[#E33E32]" />
+                <span>Article</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Feed Post 1: Recommended Job Placement */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
+            {/* Post Header */}
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-primary font-bold shrink-0 border border-slate-200">
+                  V
+                </div>
+                <div>
+                  <h3 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+                    VeloTech Canada <span className="text-[10px] font-bold text-slate-400">• Sponsor Partner</span>
+                  </h3>
+                  <p className="text-[10px] text-slate-500 font-semibold mt-0.5">Recommended Job • Just Posted</p>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold text-slate-400 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
+                sponsored
+              </span>
+            </div>
+
+            {/* Post Text */}
+            <p className="text-xs text-slate-650 leading-relaxed font-medium">
+              We are actively looking for a **Senior Full-Stack Engineer** to join our team in Vancouver, BC. We offer full Canadian work permit sponsorship and a relocation allowance for candidates with a verified **VELIZO Career Passport**. Check the details below and apply instantly.
             </p>
+
+            {/* Nested Job Card */}
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-slate-100/50 transition-colors flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded mb-2">
+                  <ShieldCheck className="h-3.5 w-3.5 text-teal-600" />
+                  98% AI Match Score
+                </span>
+                <h4 className="text-sm font-extrabold text-slate-900">Senior Full-Stack Engineer</h4>
+                <p className="text-xs text-slate-500 font-semibold mt-1 flex items-center gap-1">
+                  <span>VeloTech Canada</span> • <span>Vancouver, BC (Hybrid)</span>
+                </p>
+                <p className="text-[11px] text-primary font-extrabold mt-1">
+                  $120,000 - $145,000 CAD / yr
+                </p>
+              </div>
+              <Link href="/jobs" className="px-4 py-2 bg-primary hover:bg-[#084e96] text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 shrink-0 cursor-pointer">
+                Apply Now <ExternalLink className="h-3.5 w-3.5" />
+              </Link>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 text-xs text-slate-400 font-semibold uppercase tracking-wider bg-slate-50 border border-slate-200/50 px-4 py-2 rounded-xl">
-            <Globe className="h-4 w-4 text-teal-600" />
-            <span>CA & Global Access</span>
+          {/* Feed Post 2: System Announcement */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
+            <div className="flex justify-between items-start">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-blue-50 border border-blue-100 text-primary flex items-center justify-center shrink-0">
+                  <Globe className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+                    VELIZO Platform <CheckCircle2 className="h-3.5 w-3.5 text-teal-600 shrink-0" />
+                  </h3>
+                  <p className="text-[10px] text-slate-500 font-semibold mt-0.5">System Update • 1 day ago</p>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-650 leading-relaxed font-medium">
+              Welcome to the new VELIZO workspace! We have upgraded the verification engine to synchronize with standard Canadian employer trust rules. Complete your Education and Employment history to trigger automatic verification requests.
+            </p>
+
+            <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+              <div className="h-32 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 flex flex-col justify-center items-center text-center p-6 text-white">
+                <Award className="h-8 w-8 text-yellow-400 mb-2 animate-bounce" />
+                <h4 className="text-sm font-extrabold uppercase tracking-widest">Verify Your Credentials</h4>
+                <p className="text-[10px] text-blue-100 mt-1 max-w-xs leading-relaxed">
+                  Verified profiles receive 10x higher response rates from Canadian employers.
+                </p>
+              </div>
+              <div className="p-4 bg-slate-50 flex justify-between items-center text-xs font-bold">
+                <span className="text-slate-600">Verification Steps Checklist</span>
+                <Link href="/passport" className="text-primary hover:underline flex items-center gap-1">
+                  Start Verification <ChevronRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {/* Dashboard Content split */}
-        {isCandidate ? (
-          /* 👨‍💻 Candidate Workspace View */
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            {/* Card: Career Passport */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-              <div>
-                <div className="p-3 rounded-xl bg-blue-50 text-primary w-fit mb-4">
-                  <FileCheck className="h-6 w-6" />
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-1.5">Your Career Passport</h3>
-                <p className="text-xs text-slate-500 leading-relaxed mb-6">Manage your verified education records, work history, and certificates. Display a high Trust Score to recruiters.</p>
-              </div>
-              <Link href="/passport" className="py-2.5 rounded-lg bg-primary hover:bg-[#084e96] text-white text-xs font-semibold text-center transition-all flex items-center justify-center gap-1">
-                Open Passport <ChevronRight className="h-4 w-4" />
-              </Link>
+        </section>
+
+        {/* ─── COLUMN 3: RIGHT SIDEBAR NEWS & IMMIGRATION (1/4) ────── */}
+        <section className="lg:col-span-1 space-y-4">
+          
+          {/* Canadian Immigration News Widget */}
+          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+              <Newspaper className="h-4.5 w-4.5 text-slate-500" />
+              <h3 className="text-xs font-extrabold text-slate-900 tracking-tight uppercase">
+                Immigration & Career News
+              </h3>
             </div>
 
-            {/* Card: AI Assistant */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-              <div>
-                <div className="p-3 rounded-xl bg-purple-50 text-purple-600 w-fit mb-4">
-                  <Sparkles className="h-6 w-6" />
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-1.5">AI Interview Coach</h3>
-                <p className="text-xs text-slate-500 leading-relaxed mb-6">Analyze your resume, test ATS compliance, and generate mock interview prep sessions dynamically.</p>
+            <div className="space-y-3">
+              <div className="group cursor-pointer">
+                <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
+                  Canada targets high-growth tech profiles for sponsor path
+                </h4>
+                <p className="text-[9px] text-slate-400 font-semibold mt-1">3 days ago • 1,240 readers</p>
               </div>
-              <Link href="/coach" className="py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold text-center transition-all flex items-center justify-center gap-1">
-                Open AI Coach <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
-
-            {/* Card: Job Opportunities */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-              <div>
-                <div className="p-3 rounded-xl bg-teal-50 text-teal-600 w-fit mb-4">
-                  <Briefcase className="h-6 w-6" />
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-1.5">Job Placements</h3>
-                <p className="text-xs text-slate-500 leading-relaxed mb-6">Browse and search matching international listings. Apply instantly with your verified credentials.</p>
+              
+              <div className="group cursor-pointer">
+                <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
+                  How Trust Scores speed up work permit approvals
+                </h4>
+                <p className="text-[9px] text-slate-400 font-semibold mt-1">1 day ago • 5,420 readers</p>
               </div>
-              <Link href="/jobs" className="py-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold text-center transition-all flex items-center justify-center gap-1">
-                Explore Jobs <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
 
+              <div className="group cursor-pointer">
+                <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
+                  British Columbia Tech stream update for global developers
+                </h4>
+                <p className="text-[9px] text-slate-400 font-semibold mt-1">4 days ago • 912 readers</p>
+              </div>
+
+              <div className="group cursor-pointer">
+                <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
+                  Verifiable credentials: The new standard in tech recruitment
+                </h4>
+                <p className="text-[9px] text-slate-400 font-semibold mt-1">6h ago • 345 readers</p>
+              </div>
+            </div>
           </div>
-        ) : (
-          /* 🏢 Employer Recruiter View */
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            {/* Card: Job Postings */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-              <div>
-                <div className="p-3 rounded-xl bg-teal-50 text-teal-600 w-fit mb-4">
-                  <Briefcase className="h-6 w-6" />
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-1.5">Manage Listings</h3>
-                <p className="text-xs text-slate-500 leading-relaxed mb-6">Create new international job postings, manage existing drafts, and filter incoming applications.</p>
-              </div>
-              <Link href="/employer/jobs" className="py-2.5 rounded-lg bg-primary hover:bg-[#084e96] text-white text-xs font-semibold text-center transition-all flex items-center justify-center gap-1">
-                Post a Job <ChevronRight className="h-4 w-4" />
-              </Link>
-            </div>
 
-            {/* Card: Applicant Screening */}
-            <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-between">
-              <div>
-                <div className="p-3 rounded-xl bg-blue-50 text-primary w-fit mb-4">
-                  <User className="h-6 w-6" />
-                </div>
-                <h3 className="text-base font-bold text-slate-900 mb-1.5">Screen Applications</h3>
-                <p className="text-xs text-slate-500 leading-relaxed mb-6">Review candidate profiles, inspect verified Career Passports, and update application review status.</p>
-              </div>
-              <Link href="/employer/applications" className="py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold text-center transition-all flex items-center justify-center gap-1">
-                Review Applicants <ChevronRight className="h-4 w-4" />
-              </Link>
+          {/* Sponsor card / Promo */}
+          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm text-center space-y-3.5">
+            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block text-right">ad</span>
+            <div className="flex flex-col items-center">
+              <Sparkles className="h-6 w-6 text-purple-500 mb-2" />
+              <h4 className="text-xs font-extrabold text-slate-900 leading-snug">Prepare with AI</h4>
+              <p className="text-[10px] text-slate-500 mt-1 max-w-[180px] leading-relaxed">
+                Mock interview practice with real-time feedback.
+              </p>
             </div>
-
+            <Link href="/coach" className="block w-full py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer">
+              Start Practice
+            </Link>
           </div>
-        )}
+
+        </section>
 
       </main>
 
