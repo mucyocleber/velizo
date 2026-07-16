@@ -8,21 +8,38 @@ export default function AuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    // Supabase client SDK automatically catches the hash params/code in the URL
-    // and logs the user in. We check if a session is established and redirect.
+    // Listen for auth state changes, especially PASSWORD_RECOVERY
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        router.push('/auth/reset-password');
+      }
+    });
+
     const handleAuthCallback = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
       
+      const url = new URL(window.location.href);
+      const isRecovery = url.searchParams.get('type') === 'recovery' || 
+                         url.hash.includes('type=recovery') || 
+                         url.searchParams.get('next')?.includes('reset-password');
+
       if (session) {
-        router.push('/dashboard');
+        if (isRecovery) {
+          router.push('/auth/reset-password');
+        } else {
+          router.push('/dashboard');
+        }
       } else {
         // If session is not ready yet, set a small timeout and check again
         const timer = setTimeout(async () => {
           const { data: { session: retrySession } } = await supabase.auth.getSession();
           if (retrySession) {
-            router.push('/dashboard');
+            if (isRecovery) {
+              router.push('/auth/reset-password');
+            } else {
+              router.push('/dashboard');
+            }
           } else {
-            // If it still fails, redirect back to login
             router.push('/auth/login');
           }
         }, 1500);
@@ -31,6 +48,10 @@ export default function AuthCallback() {
     };
     
     handleAuthCallback();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [router]);
 
   return (

@@ -19,6 +19,7 @@ import {
   EyeOff
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Preloader from '@/components/shared/Preloader';
 
 const countries = [
@@ -453,9 +454,9 @@ export default function Home() {
 
               {activeTab === 'login' && (
                 <div className="text-center mt-2.5">
-                  <button type="button" className="text-[10px] text-primary hover:underline font-bold cursor-pointer">
+                  <Link href="/auth/forgot-password" className="text-[10px] text-primary hover:underline font-bold cursor-pointer">
                     Forgot Password?
-                  </button>
+                  </Link>
                 </div>
               )}
             </div>
