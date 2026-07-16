@@ -171,25 +171,61 @@ export default function Home() {
           </div>
 
           {/* 🇨🇦🇺🇸🇬🇧🇩🇪 Animated Country Flags Infinite Marquee */}
-          <div className="w-full overflow-hidden py-2 bg-white/40 border-y border-slate-200/40 backdrop-blur-sm relative">
+          <div className="w-full overflow-hidden py-3.5 bg-white/40 border-y border-slate-200/40 backdrop-blur-sm relative">
             <div className="flex w-[200%] gap-12 animate-[marquee_20s_linear_infinite]">
               {/* Track 1 */}
               <div className="flex justify-around items-center min-w-full shrink-0 gap-8">
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇨🇦</span> Canada</span>
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇺🇸</span> USA</span>
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇬🇧</span> UK</span>
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇩🇪</span> Germany</span>
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇷🇼</span> Rwanda</span>
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇯🇵</span> Japan</span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/ca.svg" alt="Canada" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  Canada
+                </span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/us.svg" alt="USA" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  USA
+                </span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/gb.svg" alt="UK" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  UK
+                </span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/de.svg" alt="Germany" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  Germany
+                </span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/rw.svg" alt="Rwanda" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  Rwanda
+                </span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/jp.svg" alt="Japan" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  Japan
+                </span>
               </div>
               {/* Track 2 (For seamless loop) */}
               <div className="flex justify-around items-center min-w-full shrink-0 gap-8">
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇨🇦</span> Canada</span>
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇺🇸</span> USA</span>
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇬🇧</span> UK</span>
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇩🇪</span> Germany</span>
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇷🇼</span> Rwanda</span>
-                <span className="flex items-center gap-2 text-xs font-bold text-slate-600"><span className="text-lg">🇯🇵</span> Japan</span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/ca.svg" alt="Canada" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  Canada
+                </span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/us.svg" alt="USA" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  USA
+                </span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/gb.svg" alt="UK" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  UK
+                </span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/de.svg" alt="Germany" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  Germany
+                </span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/rw.svg" alt="Rwanda" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  Rwanda
+                </span>
+                <span className="flex items-center gap-2.5 text-xs font-bold text-slate-700">
+                  <img src="https://flagcdn.com/jp.svg" alt="Japan" className="h-3.5 w-5 rounded-sm object-cover shadow-sm border border-slate-200/40" />
+                  Japan
+                </span>
               </div>
             </div>
           </div>
