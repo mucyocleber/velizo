@@ -46,7 +46,6 @@ function VerifyContent() {
     }
 
     try {
-      // Verify OTP code with Supabase Auth
       const { data, error } = await supabase.auth.verifyOtp({
         email,
         token: otp,
@@ -62,7 +61,7 @@ function VerifyContent() {
       if (data.session) {
         setSuccessMsg('Account verified successfully!');
         setTimeout(() => {
-          router.push('/dashboard');
+          router.push('/home');
         }, 1200);
       }
     } catch (err: any) {

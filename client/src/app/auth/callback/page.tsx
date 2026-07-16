@@ -27,7 +27,7 @@ export default function AuthCallback() {
         if (isRecovery) {
           router.push('/auth/reset-password');
         } else {
-          router.push('/dashboard');
+          router.push('/home');
         }
       } else {
         // If session is not ready yet, set a small timeout and check again
@@ -37,7 +37,7 @@ export default function AuthCallback() {
             if (isRecovery) {
               router.push('/auth/reset-password');
             } else {
-              router.push('/dashboard');
+              router.push('/home');
             }
           } else {
             router.push('/auth/login');

@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-export default function Dashboard() {
+export default function Home() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);

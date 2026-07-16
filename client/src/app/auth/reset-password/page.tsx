@@ -57,9 +57,9 @@ export default function ResetPassword() {
 
       setSuccessMsg('Your password has been reset successfully!');
       
-      // Delay to let the user see the success message, then route to dashboard
+      // Delay to let the user see the success message, then route to home
       setTimeout(() => {
-        router.push('/dashboard');
+        router.push('/home');
       }, 1500);
     } catch (err) {
       setErrorMsg('Failed to reset password. Please try again.');

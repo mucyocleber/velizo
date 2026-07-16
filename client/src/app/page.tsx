@@ -80,7 +80,7 @@ export default function Home() {
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session?.user) {
-        router.push('/dashboard');
+        router.push('/home');
       }
     };
     checkUser();
@@ -146,7 +146,7 @@ export default function Home() {
         }
 
         if (data.user) {
-          router.push('/dashboard');
+          router.push('/home');
         }
       } catch (err: any) {
         setErrorMsg('Authentication failed. Please try again.');
