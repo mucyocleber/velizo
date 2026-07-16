@@ -66,11 +66,9 @@ const countries = [
 export default function Home() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'register' | 'login'>('register');
-  const [role, setRole] = useState<'candidate' | 'employer'>('candidate');
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [companyName, setCompanyName] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -96,11 +94,6 @@ export default function Home() {
         setLoading(false);
         return;
       }
-      if (role === 'employer' && !companyName) {
-        setErrorMsg('Please fill in your company name.');
-        setLoading(false);
-        return;
-      }
 
       try {
         const { data, error } = await supabase.auth.signUp({
@@ -109,8 +102,7 @@ export default function Home() {
           options: {
             data: {
               full_name: fullName,
-              role: role,
-              ...(role === 'employer' && { company_name: companyName })
+              role: 'candidate'
             },
             emailRedirectTo: `${window.location.origin}/auth/callback`
           }
@@ -165,7 +157,7 @@ export default function Home() {
         provider: 'google',
         options: {
           redirectTo: `${window.location.origin}/auth/callback`,
-          queryParams: activeTab === 'register' ? { role: role } : undefined
+          queryParams: activeTab === 'register' ? { role: 'candidate' } : undefined
         }
       });
       if (error) setErrorMsg(error.message);
@@ -350,10 +342,10 @@ export default function Home() {
           <div className="grid grid-cols-2 p-1 bg-slate-100 border border-slate-200/40 rounded-xl mb-6">
             <button
               type="button"
-              className={`py-2.5 rounded-lg text-xs font-bold transition-all duration-205 ${
+              className={`py-2.5 rounded-lg text-xs font-bold transition-all duration-205 cursor-pointer relative z-20 ${
                 activeTab === 'register'
                   ? 'bg-white text-slate-900 shadow-sm font-extrabold'
-                  : 'text-slate-450 hover:text-slate-700'
+                  : 'text-slate-400 hover:text-slate-700'
               }`}
               onClick={() => {
                 setActiveTab('register');
@@ -364,10 +356,10 @@ export default function Home() {
             </button>
             <button
               type="button"
-              className={`py-2.5 rounded-lg text-xs font-bold transition-all duration-205 ${
+              className={`py-2.5 rounded-lg text-xs font-bold transition-all duration-205 cursor-pointer relative z-20 ${
                 activeTab === 'login'
                   ? 'bg-white text-slate-900 shadow-sm font-extrabold'
-                  : 'text-slate-450 hover:text-slate-700'
+                  : 'text-slate-400 hover:text-slate-700'
               }`}
               onClick={() => {
                 setActiveTab('login');
@@ -378,34 +370,6 @@ export default function Home() {
             </button>
           </div>
 
-          {/* 👥 Candidate vs Employer Toggle (Only on Registration) */}
-          {activeTab === 'register' && (
-            <div className="grid grid-cols-2 gap-2 p-1 bg-slate-50 border border-slate-200/50 rounded-xl mb-6">
-              <button
-                type="button"
-                className={`py-1.5 rounded-lg text-[10px] font-extrabold tracking-wider uppercase transition-all ${
-                  role === 'candidate'
-                    ? 'bg-white text-primary shadow-sm'
-                    : 'text-slate-400 hover:text-slate-750'
-                }`}
-                onClick={() => setRole('candidate')}
-              >
-                Candidate
-              </button>
-              <button
-                type="button"
-                className={`py-1.5 rounded-lg text-[10px] font-extrabold tracking-wider uppercase transition-all ${
-                  role === 'employer'
-                    ? 'bg-white text-primary shadow-sm'
-                    : 'text-slate-400 hover:text-slate-750'
-                }`}
-                onClick={() => setRole('employer')}
-              >
-                Employer
-              </button>
-            </div>
-          )}
-
           <form onSubmit={handleSubmit} className="space-y-4">
             
             {/* Full Name (Only on Registration) */}
@@ -415,7 +379,7 @@ export default function Home() {
                   Full Name
                 </label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-450">
+                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
                     <User className="h-4 w-4" />
                   </span>
                   <input
@@ -430,35 +394,13 @@ export default function Home() {
               </div>
             )}
 
-            {/* Company Name (Registration + Employer selection) */}
-            {activeTab === 'register' && role === 'employer' && (
-              <div>
-                <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">
-                  Company Name
-                </label>
-                <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-455">
-                    <Building2 className="h-4 w-4" />
-                  </span>
-                  <input
-                    type="text"
-                    placeholder="Innovate Tech Corp"
-                    className="input-style pl-10 text-xs focus:ring-2 focus:ring-blue-100"
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    required
-                  />
-                </div>
-              </div>
-            )}
-
             {/* Email Address */}
             <div>
               <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">
                 Email Address
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-450">
+                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
                   <Mail className="h-4 w-4" />
                 </span>
                 <input
@@ -485,7 +427,7 @@ export default function Home() {
                 )}
               </div>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-455">
+                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
                   <Lock className="h-4 w-4" />
                 </span>
                 <input
@@ -498,12 +440,18 @@ export default function Home() {
                   minLength={8}
                 />
               </div>
+              
+              {activeTab === 'register' && (
+                <p className="text-[10px] text-slate-400 leading-normal mt-3 bg-slate-50 border border-slate-200/50 p-2.5 rounded-lg">
+                  Note: You will complete your professional career passport profile (skills, resume, and experience details) after entering your dashboard.
+                </p>
+              )}
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-xl text-xs font-bold tracking-wider uppercase text-white bg-primary hover:bg-[#084e96] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-50 mt-6"
+              className="w-full py-3 rounded-xl text-xs font-bold tracking-wider uppercase text-white bg-primary hover:bg-[#084e96] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-50 mt-6 cursor-pointer"
             >
               {loading 
                 ? 'Processing...'
@@ -526,7 +474,7 @@ export default function Home() {
           <button
             type="button"
             onClick={handleGoogleOAuth}
-            className="w-full py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-2.5 shadow-sm hover:shadow-md"
+            className="w-full py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-2.5 shadow-sm hover:shadow-md cursor-pointer"
           >
             <svg className="h-4 w-4 mr-1" viewBox="0 0 24 24">
               <path
