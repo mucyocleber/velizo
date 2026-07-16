@@ -311,32 +311,34 @@ export default function Home() {
       </div>
 
       {/* ─── RIGHT PANEL (Sleek Account Forms - Desktop & Mobile) ─── */}
-      <div className="w-full lg:w-[45%] flex flex-col justify-between min-h-screen p-6 md:p-16 bg-white relative">
+      <div className="w-full lg:w-[45%] flex flex-col justify-between min-h-screen p-4 sm:p-8 md:p-12 lg:p-16 bg-[#F8FAFC] relative dot-grid">
         
         {/* Mobile Header Logo */}
-        <div className="flex items-center justify-between lg:justify-end w-full">
+        <div className="flex items-center justify-between lg:justify-end w-full mb-6 lg:mb-0">
           <div className="flex items-center gap-2.5 lg:hidden">
             <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.12)]" />
             <span className="text-lg font-bold tracking-tight">VELI<span className="text-primary font-black">ZO</span></span>
           </div>
           
-          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold uppercase tracking-widest bg-slate-50 border border-slate-200/40 px-3 py-1.5 rounded-xl">
-            <Globe className="h-3.5 w-3.5 text-teal-600" />
+          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold uppercase tracking-widest bg-white border border-slate-200/50 px-3 py-1.5 rounded-xl shadow-sm">
+            <Globe className="h-3.5 w-3.5 text-teal-600 animate-spin" style={{ animationDuration: '6s' }} />
             <span>Global Gateway</span>
           </div>
         </div>
 
-        {/* Main Form Center Card */}
-        <div className="w-full max-w-sm mx-auto my-auto py-10">
+        {/* Main Form Center Card (Floating White Box) */}
+        <div className="w-full max-w-md mx-auto my-auto bg-white border border-slate-200/80 p-8 md:p-10 rounded-[28px] shadow-[0_20px_50px_rgba(15,23,42,0.04)] hover:border-slate-300/60 transition-colors">
           
-          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-950 mb-2 tracking-tight">
-            {activeTab === 'register' ? 'Create your account' : 'Sign in to your portal'}
-          </h1>
-          <p className="text-slate-500 text-xs mb-8 leading-relaxed">
-            {activeTab === 'register' 
-              ? 'Join our closed network to search verified international roles and earn your passport.' 
-              : 'Sign in to access your secure profile workspace.'}
-          </p>
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-extrabold text-slate-950 tracking-tight">
+              {activeTab === 'register' ? 'Join the Global Ecosystem' : 'Welcome Back'}
+            </h1>
+            <p className="text-slate-400 text-xs mt-2 leading-relaxed max-w-xs mx-auto">
+              {activeTab === 'register' 
+                ? 'Create a verifiable profile to access international roles.' 
+                : 'Sign in to access your secure professional workspace.'}
+            </p>
+          </div>
 
           {errorMsg && (
             <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 font-semibold leading-relaxed animate-[shake_0.4s_ease-in-out]">
@@ -344,14 +346,14 @@ export default function Home() {
             </div>
           )}
 
-          {/* 🔘 Tab Switchers */}
-          <div className="flex border-b border-slate-200 mb-8">
+          {/* 🔘 Tab Switchers (Premium iOS Segmented Style) */}
+          <div className="grid grid-cols-2 p-1 bg-slate-100 border border-slate-200/40 rounded-xl mb-6">
             <button
               type="button"
-              className={`pb-3 text-xs font-bold transition-all border-b-2 pr-6 ${
+              className={`py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
                 activeTab === 'register'
-                  ? 'border-primary text-primary font-black'
-                  : 'border-transparent text-slate-400 hover:text-slate-700'
+                  ? 'bg-white text-slate-900 shadow-sm font-extrabold'
+                  : 'text-slate-400 hover:text-slate-700'
               }`}
               onClick={() => {
                 setActiveTab('register');
@@ -362,10 +364,10 @@ export default function Home() {
             </button>
             <button
               type="button"
-              className={`pb-3 text-xs font-bold transition-all border-b-2 px-6 ${
+              className={`py-2 rounded-lg text-xs font-bold transition-all duration-200 ${
                 activeTab === 'login'
-                  ? 'border-primary text-primary font-black'
-                  : 'border-transparent text-slate-400 hover:text-slate-700'
+                  ? 'bg-white text-slate-900 shadow-sm font-extrabold'
+                  : 'text-slate-400 hover:text-slate-700'
               }`}
               onClick={() => {
                 setActiveTab('login');
@@ -378,13 +380,13 @@ export default function Home() {
 
           {/* 👥 Candidate vs Employer Toggle (Only on Registration) */}
           {activeTab === 'register' && (
-            <div className="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-xl mb-6">
+            <div className="grid grid-cols-2 gap-2 p-1 bg-slate-50 border border-slate-200/50 rounded-xl mb-6">
               <button
                 type="button"
-                className={`py-2 rounded-lg text-[10px] font-extrabold tracking-wider uppercase transition-all ${
+                className={`py-1.5 rounded-lg text-[10px] font-extrabold tracking-wider uppercase transition-all ${
                   role === 'candidate'
                     ? 'bg-white text-primary shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
+                    : 'text-slate-400 hover:text-slate-700'
                 }`}
                 onClick={() => setRole('candidate')}
               >
@@ -392,10 +394,10 @@ export default function Home() {
               </button>
               <button
                 type="button"
-                className={`py-2 rounded-lg text-[10px] font-extrabold tracking-wider uppercase transition-all ${
+                className={`py-1.5 rounded-lg text-[10px] font-extrabold tracking-wider uppercase transition-all ${
                   role === 'employer'
                     ? 'bg-white text-primary shadow-sm'
-                    : 'text-slate-500 hover:text-slate-800'
+                    : 'text-slate-400 hover:text-slate-700'
                 }`}
                 onClick={() => setRole('employer')}
               >
@@ -413,13 +415,13 @@ export default function Home() {
                   Full Name
                 </label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-450">
                     <User className="h-4 w-4" />
                   </span>
                   <input
                     type="text"
                     placeholder="John Doe"
-                    className="input-style pl-10 text-xs"
+                    className="input-style pl-10 text-xs focus:ring-2 focus:ring-blue-100"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required
@@ -435,13 +437,13 @@ export default function Home() {
                   Company Name
                 </label>
                 <div className="relative">
-                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                  <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-450">
                     <Building2 className="h-4 w-4" />
                   </span>
                   <input
                     type="text"
                     placeholder="Innovate Tech Corp"
-                    className="input-style pl-10 text-xs"
+                    className="input-style pl-10 text-xs focus:ring-2 focus:ring-blue-100"
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     required
@@ -456,13 +458,13 @@ export default function Home() {
                 Email Address
               </label>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-450">
                   <Mail className="h-4 w-4" />
                 </span>
                 <input
                   type="email"
                   placeholder="name@domain.com"
-                  className="input-style pl-10 text-xs"
+                  className="input-style pl-10 text-xs focus:ring-2 focus:ring-blue-100"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -483,13 +485,13 @@ export default function Home() {
                 )}
               </div>
               <div className="relative">
-                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-455">
                   <Lock className="h-4 w-4" />
                 </span>
                 <input
                   type="password"
                   placeholder={activeTab === 'register' ? 'Min. 8 characters' : 'Enter your password'}
-                  className="input-style pl-10 text-xs"
+                  className="input-style pl-10 text-xs focus:ring-2 focus:ring-blue-100"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -501,7 +503,7 @@ export default function Home() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl text-xs font-extrabold tracking-wider uppercase text-white bg-primary hover:bg-[#084e96] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-50"
+              className="w-full py-3 rounded-xl text-xs font-bold tracking-wider uppercase text-white bg-primary hover:bg-[#084e96] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-50 mt-6"
             >
               {loading 
                 ? (activeTab === 'register' ? 'Processing...' : 'Processing...')
@@ -511,11 +513,11 @@ export default function Home() {
           </form>
 
           {/* Divider */}
-          <div className="relative my-8">
+          <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200"></div>
+              <div className="w-full border-t border-slate-100"></div>
             </div>
-            <div className="relative flex justify-center text-[10px] font-bold text-slate-400 uppercase">
+            <div className="relative flex justify-center text-[10px] font-bold text-slate-350 uppercase">
               <span className="bg-white px-3 tracking-wider">Or register with</span>
             </div>
           </div>
@@ -524,7 +526,7 @@ export default function Home() {
           <button
             type="button"
             onClick={handleGoogleOAuth}
-            className="w-full py-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-2.5 shadow-sm hover:shadow-md"
+            className="w-full py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-2.5 shadow-sm hover:shadow-md"
           >
             <svg className="h-4 w-4 mr-1" viewBox="0 0 24 24">
               <path
@@ -550,7 +552,7 @@ export default function Home() {
         </div>
 
         {/* Footer info */}
-        <div className="text-center text-[10px] text-slate-400 font-semibold">
+        <div className="text-center text-[10px] text-slate-400 font-semibold mt-6 lg:mt-0">
           By continuing, you agree to VELIZO's Terms of Service and Privacy Policy.
         </div>
 
