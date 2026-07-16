@@ -98,8 +98,9 @@ export default function Home() {
       }
 
       try {
+        const trimmedEmail = email.trim();
         const { data, error } = await supabase.auth.signUp({
-          email,
+          email: trimmedEmail,
           password,
           options: {
             data: {
@@ -117,7 +118,7 @@ export default function Home() {
         }
 
         if (data.user) {
-          router.push(`/auth/verify?email=${encodeURIComponent(email)}`);
+          router.push(`/auth/verify?email=${encodeURIComponent(trimmedEmail)}`);
         }
       } catch (err: any) {
         setErrorMsg('Registration failed. Please try again.');
@@ -131,8 +132,9 @@ export default function Home() {
       }
 
       try {
+        const trimmedEmail = email.trim();
         const { data, error } = await supabase.auth.signInWithPassword({
-          email,
+          email: trimmedEmail,
           password,
         });
 

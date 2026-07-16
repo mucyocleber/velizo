@@ -12,3 +12,9 @@ if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
 
 // Client-side Supabase instance
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+if (supabaseAnonKey.includes('.dummy')) {
+  console.warn(
+    '⚠️ Supabase Warning: Client is using the fallback dummy key. If you modified .env, please restart your Next.js dev server.'
+  );
+}
