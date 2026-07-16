@@ -13,6 +13,8 @@ import {
   Globe,
   Briefcase,
   FileCheck,
+  CheckCircle2,
+  TrendingUp,
   BrainCircuit
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -46,7 +48,6 @@ export default function Home() {
     setLoading(true);
 
     if (activeTab === 'register') {
-      // Registration flow
       if (!fullName || !email || !password) {
         setErrorMsg('Please fill in all required fields.');
         setLoading(false);
@@ -86,7 +87,6 @@ export default function Home() {
         setLoading(false);
       }
     } else {
-      // Login flow
       if (!email || !password) {
         setErrorMsg('Please enter both email and password.');
         setLoading(false);
@@ -106,7 +106,6 @@ export default function Home() {
         }
 
         if (data.user) {
-          // Success redirect
           router.push('/dashboard');
         }
       } catch (err: any) {
@@ -138,94 +137,133 @@ export default function Home() {
       {/* Animated Brand Preloader */}
       <Preloader />
 
-      {/* ─── LEFT PANEL (Marketing Content - Desktop Only) ────────── */}
-      <div className="hidden lg:flex lg:w-1/2 bg-slate-50 border-r border-slate-200 p-16 flex-col justify-between relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-blue-50/50 via-transparent to-transparent -z-10" />
+      {/* ─── LEFT PANEL (High-End Interactive Feature Showcase - Desktop Only) ─── */}
+      <div className="hidden lg:flex lg:w-[55%] bg-slate-50 border-r border-slate-200/60 p-16 flex-col justify-between relative overflow-hidden dot-grid">
+        <div className="absolute inset-0 bg-gradient-to-tr from-blue-50/30 via-transparent to-transparent -z-10" />
         
         {/* Brand Header */}
         <div className="flex items-center gap-3">
-          <img src="/logo-v.svg" alt="VELIZO" className="h-9 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.15)]" />
+          <img src="/logo-v.svg" alt="VELIZO" className="h-9 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.12)]" />
           <span className="text-xl font-bold tracking-tight text-slate-900">
             VELI<span className="text-primary font-black">ZO</span>
           </span>
         </div>
 
-        {/* Core Value Props */}
-        <div className="max-w-md my-auto">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-blue-100 bg-blue-50/50 text-xs text-primary font-bold mb-8">
-            <Sparkles className="h-3.5 w-3.5 text-primary animate-pulse" />
-            <span>International Talent Gateway</span>
+        {/* 💻 Center Interactive Dashboard Mockups */}
+        <div className="w-full max-w-lg mx-auto my-auto space-y-8 py-10">
+          
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-blue-100 bg-blue-50/50 text-xs text-primary font-bold">
+              <Sparkles className="h-3.5 w-3.5 text-primary" />
+              <span>International Recruitment Standard</span>
+            </div>
+            <h2 className="text-4xl font-extrabold text-slate-950 tracking-tight leading-tight">
+              An AI-powered gateway to <span className="gradient-text">verified global placement</span>.
+            </h2>
+            <p className="text-sm text-slate-500 leading-relaxed max-w-md">
+              Create a verifiable profile, instantly match compatibility requirements, and interact directly with international hiring managers.
+            </p>
           </div>
 
-          <h2 className="text-4xl font-extrabold text-slate-950 mb-8 leading-tight tracking-tight">
-            Connecting Global Employers with Exceptional Talent
-          </h2>
-
-          <div className="space-y-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-2xl bg-white border border-slate-200 text-primary shadow-sm">
-                <FileCheck className="h-5 w-5" />
-              </div>
+          {/* 📇 Interactive Card 1: The Career Passport Card */}
+          <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-[0_10px_35px_-10px_rgba(15,23,42,0.06)] relative group hover:border-primary/20 transition-all duration-300">
+            <div className="flex justify-between items-start mb-6">
               <div>
-                <h4 className="text-sm font-bold text-slate-800">Verifiable Career Passport</h4>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">Securely exhibit your verified employment, education credentials and certifications.</p>
+                <h4 className="text-base font-bold text-slate-900">Mucyo Cleberé</h4>
+                <p className="text-[11px] text-slate-400 font-semibold mt-0.5">Software Engineer & Tech Lead</p>
+              </div>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-50 border border-teal-100 text-[10px] font-bold text-teal-700">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span> Verified Candidate
+              </span>
+            </div>
+
+            {/* Verification Items */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="p-1 rounded-lg bg-teal-50 border border-teal-100 text-teal-600">
+                    <CheckCircle2 className="h-4 w-4" />
+                  </div>
+                  <span className="font-semibold text-slate-700">B.Sc. Software Engineering</span>
+                </div>
+                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Verified</span>
+              </div>
+
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <div className="p-1 rounded-lg bg-teal-50 border border-teal-100 text-teal-600">
+                    <CheckCircle2 className="h-4 w-4" />
+                  </div>
+                  <span className="font-semibold text-slate-700">Employment: CodeMateRwa LTD</span>
+                </div>
+                <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Verified</span>
+              </div>
+
+              {/* Progress: Trust Score */}
+              <div className="border-t border-slate-100 pt-4 mt-2">
+                <div className="flex justify-between items-center text-xs mb-1.5">
+                  <span className="text-slate-500 font-semibold">Profile Integrity (Trust Score)</span>
+                  <span className="text-primary font-bold">96 / 100</span>
+                </div>
+                <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div className="bg-gradient-to-r from-primary to-blue-400 h-full rounded-full" style={{ width: '96%' }} />
+                </div>
               </div>
             </div>
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-2xl bg-white border border-slate-200 text-primary shadow-sm">
+          </div>
+
+          {/* 📊 Interactive Card 2: AI Compatibility Scoring Match */}
+          <div className="p-5 rounded-xl bg-white border border-slate-200/80 shadow-[0_8px_25px_-10px_rgba(15,23,42,0.04)] flex justify-between items-center max-w-sm hover:border-primary/20 transition-all duration-300">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-blue-50 text-primary">
                 <BrainCircuit className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-800">Gemini AI Optimization</h4>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">Calculate ATS scores, analyze skill gaps, and get mock interview prep tailored to job postings.</p>
+                <h5 className="text-xs font-bold text-slate-800">Job Fit Score (Canada Remote)</h5>
+                <p className="text-[10px] text-slate-400 font-semibold mt-0.5">Calculated using Gemini API</p>
               </div>
             </div>
-            <div className="flex items-start gap-4">
-              <div className="p-3 rounded-2xl bg-white border border-slate-200 text-primary shadow-sm">
-                <Briefcase className="h-5 w-5" />
-              </div>
-              <div>
-                <h4 className="text-sm font-bold text-slate-800">Verified Job Listings</h4>
-                <p className="text-xs text-slate-500 mt-1 leading-relaxed">Direct connection to Canadian & international roles with transparent salaries.</p>
-              </div>
+            <div className="text-right">
+              <span className="text-lg font-black text-primary">98%</span>
+              <span className="text-[9px] text-teal-600 font-bold block">Strong Match</span>
             </div>
           </div>
+
         </div>
 
         {/* Footer brand stamp */}
         <div className="flex items-center gap-2 text-xs text-slate-400 font-semibold tracking-wide">
           <ShieldCheck className="h-5 w-5 text-teal-600" />
-          <span>Verifiable Trust Protocol Active</span>
+          <span>Verifiable Security Protocol Active</span>
         </div>
       </div>
 
-      {/* ─── RIGHT PANEL (Unified Auth Card - Fully Responsive) ─── */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-between min-h-screen p-6 md:p-16 bg-white">
+      {/* ─── RIGHT PANEL (Sleek Account Forms - Desktop & Mobile) ─── */}
+      <div className="w-full lg:w-[45%] flex flex-col justify-between min-h-screen p-6 md:p-16 bg-white relative">
         
         {/* Mobile Header Logo */}
         <div className="flex items-center justify-between lg:justify-end w-full">
           <div className="flex items-center gap-2.5 lg:hidden">
-            <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.15)]" />
+            <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.12)]" />
             <span className="text-lg font-bold tracking-tight">VELI<span className="text-primary font-black">ZO</span></span>
           </div>
           
-          {/* Global indicator */}
-          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
-            <Globe className="h-4 w-4 text-teal-600" />
-            <span>CA & Global Access</span>
+          <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold uppercase tracking-widest bg-slate-50 border border-slate-200/40 px-3 py-1.5 rounded-xl">
+            <Globe className="h-3.5 w-3.5 text-teal-600" />
+            <span>Global Gateway</span>
           </div>
         </div>
 
-        {/* Form Container */}
-        <div className="w-full max-w-md mx-auto my-auto py-10">
+        {/* Main Form Center Card */}
+        <div className="w-full max-w-sm mx-auto my-auto py-10">
           
-          <h1 className="text-3xl font-extrabold text-slate-950 mb-2 tracking-tight">
-            {activeTab === 'register' ? 'Get started today' : 'Welcome back'}
+          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-950 mb-2 tracking-tight">
+            {activeTab === 'register' ? 'Create your account' : 'Sign in to your portal'}
           </h1>
-          <p className="text-slate-500 text-sm mb-8 leading-relaxed">
+          <p className="text-slate-500 text-xs mb-8 leading-relaxed">
             {activeTab === 'register' 
-              ? 'Create a professional account and unlock global placement opportunities.' 
-              : 'Sign in to access your dashboard, applications, and career insights.'}
+              ? 'Join our closed network to search verified international roles and earn your passport.' 
+              : 'Sign in to access your secure profile workspace.'}
           </p>
 
           {errorMsg && (
@@ -234,14 +272,14 @@ export default function Home() {
             </div>
           )}
 
-          {/* 🔘 Tabs: Register vs Login */}
-          <div className="grid grid-cols-2 p-1 bg-slate-100 rounded-xl mb-6 border border-slate-200/50">
+          {/* 🔘 Tab Switchers */}
+          <div className="flex border-b border-slate-200 mb-8">
             <button
               type="button"
-              className={`py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${
+              className={`pb-3 text-xs font-bold transition-all border-b-2 pr-6 ${
                 activeTab === 'register'
-                  ? 'bg-white text-primary shadow-sm font-extrabold'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'border-primary text-primary font-black'
+                  : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
               onClick={() => {
                 setActiveTab('register');
@@ -252,10 +290,10 @@ export default function Home() {
             </button>
             <button
               type="button"
-              className={`py-2.5 rounded-lg text-xs font-bold transition-all duration-200 ${
+              className={`pb-3 text-xs font-bold transition-all border-b-2 px-6 ${
                 activeTab === 'login'
-                  ? 'bg-white text-primary shadow-sm font-extrabold'
-                  : 'text-slate-500 hover:text-slate-800'
+                  ? 'border-primary text-primary font-black'
+                  : 'border-transparent text-slate-400 hover:text-slate-700'
               }`}
               onClick={() => {
                 setActiveTab('login');
@@ -268,28 +306,28 @@ export default function Home() {
 
           {/* 👥 Candidate vs Employer Toggle (Only on Registration) */}
           {activeTab === 'register' && (
-            <div className="grid grid-cols-2 gap-2 p-1 bg-blue-50/50 border border-blue-100/50 rounded-xl mb-6">
+            <div className="grid grid-cols-2 gap-2 p-1 bg-slate-100 rounded-xl mb-6">
               <button
                 type="button"
-                className={`py-2 rounded-lg text-[11px] font-bold transition-all ${
+                className={`py-2 rounded-lg text-[10px] font-extrabold tracking-wider uppercase transition-all ${
                   role === 'candidate'
                     ? 'bg-white text-primary shadow-sm'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
                 onClick={() => setRole('candidate')}
               >
-                Job Seeker (Candidate)
+                Candidate
               </button>
               <button
                 type="button"
-                className={`py-2 rounded-lg text-[11px] font-bold transition-all ${
+                className={`py-2 rounded-lg text-[10px] font-extrabold tracking-wider uppercase transition-all ${
                   role === 'employer'
                     ? 'bg-white text-primary shadow-sm'
                     : 'text-slate-500 hover:text-slate-800'
                 }`}
                 onClick={() => setRole('employer')}
               >
-                Employer / Recruiter
+                Employer
               </button>
             </div>
           )}
@@ -299,17 +337,17 @@ export default function Home() {
             {/* Full Name (Only on Registration) */}
             {activeTab === 'register' && (
               <div>
-                <label className="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">
+                <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">
                   Full Name
                 </label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                    <User className="h-4.5 w-4.5" />
+                    <User className="h-4 w-4" />
                   </span>
                   <input
                     type="text"
                     placeholder="John Doe"
-                    className="input-style pl-10 text-sm"
+                    className="input-style pl-10 text-xs"
                     value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required
@@ -321,17 +359,17 @@ export default function Home() {
             {/* Company Name (Registration + Employer selection) */}
             {activeTab === 'register' && role === 'employer' && (
               <div>
-                <label className="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">
+                <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">
                   Company Name
                 </label>
                 <div className="relative">
                   <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                    <Building2 className="h-4.5 w-4.5" />
+                    <Building2 className="h-4 w-4" />
                   </span>
                   <input
                     type="text"
                     placeholder="Innovate Tech Corp"
-                    className="input-style pl-10 text-sm"
+                    className="input-style pl-10 text-xs"
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     required
@@ -342,17 +380,17 @@ export default function Home() {
 
             {/* Email Address */}
             <div>
-              <label className="block text-xs font-bold text-slate-500 mb-1.5 uppercase tracking-wider">
+              <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">
                 Email Address
               </label>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                  <Mail className="h-4.5 w-4.5" />
+                  <Mail className="h-4 w-4" />
                 </span>
                 <input
                   type="email"
                   placeholder="name@domain.com"
-                  className="input-style pl-10 text-sm"
+                  className="input-style pl-10 text-xs"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -363,23 +401,23 @@ export default function Home() {
             {/* Password */}
             <div>
               <div className="flex justify-between items-center mb-1.5">
-                <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider">
+                <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                   Password
                 </label>
                 {activeTab === 'login' && (
-                  <button type="button" className="text-xs text-primary hover:underline font-semibold">
+                  <button type="button" className="text-[10px] text-primary hover:underline font-bold">
                     Forgot Password?
                   </button>
                 )}
               </div>
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                  <Lock className="h-4.5 w-4.5" />
+                  <Lock className="h-4 w-4" />
                 </span>
                 <input
                   type="password"
                   placeholder={activeTab === 'register' ? 'Min. 8 characters' : 'Enter your password'}
-                  className="input-style pl-10 text-sm"
+                  className="input-style pl-10 text-xs"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
@@ -391,10 +429,10 @@ export default function Home() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl text-sm font-semibold text-white bg-primary hover:bg-[#084e96] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-50"
+              className="w-full py-3.5 rounded-xl text-xs font-extrabold tracking-wider uppercase text-white bg-primary hover:bg-[#084e96] transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-50"
             >
               {loading 
-                ? (activeTab === 'register' ? 'Creating Account...' : 'Signing In...')
+                ? (activeTab === 'register' ? 'Processing...' : 'Processing...')
                 : (activeTab === 'register' ? 'Create Account' : 'Sign In')}
               <ArrowRight className="h-4 w-4" />
             </button>
@@ -405,16 +443,16 @@ export default function Home() {
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-slate-200"></div>
             </div>
-            <div className="relative flex justify-center text-xs font-semibold text-slate-400 uppercase">
-              <span className="bg-white px-3">Or continue with</span>
+            <div className="relative flex justify-center text-[10px] font-bold text-slate-400 uppercase">
+              <span className="bg-white px-3 tracking-wider">Or register with</span>
             </div>
           </div>
 
-          {/* Google SSO Button */}
+          {/* Google Button */}
           <button
             type="button"
             onClick={handleGoogleOAuth}
-            className="w-full py-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold transition-all flex items-center justify-center gap-2.5 shadow-sm hover:shadow-md"
+            className="w-full py-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all flex items-center justify-center gap-2.5 shadow-sm hover:shadow-md"
           >
             <svg className="h-4 w-4 mr-1" viewBox="0 0 24 24">
               <path
@@ -439,14 +477,13 @@ export default function Home() {
 
         </div>
 
-        {/* Footer Text */}
-        <div className="text-center text-[10px] text-slate-400 font-medium">
+        {/* Footer info */}
+        <div className="text-center text-[10px] text-slate-400 font-semibold">
           By continuing, you agree to VELIZO's Terms of Service and Privacy Policy.
         </div>
 
       </div>
 
-      {/* 🎨 CSS Animations for dynamic elements */}
       <style jsx global>{`
         @keyframes shake {
           0%, 100% { transform: translateX(0); }
