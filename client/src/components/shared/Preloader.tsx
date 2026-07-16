@@ -43,7 +43,7 @@ export default function Preloader() {
                 <stop offset="100%" stopColor="#00D2FF" />
               </linearGradient>
               <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="-4" dy="6" stdDeviation="8" flood-color="#010A26" flood-opacity="0.6"/>
+                <feDropShadow dx="-4" dy="6" stdDeviation="8" floodColor="#010A26" floodOpacity="0.6"/>
               </filter>
             </defs>
 
