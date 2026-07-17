@@ -48,6 +48,8 @@ export default function Header() {
   const [aiLoading, setAiLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<'search' | 'ai'>('search'); // Switch between normal search and AI chat
   
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const profileDropdownRef = useRef<HTMLDivElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -93,6 +95,17 @@ export default function Header() {
     });
 
     return () => subscription.unsubscribe();
+  }, []);
+
+  // Dropdown click outside listener
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileDropdownRef.current && !profileDropdownRef.current.contains(event.target as Node)) {
+        setIsProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   // 2. Fetch personalized job recommendations from database
@@ -258,28 +271,30 @@ export default function Header() {
     <>
       {/* ─── MAIN NAV HEADER ────────────────────────────────────── */}
       <header className="w-full border-b border-slate-200 bg-white sticky top-0 z-45 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-4">
           
-          {/* Logo & Search Trigger */}
-          <div className="flex items-center gap-3 flex-1 max-w-md">
-            <Link href={session ? "/home" : "/"} className="flex items-center gap-1.5 shrink-0 group">
+          {/* 1. LEFT SIDE: LOGO */}
+          <div className="flex-none w-36 sm:w-44 flex items-center">
+            <Link href={session ? "/home" : "/"} className="flex items-center gap-1.5 group">
               <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.15)] group-hover:scale-105 transition-transform" />
-              <span className="text-base font-extrabold tracking-tight">
+              <span className="text-sm font-extrabold tracking-tight hidden xs:inline-block">
                 VELI<span className="text-primary font-black">ZO</span>
               </span>
             </Link>
-            
-            {/* Search Input (Triggers Dynamic Search & Recommendation Palette) */}
+          </div>
+
+          {/* 2. CENTER: CENTERED SLEEK SEARCH BAR */}
+          <div className="flex-1 max-w-lg">
             <div 
               onClick={() => setIsSearchOpen(true)}
-              className="relative w-full hidden md:block cursor-pointer"
+              className="relative w-full cursor-pointer"
             >
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-450">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
                 <Search className="h-4 w-4" />
               </span>
-              <div className="w-full bg-[#EDF3F8]/80 pl-9 pr-14 py-1.5 rounded text-xs font-semibold text-slate-500 border border-transparent hover:bg-[#E1E9F0]/80 transition-colors flex items-center justify-between">
-                <span>Search jobs, companies, ask AI...</span>
-                <span className="bg-slate-250 text-slate-500 px-1.5 py-0.5 rounded text-[10px] font-bold border border-slate-300">
+              <div className="w-full bg-[#EDF3F8]/70 hover:bg-[#E1E9F0]/80 pl-9 pr-14 py-1.5 rounded-lg text-xs font-semibold text-slate-500 border border-slate-200/50 transition-all flex items-center justify-between shadow-xs">
+                <span className="truncate">Search jobs, companies, ask AI...</span>
+                <span className="hidden sm:inline-block bg-white text-slate-400 border border-slate-200 px-1.5 py-0.5 rounded text-[9px] font-bold shadow-2xs">
                   Ctrl K
                 </span>
               </div>
@@ -289,177 +304,137 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Navigation Links & Account Actions */}
-          <div className="flex items-center gap-2 sm:gap-6">
+          {/* 3. RIGHT SIDE: USER PROFILE AVATAR OR PUBLIC ACTIONS */}
+          <div className="flex-none w-36 sm:w-44 flex items-center justify-end">
             {session ? (
-              // ─── AUTHENTICATED NAVBAR LINKS ───
-              <>
-                <Link href="/home" className="flex flex-col items-center justify-center text-slate-800 hover:text-slate-950 px-2 h-14 shrink-0 border-b-2 border-slate-850">
-                  <HomeIcon className="h-5 w-5" />
-                  <span className="text-[9px] font-bold mt-0.5 hidden md:block">Home</span>
-                </Link>
-                
-                {isCandidate ? (
-                  <>
-                    <Link href="/passport" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
-                      <FileCheck className="h-5 w-5" />
-                      <span className="text-[9px] font-bold mt-0.5 hidden md:block">Passport</span>
-                    </Link>
-                    <Link href="/jobs" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
-                      <Briefcase className="h-5 w-5" />
-                      <span className="text-[9px] font-bold mt-0.5 hidden md:block">Jobs</span>
-                    </Link>
-                    <Link href="/coach" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
-                      <Sparkles className="h-5 w-5 text-purple-500" />
-                      <span className="text-[9px] font-bold mt-0.5 hidden md:block font-extrabold text-purple-650">AI Coach</span>
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link href="/employer/jobs" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
-                      <Briefcase className="h-5 w-5" />
-                      <span className="text-[9px] font-bold mt-0.5 hidden md:block">Manage Jobs</span>
-                    </Link>
-                    <Link href="/employer/applications" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
-                      <Users className="h-5 w-5" />
-                      <span className="text-[9px] font-bold mt-0.5 hidden md:block">Candidates</span>
-                    </Link>
-                  </>
-                )}
+              <div className="relative" ref={profileDropdownRef}>
+                {/* Avatar Button */}
+                <button 
+                  onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
+                  className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100 transition-colors cursor-pointer border border-transparent hover:border-slate-200"
+                >
+                  <div className="h-8 w-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-xs font-bold shrink-0 overflow-hidden shadow-2xs">
+                    {profile?.avatar_url ? (
+                      <img src={profile.avatar_url} alt="avatar" className="h-full w-full object-cover" />
+                    ) : nameInitial}
+                  </div>
+                  <ChevronRight className="h-3.5 w-3.5 text-slate-400 rotate-90 hidden sm:block" />
+                </button>
 
-                {/* Profile Panel & Sign Out */}
-                <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
-                  <div className="flex items-center gap-2">
-                    <div className="h-8 w-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-xs font-bold shrink-0 overflow-hidden">
-                      {profile?.avatar_url ? (
-                        <img src={profile.avatar_url} alt="avatar" className="h-full w-full object-cover" />
-                      ) : nameInitial}
+                {/* Modern Dropdown Card */}
+                {isProfileDropdownOpen && (
+                  <div className="absolute right-0 mt-2.5 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl py-3 px-2 z-50 animate-scaleUp">
+                    {/* User info */}
+                    <div className="px-3 py-2 border-b border-slate-100 flex items-start gap-2.5">
+                      <div className="h-10 w-10 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-sm font-extrabold shrink-0 overflow-hidden">
+                        {profile?.avatar_url ? (
+                          <img src={profile.avatar_url} alt="avatar" className="h-full w-full object-cover" />
+                        ) : nameInitial}
+                      </div>
+                      <div className="text-left overflow-hidden">
+                        <span className="text-xs font-extrabold text-slate-800 block truncate leading-tight">
+                          {profile?.full_name || 'User'}
+                        </span>
+                        <span className="text-[9px] font-bold text-slate-400 block capitalize leading-none mt-0.5">
+                          {profile?.role === 'candidate' ? 'Job Seeker' : 'Employer'}
+                        </span>
+                        <span className="text-[9px] text-slate-400 truncate block mt-1 font-semibold">
+                          {profile?.email}
+                        </span>
+                      </div>
                     </div>
-                    <div className="hidden sm:block text-left">
-                      <span className="text-[10px] font-extrabold text-slate-800 block leading-tight truncate max-w-[80px]">
-                        {profile?.full_name || 'User'}
-                      </span>
-                      <span className="text-[9px] font-bold text-slate-400 block capitalize leading-none mt-0.5">
-                        {profile?.role === 'candidate' ? 'Job Seeker' : 'Employer'}
-                      </span>
+
+                    {/* Navigation shortcuts (Quick access) */}
+                    <div className="py-2 border-b border-slate-100 text-xs font-semibold">
+                      <Link 
+                        href="/home" 
+                        onClick={() => setIsProfileDropdownOpen(false)}
+                        className="flex items-center gap-2 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
+                      >
+                        <HomeIcon className="h-4 w-4 text-slate-450" />
+                        <span>Home Workspace</span>
+                      </Link>
+                      
+                      {isCandidate ? (
+                        <>
+                          <Link 
+                            href="/passport" 
+                            onClick={() => setIsProfileDropdownOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
+                          >
+                            <FileCheck className="h-4 w-4 text-slate-455" />
+                            <span>Career Passport</span>
+                          </Link>
+                          <Link 
+                            href="/jobs" 
+                            onClick={() => setIsProfileDropdownOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
+                          >
+                            <Briefcase className="h-4 w-4 text-slate-455" />
+                            <span>Browse Jobs</span>
+                          </Link>
+                          <Link 
+                            href="/coach" 
+                            onClick={() => setIsProfileDropdownOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
+                          >
+                            <Sparkles className="h-4 w-4 text-purple-500" />
+                            <span>AI Interview Coach</span>
+                          </Link>
+                        </>
+                      ) : (
+                        <>
+                          <Link 
+                            href="/employer/jobs" 
+                            onClick={() => setIsProfileDropdownOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
+                          >
+                            <Briefcase className="h-4 w-4 text-slate-455" />
+                            <span>Manage Placements</span>
+                          </Link>
+                          <Link 
+                            href="/employer/applications" 
+                            onClick={() => setIsProfileDropdownOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-lg transition-colors"
+                          >
+                            <Users className="h-4 w-4 text-slate-455" />
+                            <span>Candidate Applications</span>
+                          </Link>
+                        </>
+                      )}
+                    </div>
+
+                    {/* Log out */}
+                    <div className="pt-2">
+                      <button 
+                        onClick={handleSignOut}
+                        className="w-full text-left px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-2 cursor-pointer"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Sign Out</span>
+                      </button>
                     </div>
                   </div>
-                  
-                  <button 
-                    onClick={handleSignOut}
-                    className="p-1.5 rounded hover:bg-slate-100 text-slate-500 hover:text-red-600 transition-colors cursor-pointer"
-                    title="Log Out"
-                  >
-                    <LogOut className="h-4.5 w-4.5" />
-                  </button>
-                </div>
-              </>
+                )}
+              </div>
             ) : (
               // ─── GUEST/UNAUTHENTICATED PUBLIC LINKS ───
-              <>
-                <Link href="/auth/login" className="text-xs font-bold text-slate-655 hover:text-slate-900 px-2">
+              <div className="flex items-center gap-2">
+                <Link href="/auth/login" className="text-xs font-bold text-slate-655 hover:text-slate-950 px-2 shrink-0">
                   Sign In
                 </Link>
                 <Link 
                   href="/auth/register" 
-                  className="px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-primary hover:bg-[#084e96] transition-all flex items-center gap-1 shrink-0"
+                  className="px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-primary hover:bg-[#084e96] transition-all flex items-center gap-1 shrink-0 shadow-sm"
                 >
-                  Create Account <ArrowRight className="h-3.5 w-3.5" />
+                  Join <ArrowRight className="h-3.5 w-3.5" />
                 </Link>
-              </>
+              </div>
             )}
-
-            {/* Mobile menu triggers */}
-            <button 
-              onClick={() => setIsMobileOpen(!isMobileOpen)}
-              className="p-1.5 rounded bg-slate-50 hover:bg-slate-100 text-slate-600 md:hidden border border-slate-200 shrink-0"
-            >
-              {isMobileOpen ? <X className="h-4.5 w-4.5" /> : <Menu className="h-4.5 w-4.5" />}
-            </button>
-
           </div>
+
         </div>
       </header>
-
-      {/* ─── MOBILE DRAWER OVERLAY ──────────────────────────────── */}
-      {isMobileOpen && (
-        <div className="fixed inset-0 z-30 bg-slate-900/40 backdrop-blur-sm md:hidden" onClick={() => setIsMobileOpen(false)}>
-          <div 
-            className="absolute top-14 left-0 right-0 bg-white border-b border-slate-200 p-5 flex flex-col gap-4 shadow-xl animate-slideDown"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Search Input for Mobile (triggers Search Overlay) */}
-            <div 
-              onClick={() => { setIsMobileOpen(false); setIsSearchOpen(true); }}
-              className="relative w-full"
-            >
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-450">
-                <Search className="h-4 w-4" />
-              </span>
-              <div className="w-full bg-[#EDF3F8]/80 pl-9 py-2 rounded text-xs font-semibold text-slate-550 border border-transparent flex justify-between items-center">
-                <span>Search / Ask AI...</span>
-                <Sparkles className="h-3.5 w-3.5 text-purple-600 mr-2 animate-pulse" />
-              </div>
-            </div>
-
-            {session ? (
-              <>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-1">
-                  navigation
-                </div>
-                <Link href="/home" onClick={() => setIsMobileOpen(false)} className="flex items-center justify-between py-2 text-sm font-bold text-slate-700 hover:text-primary">
-                  <span>Home Portal</span>
-                  <ChevronRight className="h-4 w-4" />
-                </Link>
-                {isCandidate ? (
-                  <>
-                    <Link href="/passport" onClick={() => setIsMobileOpen(false)} className="flex items-center justify-between py-2 text-sm font-bold text-slate-700 hover:text-primary">
-                      <span>Career Passport</span>
-                      <ChevronRight className="h-4 w-4" />
-                    </Link>
-                    <Link href="/jobs" onClick={() => setIsMobileOpen(false)} className="flex items-center justify-between py-2 text-sm font-bold text-slate-700 hover:text-primary">
-                      <span>Browse Jobs</span>
-                      <ChevronRight className="h-4 w-4" />
-                    </Link>
-                    <Link href="/coach" onClick={() => setIsMobileOpen(false)} className="flex items-center justify-between py-2 text-sm font-bold text-purple-705 hover:text-purple-800">
-                      <span>AI Interview Coach</span>
-                      <Sparkles className="h-4 w-4 text-purple-500 animate-pulse" />
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link href="/employer/jobs" onClick={() => setIsMobileOpen(false)} className="flex items-center justify-between py-2 text-sm font-bold text-slate-700 hover:text-primary">
-                      <span>Manage Jobs</span>
-                      <ChevronRight className="h-4 w-4" />
-                    </Link>
-                    <Link href="/employer/applications" onClick={() => setIsMobileOpen(false)} className="flex items-center justify-between py-2 text-sm font-bold text-slate-700 hover:text-primary">
-                      <span>Candidate Applications</span>
-                      <ChevronRight className="h-4 w-4" />
-                    </Link>
-                  </>
-                )}
-                
-                <button 
-                  onClick={handleSignOut}
-                  className="w-full mt-2 py-2.5 bg-red-50 hover:bg-red-100 text-red-650 text-xs font-bold rounded-lg border border-red-200 transition-colors flex items-center justify-center gap-2"
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span>Log Out of Account</span>
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/auth/login" onClick={() => setIsMobileOpen(false)} className="w-full py-2.5 text-center text-xs font-bold text-slate-700 border border-slate-200 rounded-lg">
-                  Sign In
-                </Link>
-                <Link href="/auth/register" onClick={() => setIsMobileOpen(false)} className="w-full py-2.5 text-center text-xs font-bold text-white bg-primary rounded-lg flex items-center justify-center gap-1">
-                  Create Account <ArrowRight className="h-4 w-4" />
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* ─── DYNAMIC SEARCH & VELIZO AI ASSISTANT OVERLAY ────────── */}
       {isSearchOpen && (
