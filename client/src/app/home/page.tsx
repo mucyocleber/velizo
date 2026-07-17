@@ -144,7 +144,7 @@ export default function Home() {
       <Header />
 
       {/* ─── THREE COLUMN LAYOUT ────────────────────────────────── */}
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-4 grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch lg:h-[calc(100vh-3.5rem)] lg:overflow-hidden">
+      <main className="flex-1 max-w-6xl mx-auto w-full px-4 pt-4 pb-20 lg:pb-4 grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch lg:h-[calc(100vh-3.5rem)] lg:overflow-hidden">
         
         {/* ─── COLUMN 1: LEFT USER SIDEBAR CARD (1/4) ──────────────── */}
         <section className="lg:col-span-1 space-y-4 lg:h-[calc(100vh-5.5rem)] lg:overflow-y-auto pb-6 pr-1 custom-scrollbar">

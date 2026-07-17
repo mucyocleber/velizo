@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { 
   Search, 
@@ -23,11 +23,13 @@ import {
   Users,
   Building2,
   ExternalLink,
+  Plus,
   Compass as HomeIcon
 } from 'lucide-react';
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const [session, setSession] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -732,6 +734,100 @@ export default function Header() {
 
           </div>
         </div>
+      )}
+
+      {/* ─── MOBILE BOTTOM NAVIGATION BAR ────────────────────────── */}
+      {session && (
+        <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.05)] h-16 flex items-center justify-around px-2 md:hidden">
+          {/* Home */}
+          <Link 
+            href="/home" 
+            className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
+              pathname === '/home' ? 'text-primary' : 'text-slate-500 hover:text-primary'
+            }`}
+          >
+            <HomeIcon className="h-5 w-5" />
+            <span className="text-[9px] font-bold mt-1">Home</span>
+          </Link>
+
+          {/* Role specific 1: Passport or Post Job */}
+          {isCandidate ? (
+            <Link 
+              href="/passport" 
+              className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
+                pathname === '/passport' ? 'text-primary' : 'text-slate-500 hover:text-primary'
+              }`}
+            >
+              <FileCheck className="h-5 w-5" />
+              <span className="text-[9px] font-bold mt-1">Passport</span>
+            </Link>
+          ) : (
+            <Link 
+              href="/employer/jobs" 
+              className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
+                pathname.startsWith('/employer/jobs') ? 'text-primary' : 'text-slate-500 hover:text-primary'
+              }`}
+            >
+              <Plus className="h-5 w-5" />
+              <span className="text-[9px] font-bold mt-1">Post Job</span>
+            </Link>
+          )}
+
+          {/* VELIZO AI Center Search Trigger */}
+          <button 
+            onClick={() => setIsSearchOpen(true)}
+            className="flex flex-col items-center justify-center flex-1 h-full py-1 text-center text-purple-600 hover:text-purple-800 transition-colors cursor-pointer"
+          >
+            <div className="h-9 w-9 rounded-full bg-purple-50 flex items-center justify-center border border-purple-100 hover:scale-105 transition-transform">
+              <Sparkles className="h-5 w-5 animate-pulse" />
+            </div>
+            <span className="text-[9px] font-extrabold mt-0.5">VELIZO AI</span>
+          </button>
+
+          {/* Role specific 2: Jobs or Candidates */}
+          {isCandidate ? (
+            <Link 
+              href="/jobs" 
+              className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
+                pathname === '/jobs' ? 'text-primary' : 'text-slate-500 hover:text-primary'
+              }`}
+            >
+              <Briefcase className="h-5 w-5" />
+              <span className="text-[9px] font-bold mt-1">Jobs</span>
+            </Link>
+          ) : (
+            <Link 
+              href="/employer/applications" 
+              className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
+                pathname.startsWith('/employer/applications') ? 'text-primary' : 'text-slate-500 hover:text-primary'
+              }`}
+            >
+              <Users className="h-5 w-5" />
+              <span className="text-[9px] font-bold mt-1">Candidates</span>
+            </Link>
+          )}
+
+          {/* Role specific 3: AI Coach or Sign Out */}
+          {isCandidate ? (
+            <Link 
+              href="/coach" 
+              className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
+                pathname === '/coach' ? 'text-primary' : 'text-slate-500 hover:text-primary'
+              }`}
+            >
+              <Sparkles className="h-5 w-5 text-purple-550" />
+              <span className="text-[9px] font-bold mt-1">AI Coach</span>
+            </Link>
+          ) : (
+            <button 
+              onClick={handleSignOut}
+              className="flex flex-col items-center justify-center flex-1 h-full py-1 text-center text-slate-500 hover:text-red-650 transition-colors cursor-pointer"
+            >
+              <LogOut className="h-5 w-5" />
+              <span className="text-[9px] font-bold mt-1">Log Out</span>
+            </button>
+          )}
+        </nav>
       )}
 
       {/* Styled Animations CSS */}
