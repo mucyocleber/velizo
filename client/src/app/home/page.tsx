@@ -167,7 +167,7 @@ export default function Home() {
               </h2>
               <p className="text-[11px] text-slate-500 font-bold leading-normal mt-1 min-h-[30px] line-clamp-2">
                 {profile?.headline || (isCandidate 
-                  ? 'Job seeker seeking sponsorship opportunities in Canada' 
+                  ? 'Job seeker seeking global sponsorship opportunities' 
                   : 'Recruiter at VELIZO Verified Partner')}
               </p>
             </div>
@@ -251,7 +251,7 @@ export default function Home() {
               </h3>
               <p className="text-[11px] text-slate-500 font-semibold mt-1">
                 {isCandidate 
-                  ? "Here are your workspace tools to accelerate your Canadian placement journey." 
+                  ? "Here are your workspace tools to accelerate your global placement journey." 
                   : "Recruitment manager dashboard controls to post and approve placements."}
               </p>
             </div>
@@ -308,7 +308,7 @@ export default function Home() {
             </div>
 
             <p className="text-xs text-slate-650 leading-relaxed font-medium">
-              Welcome to the new VELIZO workspace! We have upgraded the verification engine to synchronize with standard Canadian employer trust rules. Complete your Education and Employment history to trigger automatic verification requests.
+              Welcome to the new VELIZO workspace! We have upgraded the verification engine to synchronize with standard global employer trust rules. Complete your Education and Employment history to trigger automatic verification requests.
             </p>
 
             <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
@@ -316,7 +316,7 @@ export default function Home() {
                 <Award className="h-8 w-8 text-yellow-400 mb-2" />
                 <h4 className="text-sm font-extrabold uppercase tracking-widest">Verify Your Credentials</h4>
                 <p className="text-[10px] text-blue-100 mt-1 max-w-xs leading-relaxed">
-                  Verified profiles receive 10x higher response rates from Canadian employers.
+                  Verified profiles receive 10x higher response rates from international employers.
                 </p>
               </div>
               <div className="p-4 bg-slate-50 flex justify-between items-center text-xs font-bold">
@@ -422,7 +422,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Canadian Immigration News Widget */}
+          {/* Global Immigration News Widget */}
           <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
             <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
               <Newspaper className="h-4.5 w-4.5 text-slate-500" />
@@ -434,7 +434,7 @@ export default function Home() {
             <div className="space-y-3">
               <div className="group cursor-pointer">
                 <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
-                  Canada targets tech profiles for sponsor path
+                  Global tech sectors expand international sponsor tracks
                 </h4>
                 <p className="text-[9px] text-slate-400 font-semibold mt-1">3 days ago • 1.2K readers</p>
               </div>
@@ -448,7 +448,7 @@ export default function Home() {
 
               <div className="group cursor-pointer">
                 <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
-                  BC Tech stream update for global developers
+                  Global tech visa pathways update for remote developers
                 </h4>
                 <p className="text-[9px] text-slate-400 font-semibold mt-1">4 days ago • 912 readers</p>
               </div>

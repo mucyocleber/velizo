@@ -237,13 +237,13 @@ export default function Header() {
   const suggestions = [
     {
       title: 'Sponsorship Finder',
-      query: 'Find tech jobs with visa sponsorship in Vancouver',
+      query: 'Find international tech jobs with visa sponsorship and relocation support',
       desc: 'Ask AI for verified sponsor hiring tracks'
     },
     {
       title: 'Immigration Pathways',
-      query: 'Explain the British Columbia Tech stream work permit process',
-      desc: 'Get immigration requirements instantly'
+      query: 'Explain fast-track global work permit options for tech professionals',
+      desc: 'Get relocation visa requirements instantly'
     },
     {
       title: 'Trust Score Criteria',
