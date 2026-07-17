@@ -224,7 +224,7 @@ export default function Home() {
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
         
         {/* ─── COLUMN 1: LEFT USER SIDEBAR CARD (1/4) ──────────────── */}
-        <section className="lg:col-span-1 space-y-4">
+        <section className="lg:col-span-1 space-y-4 lg:sticky lg:top-[72px] lg:self-start">
           <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
             {/* Banner Cover */}
             <div className="h-14 bg-gradient-to-r from-blue-700 to-indigo-800 relative" />
@@ -320,42 +320,51 @@ export default function Home() {
         {/* ─── COLUMN 2 & 3: CENTER FEED (2/4) ────────────────────── */}
         <section className="lg:col-span-2 space-y-4">
           
-          {/* Start a Post Component */}
-          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-primary text-sm font-bold shrink-0">
-                {profile?.avatar_url ? (
-                  <img src={profile.avatar_url} alt="avatar" className="h-full w-full rounded-full object-cover" />
-                ) : nameInitial}
-              </div>
-              <input
-                type="text"
-                placeholder={isCandidate 
-                  ? "Share an update or display your verified trust passport..." 
-                  : "Post a new sponsored job opening or announcement..."}
-                value={postText}
-                onChange={(e) => setPostText(e.target.value)}
-                className="w-full bg-[#EDF3F8]/50 hover:bg-slate-100/80 px-4 py-2.5 rounded-full text-xs font-semibold text-slate-600 border border-slate-200/50 outline-none cursor-pointer transition-colors"
-              />
+          {/* Welcome & Quick Actions Card */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
+            <div>
+              <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-1.5">
+                Welcome back, {profile?.full_name?.split(' ')[0] || 'User'}! <span className="inline-block animate-bounce">👋</span>
+              </h3>
+              <p className="text-[11px] text-slate-500 font-semibold mt-1">
+                {isCandidate 
+                  ? "Here are your workspace tools to accelerate your Canadian placement journey." 
+                  : "Recruitment manager dashboard controls to post and approve placements."}
+              </p>
             </div>
             
-            <div className="flex items-center justify-between pt-1 border-t border-slate-100 text-xs font-bold text-slate-500">
-              <button type="button" className="flex items-center gap-2 hover:bg-slate-50 px-3 py-2 rounded-lg transition-colors cursor-pointer">
-                <Image className="h-4 w-4 text-[#378FE9]" />
-                <span>Photo</span>
-              </button>
-              <button type="button" className="flex items-center gap-2 hover:bg-slate-50 px-3 py-2 rounded-lg transition-colors cursor-pointer">
-                <Video className="h-4 w-4 text-[#5F9B41]" />
-                <span>Video</span>
-              </button>
-              <button type="button" className="flex items-center gap-2 hover:bg-slate-50 px-3 py-2 rounded-lg transition-colors cursor-pointer">
-                <Calendar className="h-4 w-4 text-[#C37D16]" />
-                <span>Event</span>
-              </button>
-              <button type="button" className="flex items-center gap-2 hover:bg-slate-50 px-3 py-2 rounded-lg transition-colors cursor-pointer">
-                <Newspaper className="h-4 w-4 text-[#E33E32]" />
-                <span>Article</span>
-              </button>
+            <div className="grid grid-cols-3 gap-2">
+              {isCandidate ? (
+                <>
+                  <Link href="/passport" className="flex flex-col items-center justify-center p-3 rounded-xl bg-teal-50/50 hover:bg-teal-50 border border-teal-100 hover:border-teal-200 text-center transition-all group cursor-pointer">
+                    <ShieldCheck className="h-5 w-5 text-teal-600 mb-1.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[9px] font-bold text-teal-850">Verify Passport</span>
+                  </Link>
+                  <Link href="/coach" className="flex flex-col items-center justify-center p-3 rounded-xl bg-purple-50/50 hover:bg-purple-50 border border-purple-100 hover:border-purple-200 text-center transition-all group cursor-pointer">
+                    <Sparkles className="h-5 w-5 text-purple-600 mb-1.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[9px] font-bold text-purple-855">AI Coach</span>
+                  </Link>
+                  <Link href="/jobs" className="flex flex-col items-center justify-center p-3 rounded-xl bg-blue-50/50 hover:bg-blue-50 border border-blue-100 hover:border-blue-200 text-center transition-all group cursor-pointer">
+                    <Briefcase className="h-5 w-5 text-blue-600 mb-1.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[9px] font-bold text-blue-850">Browse Jobs</span>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link href="/employer/jobs" className="flex flex-col items-center justify-center p-3 rounded-xl bg-blue-50/50 hover:bg-blue-50 border border-blue-100 hover:border-blue-200 text-center transition-all group cursor-pointer">
+                    <Plus className="h-5 w-5 text-blue-600 mb-1.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[9px] font-bold text-blue-850">Post a Job</span>
+                  </Link>
+                  <Link href="/employer/applications" className="flex flex-col items-center justify-center p-3 rounded-xl bg-teal-50/50 hover:bg-teal-50 border border-teal-100 hover:border-teal-200 text-center transition-all group cursor-pointer">
+                    <Users className="h-5 w-5 text-teal-600 mb-1.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[9px] font-bold text-teal-850">View Candidates</span>
+                  </Link>
+                  <Link href="/employer/jobs" className="flex flex-col items-center justify-center p-3 rounded-xl bg-purple-50/50 hover:bg-purple-50 border border-purple-100 hover:border-purple-200 text-center transition-all group cursor-pointer">
+                    <Briefcase className="h-5 w-5 text-purple-600 mb-1.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-[9px] font-bold text-purple-850">Manage Jobs</span>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
 
@@ -463,7 +472,7 @@ export default function Home() {
         </section>
 
         {/* ─── COLUMN 3: RIGHT SIDEBAR NEWS & IMMIGRATION (1/4) ────── */}
-        <section className="lg:col-span-1 space-y-4">
+        <section className="lg:col-span-1 space-y-4 lg:sticky lg:top-[72px] lg:self-start">
           
           {/* Live Platform Stats Widget */}
           <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
