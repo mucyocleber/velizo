@@ -127,6 +127,21 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F3F4F6] font-sans text-slate-900">
+      <style dangerouslySetInnerHTML={{__html: `
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #cbd5e1;
+          border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #94a3b8;
+        }
+      `}} />
       
       {/* ─── LINKEDIN-STYLE NAVIGATION HEADER ───────────────────── */}
       <header className="w-full border-b border-slate-200 bg-white sticky top-0 z-50 shadow-sm">
@@ -221,10 +236,10 @@ export default function Home() {
       </header>
 
       {/* ─── THREE COLUMN LAYOUT ────────────────────────────────── */}
-      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-6 grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+      <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-4 grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch lg:h-[calc(100vh-3.5rem)] lg:overflow-hidden">
         
         {/* ─── COLUMN 1: LEFT USER SIDEBAR CARD (1/4) ──────────────── */}
-        <section className="lg:col-span-1 space-y-4 lg:sticky lg:top-[72px] lg:self-start">
+        <section className="lg:col-span-1 space-y-4 lg:h-[calc(100vh-5.5rem)] lg:overflow-y-auto pb-6 pr-1 custom-scrollbar">
           <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
             {/* Banner Cover */}
             <div className="h-14 bg-gradient-to-r from-blue-700 to-indigo-800 relative" />
@@ -318,7 +333,7 @@ export default function Home() {
         </section>
 
         {/* ─── COLUMN 2 & 3: CENTER FEED (2/4) ────────────────────── */}
-        <section className="lg:col-span-2 space-y-4">
+        <section className="lg:col-span-2 space-y-4 lg:h-[calc(100vh-5.5rem)] lg:overflow-y-auto pb-6 px-1 custom-scrollbar">
           
           {/* Welcome & Quick Actions Card */}
           <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
@@ -472,7 +487,7 @@ export default function Home() {
         </section>
 
         {/* ─── COLUMN 3: RIGHT SIDEBAR NEWS & IMMIGRATION (1/4) ────── */}
-        <section className="lg:col-span-1 space-y-4 lg:sticky lg:top-[72px] lg:self-start">
+        <section className="lg:col-span-1 space-y-4 lg:h-[calc(100vh-5.5rem)] lg:overflow-y-auto pb-6 pl-1 custom-scrollbar">
           
           {/* Live Platform Stats Widget */}
           <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
