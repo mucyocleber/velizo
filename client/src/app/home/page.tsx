@@ -34,6 +34,8 @@ export default function Home() {
   const [profile, setProfile] = useState<any>(null);
   const [candidate, setCandidate] = useState<any>(null);
   const [passport, setPassport] = useState<any>(null);
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [stats, setStats] = useState<any>({ candidates: 0, companies: 0, jobs: 0 });
   const [loading, setLoading] = useState(true);
   const [postText, setPostText] = useState('');
 
@@ -75,6 +77,29 @@ export default function Home() {
           if (passportData) setPassport(passportData);
         }
       }
+
+      // Fetch latest jobs from view
+      const { data: jobsData } = await supabase
+        .from('jobs_with_companies')
+        .select('*')
+        .eq('status', 'published')
+        .order('created_at', { ascending: false })
+        .limit(10);
+      if (jobsData) setJobs(jobsData);
+
+      // Fetch platform counts
+      const [candRes, compRes, jobRes] = await Promise.all([
+        supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'candidate'),
+        supabase.from('company_profiles').select('*', { count: 'exact', head: true }),
+        supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'published')
+      ]);
+
+      setStats({
+        candidates: candRes.count || 0,
+        companies: compRes.count || 0,
+        jobs: jobRes.count || 0
+      });
+
       setLoading(false);
     };
 
@@ -334,53 +359,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Feed Post 1: Recommended Job Placement */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
-            {/* Post Header */}
-            <div className="flex justify-between items-start">
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-slate-100 flex items-center justify-center text-primary font-bold shrink-0 border border-slate-200">
-                  V
-                </div>
-                <div>
-                  <h3 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
-                    VeloTech Canada <span className="text-[10px] font-bold text-slate-400">• Sponsor Partner</span>
-                  </h3>
-                  <p className="text-[10px] text-slate-500 font-semibold mt-0.5">Recommended Job • Just Posted</p>
-                </div>
-              </div>
-              <span className="text-[10px] font-bold text-slate-400 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-full uppercase tracking-wider">
-                sponsored
-              </span>
-            </div>
-
-            {/* Post Text */}
-            <p className="text-xs text-slate-650 leading-relaxed font-medium">
-              We are actively looking for a **Senior Full-Stack Engineer** to join our team in Vancouver, BC. We offer full Canadian work permit sponsorship and a relocation allowance for candidates with a verified **VELIZO Career Passport**. Check the details below and apply instantly.
-            </p>
-
-            {/* Nested Job Card */}
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-slate-100/50 transition-colors flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded mb-2">
-                  <ShieldCheck className="h-3.5 w-3.5 text-teal-600" />
-                  98% AI Match Score
-                </span>
-                <h4 className="text-sm font-extrabold text-slate-900">Senior Full-Stack Engineer</h4>
-                <p className="text-xs text-slate-500 font-semibold mt-1 flex items-center gap-1">
-                  <span>VeloTech Canada</span> • <span>Vancouver, BC (Hybrid)</span>
-                </p>
-                <p className="text-[11px] text-primary font-extrabold mt-1">
-                  $120,000 - $145,000 CAD / yr
-                </p>
-              </div>
-              <Link href="/jobs" className="px-4 py-2 bg-primary hover:bg-[#084e96] text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 shrink-0 cursor-pointer">
-                Apply Now <ExternalLink className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Feed Post 2: System Announcement */}
+          {/* Feed Pinned Post: Welcome Announcement */}
           <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-3">
@@ -391,7 +370,7 @@ export default function Home() {
                   <h3 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
                     VELIZO Platform <CheckCircle2 className="h-3.5 w-3.5 text-teal-600 shrink-0" />
                   </h3>
-                  <p className="text-[10px] text-slate-500 font-semibold mt-0.5">System Update • 1 day ago</p>
+                  <p className="text-[10px] text-slate-500 font-semibold mt-0.5">System Update • Pinned</p>
                 </div>
               </div>
             </div>
@@ -402,7 +381,7 @@ export default function Home() {
 
             <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
               <div className="h-32 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 flex flex-col justify-center items-center text-center p-6 text-white">
-                <Award className="h-8 w-8 text-yellow-400 mb-2 animate-bounce" />
+                <Award className="h-8 w-8 text-yellow-400 mb-2" />
                 <h4 className="text-sm font-extrabold uppercase tracking-widest">Verify Your Credentials</h4>
                 <p className="text-[10px] text-blue-100 mt-1 max-w-xs leading-relaxed">
                   Verified profiles receive 10x higher response rates from Canadian employers.
@@ -417,11 +396,100 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Dynamic Jobs Feed */}
+          {jobs.map((job) => (
+            <div key={job.id} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
+              {/* Post Header */}
+              <div className="flex justify-between items-start">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-blue-50 border border-blue-150 flex items-center justify-center text-primary font-bold shrink-0">
+                    {job.logo_url ? (
+                      <img src={job.logo_url} alt={job.company_name} className="h-full w-full rounded-full object-cover" />
+                    ) : (
+                      job.company_name ? job.company_name.charAt(0).toUpperCase() : 'C'
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+                      {job.company_name || 'Anonymous Recruiter'} 
+                      <span className="text-[10px] font-bold text-slate-400">• Verified Partner</span>
+                    </h3>
+                    <p className="text-[10px] text-slate-500 font-semibold mt-0.5">
+                      Just posted an opening in {job.department || job.category}
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[9px] font-bold text-slate-450 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">
+                  {job.remote_type}
+                </span>
+              </div>
+
+              {/* Post Text */}
+              <p className="text-xs text-slate-650 leading-relaxed font-medium">
+                {job.description}
+              </p>
+
+              {/* Job Card */}
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-slate-100/50 transition-colors flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-teal-700 bg-teal-50 px-1.5 py-0.5 rounded">
+                      <ShieldCheck className="h-3 w-3 text-teal-600" />
+                      95% Match Score
+                    </span>
+                    {job.skills_required && job.skills_required.slice(0, 3).map((skill: string) => (
+                      <span key={skill} className="text-[9px] font-bold text-slate-500 bg-slate-200/60 px-1.5 py-0.5 rounded">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                  <h4 className="text-xs font-extrabold text-slate-900">{job.title}</h4>
+                  <p className="text-[11px] text-slate-500 font-semibold">
+                    {job.company_name} • {job.city || job.country}
+                  </p>
+                  <p className="text-[11px] text-primary font-extrabold">
+                    {job.salary_min && job.salary_max 
+                      ? `$${Number(job.salary_min).toLocaleString()} - $${Number(job.salary_max).toLocaleString()} ${job.currency || 'CAD'}`
+                      : 'Salary Competitive'}
+                  </p>
+                </div>
+                <Link href={`/jobs`} className="px-3.5 py-2 bg-primary hover:bg-[#084e96] text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 shrink-0 cursor-pointer">
+                  Apply Now <ExternalLink className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </div>
+          ))}
+
         </section>
 
         {/* ─── COLUMN 3: RIGHT SIDEBAR NEWS & IMMIGRATION (1/4) ────── */}
         <section className="lg:col-span-1 space-y-4">
           
+          {/* Live Platform Stats Widget */}
+          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+              <Sparkles className="h-4.5 w-4.5 text-slate-500" />
+              <h3 className="text-xs font-extrabold text-slate-900 tracking-tight uppercase">
+                Platform Statistics
+              </h3>
+            </div>
+
+            <div className="space-y-3 text-xs font-semibold text-slate-500">
+              <div className="flex justify-between items-center py-0.5">
+                <span>Active Candidates</span>
+                <span className="text-slate-800 font-bold">{stats.candidates}</span>
+              </div>
+              <div className="flex justify-between items-center py-0.5">
+                <span>Sponsor Partners</span>
+                <span className="text-slate-800 font-bold">{stats.companies}</span>
+              </div>
+              <div className="flex justify-between items-center py-0.5">
+                <span>Live Tech Jobs</span>
+                <span className="text-slate-800 font-bold">{stats.jobs}</span>
+              </div>
+            </div>
+          </div>
+
           {/* Canadian Immigration News Widget */}
           <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
             <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
@@ -434,21 +502,21 @@ export default function Home() {
             <div className="space-y-3">
               <div className="group cursor-pointer">
                 <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
-                  Canada targets high-growth tech profiles for sponsor path
+                  Canada targets tech profiles for sponsor path
                 </h4>
-                <p className="text-[9px] text-slate-400 font-semibold mt-1">3 days ago • 1,240 readers</p>
+                <p className="text-[9px] text-slate-400 font-semibold mt-1">3 days ago • 1.2K readers</p>
               </div>
               
               <div className="group cursor-pointer">
                 <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
-                  How Trust Scores speed up work permit approvals
+                  How Trust Scores speed up work permits
                 </h4>
-                <p className="text-[9px] text-slate-400 font-semibold mt-1">1 day ago • 5,420 readers</p>
+                <p className="text-[9px] text-slate-400 font-semibold mt-1">1 day ago • 5.4K readers</p>
               </div>
 
               <div className="group cursor-pointer">
                 <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
-                  British Columbia Tech stream update for global developers
+                  BC Tech stream update for global developers
                 </h4>
                 <p className="text-[9px] text-slate-400 font-semibold mt-1">4 days ago • 912 readers</p>
               </div>
