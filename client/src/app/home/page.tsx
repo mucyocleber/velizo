@@ -27,6 +27,7 @@ import {
   Award
 } from 'lucide-react';
 import Link from 'next/link';
+import Header from '@/components/layout/Header';
 
 export default function Home() {
   const router = useRouter();
@@ -37,7 +38,6 @@ export default function Home() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [stats, setStats] = useState<any>({ candidates: 0, companies: 0, jobs: 0 });
   const [loading, setLoading] = useState(true);
-  const [postText, setPostText] = useState('');
 
   useEffect(() => {
     const fetchSessionAndProfile = async () => {
@@ -106,10 +106,7 @@ export default function Home() {
     fetchSessionAndProfile();
   }, [router]);
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.push('/');
-  };
+
 
   if (loading) {
     return (
@@ -143,97 +140,8 @@ export default function Home() {
         }
       `}} />
       
-      {/* ─── LINKEDIN-STYLE NAVIGATION HEADER ───────────────────── */}
-      <header className="w-full border-b border-slate-200 bg-white sticky top-0 z-50 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-          
-          {/* Logo & Search Bar */}
-          <div className="flex items-center gap-3 flex-1 max-w-md">
-            <div className="flex items-center gap-1.5 shrink-0">
-              <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.15)]" />
-              <span className="text-base font-extrabold tracking-tight hidden sm:inline-block">
-                VELI<span className="text-primary font-black">ZO</span>
-              </span>
-            </div>
-            
-            {/* Search Input */}
-            <div className="relative w-full hidden md:block">
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 pointer-events-none">
-                <Search className="h-4 w-4" />
-              </span>
-              <input
-                type="text"
-                placeholder="Search jobs, skills, companies..."
-                className="w-full bg-[#EDF3F8] pl-9 pr-4 py-1.5 rounded text-xs border-none outline-none focus:bg-white focus:ring-1 focus:ring-primary transition-all text-slate-800"
-              />
-            </div>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="flex items-center gap-2 sm:gap-6">
-            <Link href="/home" className="flex flex-col items-center justify-center text-slate-800 hover:text-slate-950 border-b-2 border-slate-800 px-2 h-14 shrink-0">
-              <Compass className="h-5 w-5" />
-              <span className="text-[10px] font-bold mt-1 hidden md:block">Home</span>
-            </Link>
-            
-            {isCandidate ? (
-              <>
-                <Link href="/passport" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
-                  <FileCheck className="h-5 w-5" />
-                  <span className="text-[10px] font-bold mt-1 hidden md:block">Passport</span>
-                </Link>
-                <Link href="/jobs" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
-                  <Briefcase className="h-5 w-5" />
-                  <span className="text-[10px] font-bold mt-1 hidden md:block">Jobs</span>
-                </Link>
-                <Link href="/coach" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
-                  <Sparkles className="h-5 w-5" />
-                  <span className="text-[10px] font-bold mt-1 hidden md:block">AI Coach</span>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href="/employer/jobs" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
-                  <Briefcase className="h-5 w-5" />
-                  <span className="text-[10px] font-bold mt-1 hidden md:block">Manage Jobs</span>
-                </Link>
-                <Link href="/employer/applications" className="flex flex-col items-center justify-center text-slate-500 hover:text-slate-800 px-2 h-14 shrink-0">
-                  <Users className="h-5 w-5" />
-                  <span className="text-[10px] font-bold mt-1 hidden md:block">Candidates</span>
-                </Link>
-              </>
-            )}
-
-            {/* Profile Dropdown & Sign Out */}
-            <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
-              <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-xs font-bold shrink-0">
-                  {profile?.avatar_url ? (
-                    <img src={profile.avatar_url} alt="avatar" className="h-full w-full rounded-full object-cover" />
-                  ) : nameInitial}
-                </div>
-                <div className="hidden sm:block text-left">
-                  <span className="text-[11px] font-extrabold text-slate-850 block leading-tight truncate max-w-[80px]">
-                    {profile?.full_name || 'User'}
-                  </span>
-                  <span className="text-[9px] font-bold text-slate-400 block capitalize leading-none mt-0.5">
-                    {profile?.role === 'candidate' ? 'Job Seeker' : 'Employer'}
-                  </span>
-                </div>
-              </div>
-              
-              <button 
-                onClick={handleSignOut}
-                className="p-1.5 rounded hover:bg-slate-100 text-slate-500 hover:text-red-600 transition-colors"
-                title="Sign Out"
-              >
-                <LogOut className="h-4.5 w-4.5" />
-              </button>
-            </div>
-
-          </div>
-        </div>
-      </header>
+      {/* ─── DYNAMIC NAV HEADER ─────────────────────────────────── */}
+      <Header />
 
       {/* ─── THREE COLUMN LAYOUT ────────────────────────────────── */}
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 py-4 grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch lg:h-[calc(100vh-3.5rem)] lg:overflow-hidden">
