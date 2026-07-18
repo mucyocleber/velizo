@@ -397,12 +397,18 @@ export default function Home() {
             {/* Header info */}
             <div className="flex justify-between items-center border-b border-slate-100 pb-3">
               <div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-blue-50/80 px-3 py-1 rounded-lg border border-blue-100">
-                  VELIZO Platform
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-800 block">
+                  VELIZO PLATFORM
                 </span>
-                <h3 className="text-xs font-extrabold text-slate-400 block mt-1.5 uppercase tracking-wider">
-                  System Update &bull; Pinned
-                </h3>
+                <div className="flex items-center gap-2 mt-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse shrink-0" />
+                  <span className="text-[10px] font-extrabold text-slate-450 uppercase tracking-widest">
+                    SYSTEM WORKSPACE UPDATE
+                  </span>
+                  <span className="text-[10px] font-bold text-slate-350">
+                    &bull; PINNED
+                  </span>
+                </div>
               </div>
               <Bookmark className="h-5 w-5 text-primary" />
             </div>
@@ -487,9 +493,10 @@ export default function Home() {
                 <div className="pt-1">
                   <Link 
                     href="/passport" 
-                    className="inline-flex items-center justify-center w-full sm:w-auto px-5 py-2.5 bg-primary hover:bg-[#084e96] text-white text-[11px] font-bold rounded-xl transition-all shadow-sm hover:shadow-md cursor-pointer"
+                    className="inline-flex items-center justify-center w-full sm:w-auto px-6 py-2.5 bg-gradient-to-r from-primary to-[#084e96] hover:from-[#084e96] hover:to-[#063f7a] text-white text-[11px] font-black rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md hover:shadow-lg gap-2 cursor-pointer group"
                   >
-                    Start Verification
+                    <span>Start Verification</span>
+                    <ChevronRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" />
                   </Link>
                 </div>
               </div>
