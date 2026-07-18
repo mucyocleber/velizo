@@ -407,70 +407,91 @@ export default function Home() {
               <Bookmark className="h-4.5 w-4.5 text-primary" />
             </div>
 
-            {/* Announcement Message */}
-            <p className="text-xs font-semibold text-slate-655 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-150">
-              Welcome to the new VELIZO workspace! We have upgraded the verification engine to synchronize with standard global employer trust rules. Complete your Education and Employment history to trigger automatic verification requests.
-            </p>
-
-            {/* Verification Section */}
-            <div className="p-4 rounded-xl border-2 border-primary/20 bg-blue-50/10 space-y-4">
-              <div>
-                <h4 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
-                  <ShieldCheck className="h-4.5 w-4.5 text-primary" /> Verify Your Credentials
-                </h4>
-                <p className="text-[10px] text-slate-500 font-semibold mt-1">
-                  Verified profiles receive 10x higher response rates from international employers.
+            {/* Announcement Message Layout: Image left, Text right */}
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
+              <div className="sm:col-span-1 flex justify-center">
+                <img 
+                  src="/welcome_announcement.png" 
+                  alt="Welcome Announcement" 
+                  className="max-h-24 w-auto object-contain rounded-xl"
+                />
+              </div>
+              <div className="sm:col-span-3">
+                <p className="text-xs font-semibold text-slate-655 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-155">
+                  Welcome to the new VELIZO workspace! We have upgraded the verification engine to synchronize with standard global employer trust rules. Complete your Education and Employment history to trigger automatic verification requests.
                 </p>
               </div>
+            </div>
 
-              {/* Steps Checklist */}
-              <div className="space-y-2">
-                <h5 className="text-[9px] font-extrabold text-slate-450 uppercase tracking-widest">
-                  Verification Steps Checklist
-                </h5>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  {isCandidate ? (
-                    <>
-                      <div className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                        <CheckCircle2 className={`h-4 w-4 shrink-0 ${passport?.identity_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
-                        <span className="text-[9px] font-bold text-slate-700">Identity Check</span>
-                      </div>
-                      <div className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                        <CheckCircle2 className={`h-4 w-4 shrink-0 ${passport?.education_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
-                        <span className="text-[9px] font-bold text-slate-700">Education Details</span>
-                      </div>
-                      <div className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                        <CheckCircle2 className={`h-4 w-4 shrink-0 ${passport?.employment_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
-                        <span className="text-[9px] font-bold text-slate-700">Employment History</span>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                        <CheckCircle2 className={`h-4 w-4 shrink-0 ${company?.is_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
-                        <span className="text-[9px] font-bold text-slate-700">Corporate Details</span>
-                      </div>
-                      <div className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                        <CheckCircle2 className={`h-4 w-4 shrink-0 ${company?.website ? 'text-emerald-500' : 'text-slate-300'}`} />
-                        <span className="text-[9px] font-bold text-slate-700">Website Linked</span>
-                      </div>
-                      <div className="flex items-center gap-2 p-2.5 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                        <CheckCircle2 className={`h-4 w-4 shrink-0 ${company?.description ? 'text-emerald-500' : 'text-slate-300'}`} />
-                        <span className="text-[9px] font-bold text-slate-700">Business Summary</span>
-                      </div>
-                    </>
-                  )}
+            {/* Verification Section Layout: Text left, Image right */}
+            <div className="p-4 rounded-xl border-2 border-primary/20 bg-blue-50/10 grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
+              <div className="sm:col-span-3 space-y-4">
+                <div>
+                  <h4 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
+                    <ShieldCheck className="h-4.5 w-4.5 text-primary" /> Verify Your Credentials
+                  </h4>
+                  <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                    Verified profiles receive 10x higher response rates from international employers.
+                  </p>
                 </div>
+
+                {/* Steps Checklist */}
+                <div className="space-y-2">
+                  <h5 className="text-[9px] font-extrabold text-slate-450 uppercase tracking-widest">
+                    Verification Steps Checklist
+                  </h5>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    {isCandidate ? (
+                      <>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${passport?.identity_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[9px] font-bold text-slate-700">Identity Check</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${passport?.education_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[9px] font-bold text-slate-700">Education Details</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${passport?.employment_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[9px] font-bold text-slate-700">Employment History</span>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${company?.is_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[9px] font-bold text-slate-700">Corporate Details</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${company?.website ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[9px] font-bold text-slate-700">Website Linked</span>
+                        </div>
+                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${company?.description ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[9px] font-bold text-slate-700">Business Summary</span>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Start CTA Button */}
+                <Link 
+                  href="/passport" 
+                  className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-primary hover:bg-[#084e96] text-white text-[11px] font-bold rounded-xl transition-all shadow-3xs cursor-pointer"
+                >
+                  Start Verification
+                </Link>
               </div>
 
-              {/* Start CTA Button */}
-              <Link 
-                href="/passport" 
-                className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-primary hover:bg-[#084e96] text-white text-[11px] font-bold rounded-xl transition-all shadow-3xs cursor-pointer"
-              >
-                Start Verification
-              </Link>
+              <div className="sm:col-span-1 flex justify-center">
+                <img 
+                  src="/credentials_verification.png" 
+                  alt="Credentials Verification" 
+                  className="max-h-28 w-auto object-contain rounded-xl"
+                />
+              </div>
             </div>
           </div>
 
