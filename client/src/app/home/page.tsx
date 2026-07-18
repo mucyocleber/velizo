@@ -24,7 +24,9 @@ import {
   Users,
   Search,
   ExternalLink,
-  Award
+  Award,
+  Check,
+  AlertCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -35,6 +37,7 @@ export default function Home() {
   const [profile, setProfile] = useState<any>(null);
   const [candidate, setCandidate] = useState<any>(null);
   const [passport, setPassport] = useState<any>(null);
+  const [company, setCompany] = useState<any>(null);
   const [jobs, setJobs] = useState<any[]>([]);
   const [stats, setStats] = useState<any>({ candidates: 0, companies: 0, jobs: 0 });
   const [loading, setLoading] = useState(true);
@@ -75,6 +78,16 @@ export default function Home() {
             .eq('candidate_id', session.user.id)
             .single();
           if (passportData) setPassport(passportData);
+        }
+
+        // Fetch company details if employer
+        if (profileData.role === 'employer') {
+          const { data: companyData } = await supabase
+            .from('company_profiles')
+            .select('*')
+            .eq('employer_id', session.user.id)
+            .single();
+          if (companyData) setCompany(companyData);
         }
       }
 
@@ -121,6 +134,78 @@ export default function Home() {
 
   const isCandidate = profile?.role === 'candidate';
   const nameInitial = profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : 'U';
+
+  const getCandidateCompletion = () => {
+    const completed = [];
+    const missing = [];
+    
+    completed.push({ name: 'Account created', code: 'account' });
+    
+    if (candidate?.summary) {
+      completed.push({ name: 'Professional Summary', code: 'summary' });
+    } else {
+      missing.push({ name: 'Add Summary Headline', code: 'summary' });
+    }
+    
+    if (candidate?.nationality) {
+      completed.push({ name: 'Nationality configured', code: 'nationality' });
+    } else {
+      missing.push({ name: 'Set Nationality', code: 'nationality' });
+    }
+    
+    if (candidate?.current_location) {
+      completed.push({ name: 'Location specified', code: 'location' });
+    } else {
+      missing.push({ name: 'Add Location Details', code: 'location' });
+    }
+    
+    if (candidate?.phone_number) {
+      completed.push({ name: 'Contact number added', code: 'phone' });
+    } else {
+      missing.push({ name: 'Verify Phone Number', code: 'phone' });
+    }
+    
+    const percentage = Math.round((completed.length / 5) * 100);
+    return { percentage, completed, missing };
+  };
+
+  const getEmployerCompletion = () => {
+    const completed = [];
+    const missing = [];
+    
+    if (company?.company_name) {
+      completed.push({ name: 'Company Name set', code: 'name' });
+    } else {
+      missing.push({ name: 'Define Company Name', code: 'name' });
+    }
+    
+    if (company?.website) {
+      completed.push({ name: 'Website linked', code: 'website' });
+    } else {
+      missing.push({ name: 'Add Corporate Website', code: 'website' });
+    }
+    
+    if (company?.industry) {
+      completed.push({ name: 'Industry configured', code: 'industry' });
+    } else {
+      missing.push({ name: 'Configure Industry Sector', code: 'industry' });
+    }
+    
+    if (company?.company_size) {
+      completed.push({ name: 'Company Size set', code: 'size' });
+    } else {
+      missing.push({ name: 'Specify Employee Count', code: 'size' });
+    }
+    
+    if (company?.description) {
+      completed.push({ name: 'Description created', code: 'desc' });
+    } else {
+      missing.push({ name: 'Add Company Description', code: 'desc' });
+    }
+    
+    const percentage = Math.round((completed.length / 5) * 100);
+    return { percentage, completed, missing };
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F3F4F6] font-sans text-slate-900">
@@ -172,48 +257,106 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Profile Statistics */}
-            <div className="border-t border-slate-100 py-3 text-xs text-slate-500 font-semibold space-y-2">
-              <div className="flex justify-between px-4 hover:bg-slate-50 py-1 transition-colors">
-                <span>Profile views</span>
-                <span className="text-primary font-extrabold">142</span>
-              </div>
-              <div className="flex justify-between px-4 hover:bg-slate-50 py-1 transition-colors">
-                <span>Connection index</span>
-                <span className="text-primary font-extrabold">34</span>
-              </div>
+            {/* Role-Specific Completion Tracker */}
+            <div className="border-t border-slate-100 p-4 space-y-4">
+              {isCandidate ? (() => {
+                const { percentage, completed, missing } = getCandidateCompletion();
+                return (
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-extrabold text-slate-450 uppercase tracking-wider">Profile Completed</span>
+                      <span className="text-xs font-black text-teal-655">{percentage}%</span>
+                    </div>
+                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                      <div 
+                        className="bg-teal-500 h-full rounded-full transition-all duration-500" 
+                        style={{ width: `${percentage}%` }} 
+                      />
+                    </div>
 
-              {isCandidate && passport && (
-                <div className="px-4 pt-2 border-t border-slate-100 space-y-1.5">
-                  <div className="flex justify-between text-[11px]">
-                    <span>Passport Trust Score</span>
-                    <span className="text-teal-600 font-bold">{passport.trust_score}%</span>
+                    {/* Progress details */}
+                    <div className="space-y-1.5 pt-1">
+                      {completed.map((item) => (
+                        <div key={item.code} className="flex items-center gap-2 text-[10px] text-slate-500 font-semibold">
+                          <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                          <span className="truncate">{item.name}</span>
+                        </div>
+                      ))}
+                      {missing.map((item) => (
+                        <div key={item.code} className="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
+                          <AlertCircle className="h-3.5 w-3.5 text-slate-300 shrink-0" />
+                          <span className="truncate">{item.name}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Trust Score */}
+                    {passport && (
+                      <div className="pt-2 border-t border-slate-100 space-y-1">
+                        <div className="flex justify-between text-[10px] font-bold text-slate-500">
+                          <span>Passport Trust Score</span>
+                          <span className="text-primary font-black">{passport.trust_score}%</span>
+                        </div>
+                        <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                          <div 
+                            className="bg-primary h-full rounded-full transition-all duration-500" 
+                            style={{ width: `${passport.trust_score}%` }} 
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                    <div 
-                      className="bg-teal-500 h-full rounded-full" 
-                      style={{ width: `${passport.trust_score}%` }} 
-                    />
+                );
+              })() : (() => {
+                const { percentage, completed, missing } = getEmployerCompletion();
+                return (
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[10px] font-extrabold text-slate-455 uppercase tracking-wider">Company Profile</span>
+                      <span className="text-xs font-black text-primary">{percentage}%</span>
+                    </div>
+                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                      <div 
+                        className="bg-primary h-full rounded-full transition-all duration-500" 
+                        style={{ width: `${percentage}%` }} 
+                      />
+                    </div>
+
+                    {/* Progress details */}
+                    <div className="space-y-1.5 pt-1">
+                      {completed.map((item) => (
+                        <div key={item.code} className="flex items-center gap-2 text-[10px] text-slate-500 font-semibold">
+                          <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0" />
+                          <span className="truncate">{item.name}</span>
+                        </div>
+                      ))}
+                      {missing.map((item) => (
+                        <div key={item.code} className="flex items-center gap-2 text-[10px] text-slate-400 font-medium">
+                          <AlertCircle className="h-3.5 w-3.5 text-slate-300 shrink-0" />
+                          <span className="truncate">{item.name}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                );
+              })()}
             </div>
 
-            {/* My Items Link */}
-            <div className="border-t border-slate-100 p-3 bg-slate-50 hover:bg-slate-100 transition-colors text-center">
+            {/* Complete Profile CTA Link */}
+            <div className="border-t border-slate-100 p-3 bg-slate-50 hover:bg-slate-100/80 transition-colors text-center">
               <Link 
-                href={isCandidate ? "/passport" : "/employer/jobs"} 
+                href={isCandidate ? "/passport" : "/passport"} 
                 className="text-[11px] font-bold text-primary flex items-center justify-center gap-1.5"
               >
                 {isCandidate ? (
                   <>
                     <FileCheck className="h-3.5 w-3.5" />
-                    <span>Manage Career Passport</span>
+                    <span>Complete Career Passport</span>
                   </>
                 ) : (
                   <>
-                    <Briefcase className="h-3.5 w-3.5" />
-                    <span>Manage Posted Jobs</span>
+                    <Building2 className="h-3.5 w-3.5" />
+                    <span>Update Company Profile</span>
                   </>
                 )}
               </Link>
@@ -225,17 +368,22 @@ export default function Home() {
             <h4 className="text-slate-800 text-[10px] font-bold uppercase tracking-wider mb-1">shortcuts</h4>
             <Link href={isCandidate ? "/jobs" : "/employer/applications"} className="flex items-center gap-2 hover:text-primary transition-colors">
               <Briefcase className="h-4 w-4 text-slate-400" />
-              <span>Explore Active Placements</span>
+              <span>{isCandidate ? 'Explore Placements' : 'Screen Applications'}</span>
             </Link>
-            {isCandidate && (
+            {isCandidate ? (
               <Link href="/coach" className="flex items-center gap-2 hover:text-primary transition-colors">
                 <Sparkles className="h-4 w-4 text-purple-400" />
                 <span>AI Interview Coaching</span>
               </Link>
+            ) : (
+              <Link href="/employer/jobs" className="flex items-center gap-2 hover:text-primary transition-colors">
+                <Plus className="h-4 w-4 text-slate-400" />
+                <span>Post Job Placements</span>
+              </Link>
             )}
             <div className="pt-2 border-t border-slate-100 flex items-center gap-2 text-[10px] text-slate-400">
               <Award className="h-4 w-4 text-yellow-600" />
-              <span>Verified Credential Protocol</span>
+              <span>{isCandidate ? 'Verified Passport Standard' : 'Verified Recruiter Standard'}</span>
             </div>
           </div>
         </section>
