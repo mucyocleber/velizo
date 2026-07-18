@@ -218,8 +218,8 @@ export default function Header() {
       <header className="w-full border-b border-slate-200 bg-white sticky top-0 z-45 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
           
-          {/* Logo & Search Trigger (Left side on Desktop, Logo only on Mobile) */}
-          <div className="flex items-center gap-3 shrink-0 md:flex-1 md:max-w-md">
+          {/* Logo & Search Trigger */}
+          <div className="flex items-center gap-3 shrink-0">
             <Link href={session ? "/home" : "/"} className="flex items-center gap-1.5 shrink-0 group">
               <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.15)] group-hover:scale-105 transition-transform" />
               <span className="text-sm font-extrabold tracking-tight hidden sm:inline-block">
@@ -227,17 +227,17 @@ export default function Header() {
               </span>
             </Link>
             
-            {/* Desktop Search Trigger */}
+            {/* Desktop Search Trigger (Compact & Premium) */}
             <div 
               onClick={() => setIsSearchOpen(true)}
-              className="relative w-full hidden md:block cursor-pointer"
+              className="relative hidden md:block cursor-pointer w-44"
             >
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold">
-                <Search className="h-4 w-4" />
+              <span className="absolute inset-y-0 left-0 pl-2.5 flex items-center text-slate-400">
+                <Search className="h-3.5 w-3.5" />
               </span>
-              <div className="w-full bg-[#EDF3F8]/80 pl-9 pr-14 py-1.5 rounded text-xs font-semibold text-slate-550 border border-transparent hover:bg-[#E1E9F0]/80 transition-colors flex items-center justify-between">
-                <span>Search jobs, companies, skills, locations...</span>
-                <span className="bg-white text-slate-400 border border-slate-200 px-1.5 py-0.5 rounded text-[9px] font-bold shadow-2xs">
+              <div className="w-full bg-[#EDF3F8]/60 pl-8 pr-1.5 py-1 rounded-lg text-xs font-semibold text-slate-400 border border-slate-200/50 hover:bg-[#EDF3F8]/90 transition-all flex items-center justify-between h-8">
+                <span>Search...</span>
+                <span className="bg-white text-[9px] text-slate-400 border border-slate-200 px-1 py-0.2 rounded shadow-3xs font-bold scale-90">
                   Ctrl K
                 </span>
               </div>
@@ -247,14 +247,14 @@ export default function Header() {
           {/* Centered Search Trigger (Mobile Only - fits between Logo and Notifications) */}
           <div 
             onClick={() => setIsSearchOpen(true)}
-            className="flex-1 max-w-xs md:hidden cursor-pointer"
+            className="flex-1 max-w-[120px] md:hidden cursor-pointer"
           >
             <div className="relative w-full">
               <span className="absolute inset-y-0 left-0 pl-2.5 flex items-center text-slate-400">
                 <Search className="h-3.5 w-3.5" />
               </span>
-              <div className="w-full bg-[#EDF3F8]/80 pl-8 pr-2 py-1.5 rounded-lg text-[10px] font-semibold text-slate-500 border border-transparent flex items-center justify-between">
-                <span className="truncate">Search jobs, skills...</span>
+              <div className="w-full bg-[#EDF3F8]/60 pl-8 py-1 rounded-lg text-xs font-semibold text-slate-400 border border-slate-200/50 h-8 flex items-center">
+                <span>Search...</span>
               </div>
             </div>
           </div>
