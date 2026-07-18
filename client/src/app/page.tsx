@@ -100,29 +100,40 @@ export default function Home() {
 
       try {
         const trimmedEmail = email.trim();
-        const { data, error } = await supabase.auth.signUp({
-          email: trimmedEmail,
-          password,
-          options: {
-            data: {
-              full_name: fullName,
-              role: 'candidate'
-            },
-            emailRedirectTo: `${window.location.origin}/auth/callback`
-          }
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: trimmedEmail,
+            password,
+            fullName,
+            role: 'candidate'
+          })
         });
 
-        if (error) {
-          setErrorMsg(error.message);
+        const resData = await res.json();
+
+        if (!res.ok) {
+          setErrorMsg(resData.error || 'Registration failed. Please try again.');
           setLoading(false);
           return;
         }
 
-        if (data.user) {
-          router.push(`/auth/verify?email=${encodeURIComponent(trimmedEmail)}`);
+        // Automatically sign in the user now that account is confirmed
+        const { error: signInError } = await supabase.auth.signInWithPassword({
+          email: trimmedEmail,
+          password
+        });
+
+        if (signInError) {
+          // Fallback to active tab transition or login page redirect
+          setActiveTab('login');
+          setLoading(false);
+        } else {
+          router.push('/home');
         }
       } catch (err: any) {
-        setErrorMsg('Registration failed. Please try again.');
+        setErrorMsg(err.message || 'Something went wrong. Please try again.');
         setLoading(false);
       }
     } else {
