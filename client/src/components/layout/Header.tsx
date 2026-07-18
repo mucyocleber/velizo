@@ -222,7 +222,7 @@ export default function Header() {
           <div className="flex items-center gap-3 shrink-0">
             <Link href={session ? "/home" : "/"} className="flex items-center gap-1.5 shrink-0 group">
               <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.15)] group-hover:scale-105 transition-transform" />
-              <span className="text-sm font-extrabold tracking-tight hidden sm:inline-block">
+              <span className="text-sm font-extrabold tracking-tight inline-block">
                 VELI<span className="text-primary font-black">ZO</span>
               </span>
             </Link>
