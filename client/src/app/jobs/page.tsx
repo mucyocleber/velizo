@@ -94,7 +94,7 @@ export default function JobsPage() {
                     <h3 className="text-sm font-extrabold text-slate-900 leading-snug">{job.title}</h3>
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-[10px] text-slate-500 font-semibold">
                       <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5 text-slate-400" /> {job.city || job.country} ({job.remote_type})</span>
-                      <span className="flex items-center gap-1"><Briefcase className="h-3.5 w-3.5 text-slate-400" /> {job.job_type.replace('_', ' ')}</span>
+                      <span className="flex items-center gap-1"><Briefcase className="h-3.5 w-3.5 text-slate-400" /> {job.job_type?.replace('_', ' ') || 'Full Time'}</span>
                       {job.salary_range && <span className="flex items-center gap-0.5"><DollarSign className="h-3.5 w-3.5 text-slate-400" /> {job.salary_range}</span>}
                     </div>
                   </div>

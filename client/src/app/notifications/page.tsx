@@ -329,7 +329,7 @@ export default function NotificationsPage() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-start gap-2.5">
                     <span className="text-[9px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider bg-slate-100 text-slate-655 border border-slate-200">
-                      {selectedNotification.type.replace('_', ' ')}
+                      {selectedNotification.type?.replace('_', ' ') || 'alert'}
                     </span>
                     <span className="text-[10px] text-slate-400 font-extrabold">
                       {new Date(selectedNotification.created_at).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })}
