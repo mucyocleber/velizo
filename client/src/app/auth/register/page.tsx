@@ -34,31 +34,40 @@ export default function Register() {
     }
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            full_name: fullName,
-            role: role,
-            ...(role === 'employer' && { company_name: companyName })
-          },
-          emailRedirectTo: `${window.location.origin}/auth/callback`
-        }
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          password,
+          fullName,
+          role,
+          companyName: role === 'employer' ? companyName : undefined
+        })
       });
 
-      if (error) {
-        setErrorMsg(error.message);
+      const resData = await res.json();
+
+      if (!res.ok) {
+        setErrorMsg(resData.error || 'Registration failed. Please try again.');
         setLoading(false);
         return;
       }
 
-      if (data.user) {
-        // Redirect to verification prompt page
-        router.push(`/auth/verify?email=${encodeURIComponent(email)}`);
+      // Automatically sign in the user now that account is confirmed
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (signInError) {
+        // Fallback to login if auto sign-in fails
+        router.push('/auth/login?registered=true');
+      } else {
+        router.push('/home');
       }
     } catch (err: any) {
-      setErrorMsg('Something went wrong. Please try again.');
+      setErrorMsg(err.message || 'Something went wrong. Please try again.');
       setLoading(false);
     }
   };
