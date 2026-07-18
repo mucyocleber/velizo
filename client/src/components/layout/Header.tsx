@@ -6,7 +6,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { 
   Search, 
-  Sparkles, 
   LogOut, 
   Bell, 
   ShieldCheck, 
@@ -17,13 +16,11 @@ import {
   X, 
   ArrowRight, 
   ChevronRight, 
-  Loader2,
-  Info,
-  HelpCircle,
   Users,
   Building2,
   ExternalLink,
   Plus,
+  Info,
   Compass as HomeIcon
 } from 'lucide-react';
 
@@ -39,11 +36,6 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<{ jobs: any[], companies: any[] }>({ jobs: [], companies: [] });
   const [recommendations, setRecommendations] = useState<any[]>([]);
-  
-  // AI assistant states
-  const [aiResponse, setAiResponse] = useState('');
-  const [aiLoading, setAiLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'search' | 'ai'>('search'); // Switch between normal search and AI chat
   
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -192,63 +184,8 @@ export default function Header() {
     router.push('/');
   };
 
-  // 4. Query VELIZO AI Assistant
-  const handleAskVELIZO = async (queryText?: string) => {
-    const textToSend = queryText || searchQuery;
-    if (!textToSend.trim()) return;
-
-    setActiveTab('ai'); // Switch UI to AI Response panel
-    setAiLoading(true);
-    setAiResponse('');
-    
-    const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-
-    try {
-      const res = await fetch(`${API_BASE}/api/ai/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: textToSend,
-          context: profile ? `User role: ${profile.role}, Full Name: ${profile.full_name}, Email: ${profile.email}` : ''
-        })
-      });
-
-      const data = await res.json();
-      if (data.success && data.data?.message) {
-        setAiResponse(data.data.message);
-      } else {
-        setAiResponse(data.error?.message || 'Error: Failed to obtain response from VELIZO AI Assistant.');
-      }
-    } catch (err) {
-      console.error('VELIZO AI chat error:', err);
-      setAiResponse('VELIZO AI Assistant is offline. Please verify that your backend server is running on port 5000.');
-    } finally {
-      setAiLoading(false);
-    }
-  };
-
   const nameInitial = profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : 'U';
   const isCandidate = profile?.role === 'candidate';
-
-  const suggestions = [
-    {
-      title: 'Sponsorship Finder',
-      query: 'Find international tech jobs with visa sponsorship and relocation support',
-      desc: 'Ask AI for verified sponsor hiring tracks'
-    },
-    {
-      title: 'Immigration Pathways',
-      query: 'Explain fast-track global work permit options for tech professionals',
-      desc: 'Get relocation visa requirements instantly'
-    },
-    {
-      title: 'Trust Score Criteria',
-      query: 'How do I complete my Career Passport to get verified?',
-      desc: 'Steps to reach 100% profile score'
-    }
-  ];
 
   return (
     <>
@@ -270,18 +207,15 @@ export default function Header() {
               onClick={() => setIsSearchOpen(true)}
               className="relative w-full hidden md:block cursor-pointer"
             >
-              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-455">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-bold">
                 <Search className="h-4 w-4" />
               </span>
-              <div className="w-full bg-[#EDF3F8]/80 pl-9 pr-14 py-1.5 rounded text-xs font-semibold text-slate-555 border border-transparent hover:bg-[#E1E9F0]/80 transition-colors flex items-center justify-between">
-                <span>Search jobs, companies, ask AI...</span>
-                <span className="bg-white text-slate-400 border border-slate-200 px-1.5 py-0.5 rounded text-[10px] font-bold shadow-2xs">
+              <div className="w-full bg-[#EDF3F8]/80 pl-9 pr-14 py-1.5 rounded text-xs font-semibold text-slate-550 border border-transparent hover:bg-[#E1E9F0]/80 transition-colors flex items-center justify-between">
+                <span>Search jobs, companies...</span>
+                <span className="bg-white text-slate-400 border border-slate-200 px-1.5 py-0.5 rounded text-[9px] font-bold shadow-2xs">
                   Ctrl K
                 </span>
               </div>
-              <span className="absolute inset-y-0 right-0 pr-3 flex items-center text-purple-655">
-                <Sparkles className="h-3.5 w-3.5 animate-pulse" />
-              </span>
             </div>
           </div>
 
@@ -295,11 +229,8 @@ export default function Header() {
                 <Search className="h-3.5 w-3.5" />
               </span>
               <div className="w-full bg-[#EDF3F8]/80 pl-8 pr-2 py-1.5 rounded-lg text-[10px] font-semibold text-slate-500 border border-transparent flex items-center justify-between">
-                <span className="truncate">Search / Ask AI...</span>
+                <span className="truncate">Search jobs...</span>
               </div>
-              <span className="absolute inset-y-0 right-0 pr-2.5 flex items-center text-purple-600">
-                <Sparkles className="h-3 w-3 animate-pulse" />
-              </span>
             </div>
           </div>
 
@@ -328,12 +259,6 @@ export default function Header() {
                     }`}>
                       <Briefcase className="h-5 w-5" />
                       <span className="text-[9px] font-bold mt-0.5">Jobs</span>
-                    </Link>
-                    <Link href="/coach" className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
-                      pathname === '/coach' ? 'text-primary border-b-2 border-primary font-bold text-purple-700' : 'text-slate-500 hover:text-slate-805'
-                    }`}>
-                      <Sparkles className="h-5 w-5 text-purple-500" />
-                      <span className="text-[9px] font-bold mt-0.5">AI Coach</span>
                     </Link>
                   </>
                 ) : (
@@ -418,7 +343,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ─── DYNAMIC SEARCH & VELIZO AI ASSISTANT OVERLAY ────────── */}
+      {/* ─── DYNAMIC SEARCH OVERLAY ──────────────────────────────── */}
       {isSearchOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-start justify-center p-4 pt-16 sm:pt-28">
           <div 
@@ -433,7 +358,7 @@ export default function Header() {
                 </div>
                 <div>
                   <h3 className="text-xs font-extrabold text-slate-900">VELIZO Dynamic Workspace Search</h3>
-                  <p className="text-[10px] text-slate-400 font-bold mt-0.5">Search database records or consult the VELIZO AI Assistant</p>
+                  <p className="text-[10px] text-slate-400 font-bold mt-0.5">Search database records for jobs and partner companies</p>
                 </div>
               </div>
               <button 
@@ -450,65 +375,18 @@ export default function Header() {
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Search jobs, categories, companies, or type AI questions..."
+                placeholder="Type to search jobs, categories, or companies..."
                 className="w-full text-xs font-medium text-slate-800 outline-none border-none placeholder-slate-400 bg-transparent"
                 value={searchQuery}
-                onChange={(e) => {
-                  setActiveTab('search'); // Reset back to search tab when typing
-                  handleSearchChange(e.target.value);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    if (searchQuery.trim()) {
-                      handleAskVELIZO();
-                    }
-                  }
-                }}
+                onChange={(e) => handleSearchChange(e.target.value)}
               />
-              <button
-                onClick={() => handleAskVELIZO()}
-                disabled={aiLoading || !searchQuery.trim()}
-                className="px-3 py-1.5 bg-purple-600 hover:bg-purple-750 disabled:opacity-50 text-white text-[10px] font-bold rounded-lg transition-all shrink-0 flex items-center gap-1 cursor-pointer"
-                title="Query the AI assistant"
-              >
-                <Sparkles className="h-3 w-3" /> Ask VELIZO AI
-              </button>
             </div>
 
-            {/* Autocomplete / Tab Selection Layout */}
+            {/* Autocomplete Layout */}
             <div className="flex-1 overflow-y-auto max-h-[350px] custom-scrollbar">
               
-              {/* Tab Navigation (Search Results vs AI chat response) */}
-              {searchQuery && (
-                <div className="flex border-b border-slate-150 px-4 bg-slate-50/50">
-                  <button 
-                    onClick={() => setActiveTab('search')}
-                    className={`py-2 px-3 text-[10px] font-bold border-b-2 transition-all ${
-                      activeTab === 'search' 
-                        ? 'border-primary text-slate-900' 
-                        : 'border-transparent text-slate-450 hover:text-slate-600'
-                    }`}
-                  >
-                    Database Matches ({searchResults.jobs.length + searchResults.companies.length})
-                  </button>
-                  <button 
-                    onClick={() => {
-                      if (!aiResponse && !aiLoading) handleAskVELIZO();
-                      else setActiveTab('ai');
-                    }}
-                    className={`py-2 px-3 text-[10px] font-bold border-b-2 transition-all flex items-center gap-1 ${
-                      activeTab === 'ai' 
-                        ? 'border-purple-600 text-purple-700' 
-                        : 'border-transparent text-slate-455 hover:text-slate-600'
-                    }`}
-                  >
-                    <Sparkles className="h-3 w-3" /> VELIZO AI Assistant
-                  </button>
-                </div>
-              )}
-
-              {/* TAB 1: NORMAL DATABASE SEARCH RESULTS */}
-              {activeTab === 'search' && searchQuery && (
+              {/* DATABASE SEARCH RESULTS */}
+              {searchQuery ? (
                 <div className="p-4 space-y-4">
                   {/* Job Matches */}
                   <div className="space-y-2">
@@ -581,34 +459,9 @@ export default function Header() {
                     )}
                   </div>
                 </div>
-              )}
-
-              {/* TAB 2: VELIZO AI ASSISTANT PANEL */}
-              {activeTab === 'ai' && searchQuery && (
-                <div className="p-4 space-y-3 bg-slate-50/50">
-                  <div className="flex items-center gap-1.5 text-[10px] font-bold text-purple-705 bg-purple-50 px-2 py-0.5 rounded w-fit">
-                    <Sparkles className="h-3 w-3 text-purple-650" />
-                    VELIZO AI Assistant Response
-                  </div>
-
-                  {aiLoading ? (
-                    <div className="flex flex-col items-center justify-center py-10 gap-3 text-slate-500 text-xs font-semibold">
-                      <Loader2 className="h-6 w-6 animate-spin text-purple-600" />
-                      <span>VELIZO AI is drafting response...</span>
-                    </div>
-                  ) : (
-                    <div className="text-xs text-slate-700 leading-relaxed font-semibold whitespace-pre-wrap select-text selection:bg-purple-100 bg-white border border-slate-150 p-4 rounded-xl shadow-sm">
-                      {aiResponse}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* SUGGESTIONS & PERSONALIZED RECOMMENDATIONS (Empty Query) */}
-              {!searchQuery && (
+              ) : (
+                /* PERSONALIZED RECOMMENDATIONS (Empty Query) */
                 <div className="p-5 space-y-6">
-                  
-                  {/* Recommended Jobs based on user profile info */}
                   {recommendations.length > 0 && (
                     <div className="space-y-2.5">
                       <h4 className="text-[10px] font-extrabold text-teal-700 bg-teal-50 border border-teal-100/50 px-2.5 py-1 rounded-lg w-fit uppercase tracking-widest flex items-center gap-1.5">
@@ -641,33 +494,6 @@ export default function Header() {
                       </div>
                     </div>
                   )}
-
-                  {/* AI Quick chat prompts */}
-                  <div className="space-y-2.5 pt-4 border-t border-slate-100">
-                    <h4 className="text-[10px] font-extrabold text-slate-455 uppercase tracking-widest pl-1.5">
-                      Ask VELIZO AI Assistant
-                    </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                      {suggestions.map((sug) => (
-                        <div 
-                          key={sug.title}
-                          onClick={() => {
-                            setSearchQuery(sug.query);
-                            handleAskVELIZO(sug.query);
-                          }}
-                          className="p-3.5 rounded-xl border border-slate-200/80 bg-slate-50/50 hover:bg-slate-50 hover:border-primary/20 transition-all cursor-pointer group"
-                        >
-                          <h4 className="text-[10px] font-extrabold text-slate-800 flex items-center gap-1 group-hover:text-primary transition-colors">
-                            {sug.title} <ChevronRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
-                          </h4>
-                          <p className="text-[9px] text-slate-500 leading-snug font-semibold mt-1">
-                            {sug.desc}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
                 </div>
               )}
 
@@ -679,9 +505,9 @@ export default function Header() {
                 <Info className="h-3.5 w-3.5 text-slate-400" />
                 <span>Tip: Press <kbd className="bg-slate-200 px-1 py-0.5 rounded text-[9px] font-bold text-slate-600 border border-slate-300">Esc</kbd> to exit search</span>
               </span>
-              {(aiResponse || searchQuery) && (
+              {searchQuery && (
                 <button 
-                  onClick={() => { setAiResponse(''); setSearchQuery(''); setSearchResults({ jobs: [], companies: [] }); }}
+                  onClick={() => { setSearchQuery(''); setSearchResults({ jobs: [], companies: [] }); }}
                   className="text-slate-500 hover:text-slate-805 font-bold hover:underline cursor-pointer"
                 >
                   Clear search
@@ -730,17 +556,6 @@ export default function Header() {
             </Link>
           )}
 
-          {/* VELIZO AI Center Search Trigger */}
-          <button 
-            onClick={() => setIsSearchOpen(true)}
-            className="flex flex-col items-center justify-center flex-1 h-full py-1 text-center text-purple-600 hover:text-purple-800 transition-colors cursor-pointer"
-          >
-            <div className="h-9 w-9 rounded-full bg-purple-50 flex items-center justify-center border border-purple-100 hover:scale-105 transition-transform">
-              <Sparkles className="h-5 w-5 animate-pulse" />
-            </div>
-            <span className="text-[9px] font-extrabold mt-0.5">VELIZO AI</span>
-          </button>
-
           {/* Role specific 2: Jobs or Candidates */}
           {isCandidate ? (
             <Link 
@@ -764,26 +579,14 @@ export default function Header() {
             </Link>
           )}
 
-          {/* Role specific 3: AI Coach or Sign Out */}
-          {isCandidate ? (
-            <Link 
-              href="/coach" 
-              className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
-                pathname === '/coach' ? 'text-primary font-bold' : 'text-slate-500 hover:text-primary'
-              }`}
-            >
-              <Sparkles className="h-5 w-5 text-purple-550" />
-              <span className="text-[9px] font-bold mt-1">AI Coach</span>
-            </Link>
-          ) : (
-            <button 
-              onClick={handleSignOut}
-              className="flex flex-col items-center justify-center flex-1 h-full py-1 text-center text-slate-500 hover:text-red-650 transition-colors cursor-pointer"
-            >
-              <LogOut className="h-5 w-5" />
-              <span className="text-[9px] font-bold mt-1">Log Out</span>
-            </button>
-          )}
+          {/* Role specific 3: Log Out (for mobile navbar end) */}
+          <button 
+            onClick={handleSignOut}
+            className="flex flex-col items-center justify-center flex-1 h-full py-1 text-center text-slate-500 hover:text-red-650 transition-colors cursor-pointer"
+          >
+            <LogOut className="h-5 w-5" />
+            <span className="text-[9px] font-bold mt-1">Log Out</span>
+          </button>
         </nav>
       )}
 
