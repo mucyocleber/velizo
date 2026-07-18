@@ -158,39 +158,34 @@ export default function Header() {
         setNotifications(data);
         setUnreadCount(data.filter(n => !n.is_read).length);
       } else {
-        // If empty, insert demo notifications for immediate premium demonstration
-        const demoNotifications = [
-          {
-            user_id: userId,
-            title: "Application Shortlisted",
-            content: "Congratulations! Your application for Senior Full-Stack Engineer at TechCorp has been shortlisted.",
-            type: "application_update",
-            is_read: false
-          },
-          {
-            user_id: userId,
-            title: "New Job Recommendation",
-            content: "A new developer job matching your category has been posted.",
-            type: "job_alert",
-            is_read: false
-          },
-          {
+        // If they have zero notifications ever, insert exactly one welcome notification
+        // Check if they ever had a welcome notification to avoid double inserts
+        const { count, error: countError } = await supabase
+          .from('notifications')
+          .select('id', { count: 'exact', head: true })
+          .eq('user_id', userId);
+
+        if (!countError && count === 0) {
+          const welcomeNotification = {
             user_id: userId,
             title: "Welcome to VELIZO!",
-            content: "Complete your profile to unlock custom fast-track recommendations.",
+            content: "Complete your profile to unlock custom fast-track recommendations and start applying.",
             type: "welcome",
             is_read: false
-          }
-        ];
-        
-        const { data: insertedData } = await supabase
-          .from('notifications')
-          .insert(demoNotifications)
-          .select();
+          };
           
-        if (insertedData) {
-          setNotifications(insertedData);
-          setUnreadCount(insertedData.filter(n => !n.is_read).length);
+          const { data: insertedData } = await supabase
+            .from('notifications')
+            .insert(welcomeNotification)
+            .select();
+            
+          if (insertedData) {
+            setNotifications(insertedData);
+            setUnreadCount(insertedData.filter(n => !n.is_read).length);
+          }
+        } else {
+          setNotifications([]);
+          setUnreadCount(0);
         }
       }
     } catch (err) {
