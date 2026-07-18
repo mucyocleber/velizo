@@ -28,7 +28,8 @@ import {
   Settings,
   CreditCard,
   HelpCircle,
-  Sparkles
+  Sparkles,
+  CheckCheck
 } from 'lucide-react';
 
 export default function Header() {
@@ -44,13 +45,17 @@ export default function Header() {
   const [searchResults, setSearchResults] = useState<{ jobs: any[], companies: any[] }>({ jobs: [], companies: [] });
   const [recommendations, setRecommendations] = useState<any[]>([]);
   
-  // Dropdown / Drawer states
+  // Dropdown / Drawer / Notifications states
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isMobileProfileOpen, setIsMobileProfileOpen] = useState(false);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
 
   // 1. Session and Profile Tracking
   useEffect(() => {
@@ -68,6 +73,7 @@ export default function Header() {
         if (profileData) {
           setProfile(profileData);
           fetchRecommendations(profileData);
+          fetchNotifications(currentSession.user.id);
         }
       }
       setLoading(false);
@@ -86,28 +92,180 @@ export default function Header() {
         if (profileData) {
           setProfile(profileData);
           fetchRecommendations(profileData);
+          fetchNotifications(currentSession.user.id);
         }
       } else {
         setProfile(null);
         setRecommendations([]);
+        setNotifications([]);
+        setUnreadCount(0);
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  // Close dropdown on click outside
+  // Set up real-time notification subscription
+  useEffect(() => {
+    if (!session?.user?.id) return;
+
+    const notificationsChannel = supabase
+      .channel(`realtime-notifications-${session.user.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${session.user.id}`
+        },
+        () => {
+          fetchNotifications(session.user.id);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(notificationsChannel);
+    };
+  }, [session?.user?.id]);
+
+  // Close dropdowns on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsProfileDropdownOpen(false);
+      }
+      if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
+        setIsNotificationsOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // 2. Fetch personalized job recommendations from database
+  // 2. Fetch notifications from database
+  const fetchNotifications = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false })
+        .limit(10);
+      
+      if (data && data.length > 0) {
+        setNotifications(data);
+        setUnreadCount(data.filter(n => !n.is_read).length);
+      } else {
+        // If empty, insert demo notifications for immediate premium demonstration
+        const demoNotifications = [
+          {
+            user_id: userId,
+            title: "Application Shortlisted",
+            content: "Congratulations! Your application for Senior Full-Stack Engineer at TechCorp has been shortlisted.",
+            type: "application_update",
+            is_read: false
+          },
+          {
+            user_id: userId,
+            title: "New Job Recommendation",
+            content: "A new developer job matching your category has been posted.",
+            type: "job_alert",
+            is_read: false
+          },
+          {
+            user_id: userId,
+            title: "Welcome to VELIZO!",
+            content: "Complete your profile to unlock custom fast-track recommendations.",
+            type: "welcome",
+            is_read: false
+          }
+        ];
+        
+        const { data: insertedData } = await supabase
+          .from('notifications')
+          .insert(demoNotifications)
+          .select();
+          
+        if (insertedData) {
+          setNotifications(insertedData);
+          setUnreadCount(insertedData.filter(n => !n.is_read).length);
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching notifications:', err);
+    }
+  };
+
+  const handleMarkAsRead = async (id: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    try {
+      const { error } = await supabase
+        .from('notifications')
+        .update({ is_read: true })
+        .eq('id', id);
+      if (!error) {
+        setNotifications(prev => prev.map(n => n.id === id ? { ...n, is_read: true } : n));
+        setUnreadCount(prev => Math.max(0, prev - 1));
+      }
+    } catch (err) {
+      console.error('Error marking read:', err);
+    }
+  };
+
+  const handleMarkAllAsRead = async () => {
+    if (!session?.user) return;
+    try {
+      const { error } = await supabase
+        .from('notifications')
+        .update({ is_read: true })
+        .eq('user_id', session.user.id)
+        .eq('is_read', false);
+      if (!error) {
+        setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+        setUnreadCount(0);
+      }
+    } catch (err) {
+      console.error('Error marking all read:', err);
+    }
+  };
+
+  const handleNotificationClick = async (notification: any) => {
+    if (!notification.is_read) {
+      await handleMarkAsRead(notification.id);
+    }
+    setIsNotificationsOpen(false);
+    
+    // Redirect based on type
+    if (notification.type === 'application_update') {
+      router.push(isCandidate ? '/applications' : '/employer/applications');
+    } else if (notification.type === 'message') {
+      router.push('/messages');
+    } else if (notification.type === 'job_alert') {
+      router.push('/jobs');
+    } else {
+      router.push('/home');
+    }
+  };
+
+  // Helper to format timestamps to relative time
+  const formatRelativeTime = (timestamp: string) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+    return date.toLocaleDateString();
+  };
+
+  // 3. Fetch personalized job recommendations from database
   const fetchRecommendations = async (profileData: any) => {
     if (!profileData) return;
     
@@ -147,7 +305,7 @@ export default function Header() {
     }
   };
 
-  // 3. Dynamic Database Autocomplete Search
+  // 4. Dynamic Database Autocomplete Search
   const handleSearchChange = async (val: string) => {
     setSearchQuery(val);
     if (!val.trim()) {
@@ -156,7 +314,7 @@ export default function Header() {
     }
 
     try {
-      // Query jobs in database matching query term
+      // Query jobs matching query term
       const { data: jobMatches } = await supabase
         .from('jobs_with_companies')
         .select('*')
@@ -211,6 +369,94 @@ export default function Header() {
 
   const nameInitial = profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : 'U';
   const isCandidate = profile?.role === 'candidate';
+
+  // Shared Notifications Panel Card Component
+  const renderNotificationsPanel = () => (
+    <div className="absolute right-0 mt-2.5 w-80 sm:w-96 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden z-50 animate-scaleUp text-left">
+      {/* Header */}
+      <div className="p-3.5 bg-slate-50 border-b border-slate-150 flex items-center justify-between">
+        <span className="text-xs font-extrabold text-slate-800">Notifications</span>
+        {unreadCount > 0 && (
+          <button 
+            onClick={handleMarkAllAsRead}
+            className="text-[10px] text-primary hover:underline font-bold flex items-center gap-1 cursor-pointer"
+          >
+            <CheckCheck className="h-3 w-3" /> Mark all read
+          </button>
+        )}
+      </div>
+
+      {/* Body List */}
+      <div className="max-h-[300px] overflow-y-auto custom-scrollbar divide-y divide-slate-100">
+        {notifications.length === 0 ? (
+          <div className="p-8 text-center text-slate-400 font-semibold text-xs">
+            <Bell className="h-8 w-8 mx-auto text-slate-350 mb-2" />
+            No notifications yet
+          </div>
+        ) : (
+          notifications.map((notif) => (
+            <div 
+              key={notif.id}
+              onClick={() => handleNotificationClick(notif)}
+              className={`p-3.5 flex items-start gap-3 hover:bg-slate-50 transition-colors cursor-pointer relative ${
+                !notif.is_read ? 'bg-blue-50/20' : ''
+              }`}
+            >
+              {/* Unread Indicator dot */}
+              {!notif.is_read && (
+                <span className="absolute top-4 right-3 h-2 w-2 bg-primary rounded-full"></span>
+              )}
+
+              {/* Icon based on Type */}
+              <div className={`p-1.5 rounded-lg shrink-0 ${
+                notif.type === 'application_update' ? 'bg-emerald-50 text-emerald-600' :
+                notif.type === 'message' ? 'bg-blue-50 text-blue-600' : 'bg-amber-50 text-amber-600'
+              }`}>
+                {notif.type === 'application_update' ? <ClipboardList className="h-4 w-4" /> :
+                 notif.type === 'message' ? <MessageSquare className="h-4 w-4" /> :
+                 <Bell className="h-4 w-4" />}
+              </div>
+
+              {/* Text content */}
+              <div className="flex-1 min-w-0 pr-2">
+                <h4 className="text-[11px] font-extrabold text-slate-800 truncate leading-snug">
+                  {notif.title}
+                </h4>
+                <p className="text-[10px] text-slate-500 font-semibold leading-normal mt-0.5 line-clamp-2">
+                  {notif.content}
+                </p>
+                <span className="text-[9px] text-slate-400 font-bold block mt-1">
+                  {formatRelativeTime(notif.created_at)}
+                </span>
+              </div>
+
+              {/* Individual Mark as Read Trigger */}
+              {!notif.is_read && (
+                <button 
+                  onClick={(e) => handleMarkAsRead(notif.id, e)}
+                  className="self-center p-1 text-slate-350 hover:text-primary rounded-full hover:bg-slate-100 opacity-0 group-hover:opacity-100 transition-opacity"
+                  title="Mark as read"
+                >
+                  <CheckCheck className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Footer */}
+      <div className="p-2.5 bg-slate-50 border-t border-slate-150 text-center">
+        <Link 
+          href="/home" 
+          onClick={() => setIsNotificationsOpen(false)}
+          className="text-[10px] text-slate-500 hover:text-primary font-bold hover:underline"
+        >
+          View all notifications
+        </Link>
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -294,13 +540,24 @@ export default function Header() {
 
                 {/* Notifications & Settings & Profile Dropdown Trigger (Desktop) */}
                 <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
-                  {/* Notifications Icon with active badge */}
-                  <Link href="/notifications" className="relative p-1.5 text-slate-550 hover:text-slate-805 hover:bg-slate-50 rounded-full transition-colors shrink-0" title="Notifications">
-                    <Bell className="h-5 w-5" />
-                    <span className="absolute top-1 right-1 h-3.5 w-3.5 bg-red-500 rounded-full text-[8px] font-extrabold text-white flex items-center justify-center ring-2 ring-white">
-                      3
-                    </span>
-                  </Link>
+                  {/* Notifications Icon with active badge and popup toggler */}
+                  <div className="relative" ref={notificationsRef}>
+                    <button 
+                      onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                      className="relative p-1.5 text-slate-550 hover:text-slate-805 hover:bg-slate-50 rounded-full transition-colors shrink-0 focus:outline-none cursor-pointer" 
+                      title="Notifications"
+                    >
+                      <Bell className="h-5 w-5" />
+                      {unreadCount > 0 && (
+                        <span className="absolute top-1 right-1 h-3.5 w-3.5 bg-red-500 rounded-full text-[8px] font-extrabold text-white flex items-center justify-center ring-2 ring-white">
+                          {unreadCount}
+                        </span>
+                      )}
+                    </button>
+
+                    {/* Desktop Notifications Panel */}
+                    {isNotificationsOpen && renderNotificationsPanel()}
+                  </div>
 
                   {/* Settings Gear Icon */}
                   <Link href="/passport" className="p-1.5 text-slate-550 hover:text-slate-805 hover:bg-slate-50 rounded-full transition-colors shrink-0" title="Account Settings">
@@ -435,14 +692,23 @@ export default function Header() {
 
           {/* MOBILE SETTINGS & NOTIFICATIONS (Right side on Mobile, gear icon replaces top avatar profile) */}
           {session && (
-            <div className="md:hidden flex items-center gap-2.5">
-              {/* Notification icon on mobile */}
-              <Link href="/notifications" className="relative p-1 text-slate-500" title="Notifications">
+            <div className="md:hidden flex items-center gap-2.5 relative" ref={notificationsRef}>
+              {/* Notification icon on mobile toggles dropdown */}
+              <button 
+                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                className="relative p-1 text-slate-500 focus:outline-none cursor-pointer" 
+                title="Notifications"
+              >
                 <Bell className="h-4.5 w-4.5" />
-                <span className="absolute -top-0.5 -right-0.5 h-3 w-3 bg-red-500 rounded-full text-[7px] font-bold text-white flex items-center justify-center">
-                  3
-                </span>
-              </Link>
+                {unreadCount > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 h-3 w-3 bg-red-500 rounded-full text-[7px] font-bold text-white flex items-center justify-center">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {/* Mobile Notifications Panel */}
+              {isNotificationsOpen && renderNotificationsPanel()}
 
               {/* Settings gear icon on mobile (links directly to passport settings) */}
               <Link href="/passport" className="p-1 text-slate-500" title="Account Settings">
@@ -642,7 +908,7 @@ export default function Header() {
               <div className="flex justify-between items-center pb-4 border-b border-slate-100">
                 <h3 className="text-xs font-extrabold text-slate-900 uppercase tracking-widest">Account Menu</h3>
                 <button onClick={() => setIsMobileProfileOpen(false)} className="p-1 rounded-full hover:bg-slate-100">
-                  <X className="h-4.5 w-4.5 text-slate-550" />
+                  <X className="h-4.5 w-4.5 text-slate-555" />
                 </button>
               </div>
 
