@@ -414,18 +414,18 @@ export default function Home() {
             </div>
 
             {/* Announcement Message Layout: Speech bubble speaking woman */}
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
               {/* Welcoming Woman Left Column */}
-              <div className="sm:col-span-1 flex justify-center">
+              <div className="md:col-span-3 flex justify-center">
                 <img 
                   src="/welcome_announcement.png" 
                   alt="Welcome Announcement" 
-                  className="max-h-36 w-auto object-contain rounded-xl drop-shadow-md"
+                  className="max-h-48 md:max-h-52 w-auto object-contain rounded-xl drop-shadow-md"
                 />
               </div>
               
               {/* Speech Bubble Right Column */}
-              <div className="sm:col-span-3 relative pl-2">
+              <div className="md:col-span-9 relative pl-2">
                 <div className="relative bg-slate-50 p-5 rounded-2xl border border-slate-250 text-xs font-semibold text-slate-655 leading-relaxed shadow-3xs">
                   {/* Speech bubble tail pointing left */}
                   <div className="absolute top-1/2 -left-2 -translate-y-1/2 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-slate-250" />
@@ -437,8 +437,8 @@ export default function Home() {
             </div>
 
             {/* Verification Section Layout: Text left, Image right */}
-            <div className="p-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-blue-50/30 to-indigo-50/10 grid grid-cols-1 sm:grid-cols-4 gap-6 items-center shadow-3xs">
-              <div className="sm:col-span-3 space-y-4">
+            <div className="p-6 rounded-2xl border border-slate-200 bg-gradient-to-br from-blue-50/30 to-indigo-50/10 grid grid-cols-1 md:grid-cols-12 gap-6 items-center shadow-3xs">
+              <div className="md:col-span-9 space-y-4">
                 <div>
                   <h4 className="text-sm font-black text-slate-900 flex items-center gap-1.5">
                     <ShieldCheck className="h-5 w-5 text-primary shrink-0" /> Verify Your Credentials
@@ -502,11 +502,11 @@ export default function Home() {
               </div>
 
               {/* Verification Illustration Right Column */}
-              <div className="sm:col-span-1 flex justify-center">
+              <div className="md:col-span-3 flex justify-center">
                 <img 
                   src="/credentials_verification.png" 
                   alt="Credentials Verification" 
-                  className="max-h-36 w-auto object-contain rounded-xl drop-shadow-md"
+                  className="max-h-48 md:max-h-52 w-auto object-contain rounded-xl drop-shadow-md"
                 />
               </div>
             </div>
