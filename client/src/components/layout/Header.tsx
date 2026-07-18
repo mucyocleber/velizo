@@ -10,7 +10,8 @@ import {
   Bell, 
   ShieldCheck, 
   Briefcase, 
-  FileCheck, 
+  ClipboardList, 
+  MessageSquare,
   Compass, 
   Menu, 
   X, 
@@ -248,17 +249,23 @@ export default function Header() {
                 
                 {isCandidate ? (
                   <>
-                    <Link href="/passport" className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
-                      pathname === '/passport' ? 'text-primary border-b-2 border-primary font-bold' : 'text-slate-500 hover:text-slate-805'
-                    }`}>
-                      <FileCheck className="h-5 w-5" />
-                      <span className="text-[9px] font-bold mt-0.5">Passport</span>
-                    </Link>
                     <Link href="/jobs" className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
                       pathname === '/jobs' ? 'text-primary border-b-2 border-primary font-bold' : 'text-slate-500 hover:text-slate-805'
                     }`}>
                       <Briefcase className="h-5 w-5" />
                       <span className="text-[9px] font-bold mt-0.5">Jobs</span>
+                    </Link>
+                    <Link href="/applications" className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
+                      pathname === '/applications' ? 'text-primary border-b-2 border-primary font-bold' : 'text-slate-500 hover:text-slate-805'
+                    }`}>
+                      <ClipboardList className="h-5 w-5" />
+                      <span className="text-[9px] font-bold mt-0.5">Applications</span>
+                    </Link>
+                    <Link href="/messages" className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
+                      pathname === '/messages' ? 'text-primary border-b-2 border-primary font-bold' : 'text-slate-500 hover:text-slate-805'
+                    }`}>
+                      <MessageSquare className="h-5 w-5" />
+                      <span className="text-[9px] font-bold mt-0.5">Messages</span>
                     </Link>
                   </>
                 ) : (
@@ -267,7 +274,7 @@ export default function Header() {
                       pathname.startsWith('/employer/jobs') ? 'text-primary border-b-2 border-primary font-bold' : 'text-slate-500 hover:text-slate-805'
                     }`}>
                       <Briefcase className="h-5 w-5" />
-                      <span className="text-[9px] font-bold mt-0.5">Manage Jobs</span>
+                      <span className="text-[9px] font-bold mt-0.5">Post Job</span>
                     </Link>
                     <Link href="/employer/applications" className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
                       pathname.startsWith('/employer/applications') ? 'text-primary border-b-2 border-primary font-bold' : 'text-slate-500 hover:text-slate-805'
@@ -275,14 +282,26 @@ export default function Header() {
                       <Users className="h-5 w-5" />
                       <span className="text-[9px] font-bold mt-0.5">Candidates</span>
                     </Link>
+                    <Link href="/messages" className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
+                      pathname === '/messages' ? 'text-primary border-b-2 border-primary font-bold' : 'text-slate-500 hover:text-slate-805'
+                    }`}>
+                      <MessageSquare className="h-5 w-5" />
+                      <span className="text-[9px] font-bold mt-0.5">Messages</span>
+                    </Link>
                   </>
                 )}
 
-                {/* Profile Avatar & Log Out (Desktop) */}
+                {/* Notifications & Profile Avatar & Log Out (Desktop) */}
                 <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
+                  {/* Notifications Icon */}
+                  <Link href="/notifications" className="relative p-1.5 text-slate-550 hover:text-slate-805 hover:bg-slate-50 rounded-full transition-colors shrink-0" title="Notifications">
+                    <Bell className="h-5 w-5" />
+                    <span className="absolute top-1 right-1 h-2 w-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+                  </Link>
+
                   <Link 
                     href={isCandidate ? "/passport" : "/home"}
-                    className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+                    className="flex items-center gap-2 hover:opacity-90 transition-opacity shrink-0"
                     title="View Profile"
                   >
                     <div className="h-8 w-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-xs font-bold shrink-0 overflow-hidden shadow-2xs">
@@ -295,14 +314,14 @@ export default function Header() {
                         {profile?.full_name || 'User'}
                       </span>
                       <span className="text-[9px] font-bold text-slate-400 block capitalize leading-none mt-0.5">
-                        {profile?.role === 'candidate' ? 'Job Seeker' : 'Employer'}
+                        Profile
                       </span>
                     </div>
                   </Link>
                   
                   <button 
                     onClick={handleSignOut}
-                    className="p-1.5 rounded hover:bg-slate-100 text-slate-500 hover:text-red-650 transition-colors cursor-pointer"
+                    className="p-1.5 rounded hover:bg-slate-100 text-slate-500 hover:text-red-650 transition-colors cursor-pointer shrink-0"
                     title="Log Out"
                   >
                     <LogOut className="h-4.5 w-4.5" />
@@ -327,7 +346,11 @@ export default function Header() {
 
           {/* MOBILE PROFILE AVATAR (Right side on Mobile, links directly to Profile/Passport, no dropdown) */}
           {session && (
-            <div className="md:hidden flex items-center">
+            <div className="md:hidden flex items-center gap-2">
+              <Link href="/notifications" className="relative p-1 text-slate-500" title="Notifications">
+                <Bell className="h-4.5 w-4.5" />
+                <span className="absolute top-0.5 right-0.5 h-1.5 w-1.5 bg-red-500 rounded-full"></span>
+              </Link>
               <Link 
                 href={isCandidate ? "/passport" : "/home"}
                 className="h-8 w-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-xs font-bold shrink-0 overflow-hidden shadow-2xs cursor-pointer"
@@ -394,7 +417,7 @@ export default function Header() {
                       <Briefcase className="h-3.5 w-3.5 text-slate-400" /> Matching Placements
                     </h4>
                     {searchResults.jobs.length === 0 ? (
-                      <p className="text-[10px] text-slate-450 italic pl-1.5">No jobs match your query.</p>
+                      <p className="text-[10px] text-slate-455 italic pl-1.5">No jobs match your query.</p>
                     ) : (
                       <div className="space-y-1.5">
                         {searchResults.jobs.map((job) => (
@@ -533,16 +556,16 @@ export default function Header() {
             <span className="text-[9px] font-bold mt-1">Home</span>
           </Link>
 
-          {/* Role specific 1: Passport or Post Job */}
+          {/* Jobs */}
           {isCandidate ? (
             <Link 
-              href="/passport" 
+              href="/jobs" 
               className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
-                pathname === '/passport' ? 'text-primary font-bold' : 'text-slate-500 hover:text-primary'
+                pathname === '/jobs' ? 'text-primary font-bold' : 'text-slate-500 hover:text-primary'
               }`}
             >
-              <FileCheck className="h-5 w-5" />
-              <span className="text-[9px] font-bold mt-1">Passport</span>
+              <Briefcase className="h-5 w-5" />
+              <span className="text-[9px] font-bold mt-1">Jobs</span>
             </Link>
           ) : (
             <Link 
@@ -556,16 +579,16 @@ export default function Header() {
             </Link>
           )}
 
-          {/* Role specific 2: Jobs or Candidates */}
+          {/* Applications / Candidates */}
           {isCandidate ? (
             <Link 
-              href="/jobs" 
+              href="/applications" 
               className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
-                pathname === '/jobs' ? 'text-primary font-bold' : 'text-slate-500 hover:text-primary'
+                pathname === '/applications' ? 'text-primary font-bold' : 'text-slate-500 hover:text-primary'
               }`}
             >
-              <Briefcase className="h-5 w-5" />
-              <span className="text-[9px] font-bold mt-1">Jobs</span>
+              <ClipboardList className="h-5 w-5" />
+              <span className="text-[9px] font-bold mt-1">Applications</span>
             </Link>
           ) : (
             <Link 
@@ -579,14 +602,16 @@ export default function Header() {
             </Link>
           )}
 
-          {/* Role specific 3: Log Out (for mobile navbar end) */}
-          <button 
-            onClick={handleSignOut}
-            className="flex flex-col items-center justify-center flex-1 h-full py-1 text-center text-slate-500 hover:text-red-650 transition-colors cursor-pointer"
+          {/* Messages */}
+          <Link 
+            href="/messages" 
+            className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
+              pathname === '/messages' ? 'text-primary font-bold' : 'text-slate-500 hover:text-primary'
+            }`}
           >
-            <LogOut className="h-5 w-5" />
-            <span className="text-[9px] font-bold mt-1">Log Out</span>
-          </button>
+            <MessageSquare className="h-5 w-5" />
+            <span className="text-[9px] font-bold mt-1">Messages</span>
+          </Link>
         </nav>
       )}
 
