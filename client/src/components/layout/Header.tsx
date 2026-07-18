@@ -12,7 +12,6 @@ import {
   Briefcase, 
   ClipboardList, 
   MessageSquare,
-  Menu, 
   X, 
   ArrowRight, 
   ChevronRight, 
@@ -293,7 +292,7 @@ export default function Header() {
                   <span className="text-[9px] font-bold mt-0.5">AI Assistant</span>
                 </Link>
 
-                {/* Notifications & Profile Dropdown Trigger (Desktop) */}
+                {/* Notifications & Settings & Profile Dropdown Trigger (Desktop) */}
                 <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
                   {/* Notifications Icon with active badge */}
                   <Link href="/notifications" className="relative p-1.5 text-slate-550 hover:text-slate-805 hover:bg-slate-50 rounded-full transition-colors shrink-0" title="Notifications">
@@ -301,6 +300,11 @@ export default function Header() {
                     <span className="absolute top-1 right-1 h-3.5 w-3.5 bg-red-500 rounded-full text-[8px] font-extrabold text-white flex items-center justify-center ring-2 ring-white">
                       3
                     </span>
+                  </Link>
+
+                  {/* Settings Gear Icon */}
+                  <Link href="/passport" className="p-1.5 text-slate-550 hover:text-slate-805 hover:bg-slate-50 rounded-full transition-colors shrink-0" title="Account Settings">
+                    <Settings className="h-5 w-5" />
                   </Link>
 
                   {/* Profile Dropdown Container */}
@@ -380,15 +384,6 @@ export default function Header() {
                           </Link>
 
                           <Link 
-                            href="/passport" 
-                            onClick={() => setIsProfileDropdownOpen(false)}
-                            className="flex items-center gap-2.5 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
-                          >
-                            <Settings className="h-4 w-4 text-slate-400" />
-                            <span>Account Settings</span>
-                          </Link>
-
-                          <Link 
                             href="/home" 
                             onClick={() => setIsProfileDropdownOpen(false)}
                             className="flex items-center gap-2.5 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
@@ -438,9 +433,9 @@ export default function Header() {
             )}
           </div>
 
-          {/* MOBILE PROFILE & NOTIFICATIONS (Right side on Mobile, triggers drawers/modals) */}
+          {/* MOBILE SETTINGS & NOTIFICATIONS (Right side on Mobile, gear icon replaces top avatar profile) */}
           {session && (
-            <div className="md:hidden flex items-center gap-3">
+            <div className="md:hidden flex items-center gap-2.5">
               {/* Notification icon on mobile */}
               <Link href="/notifications" className="relative p-1 text-slate-500" title="Notifications">
                 <Bell className="h-4.5 w-4.5" />
@@ -449,16 +444,10 @@ export default function Header() {
                 </span>
               </Link>
 
-              {/* Avatar trigger to toggle Profile Drawer */}
-              <button 
-                onClick={() => setIsMobileProfileOpen(true)}
-                className="h-8 w-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-xs font-bold shrink-0 overflow-hidden shadow-2xs cursor-pointer focus:outline-none"
-                title="View Profile"
-              >
-                {profile?.avatar_url ? (
-                  <img src={profile.avatar_url} alt="avatar" className="h-full w-full object-cover" />
-                ) : nameInitial}
-              </button>
+              {/* Settings gear icon on mobile (links directly to passport settings) */}
+              <Link href="/passport" className="p-1 text-slate-500" title="Account Settings">
+                <Settings className="h-4.5 w-4.5" />
+              </Link>
             </div>
           )}
 
@@ -671,7 +660,7 @@ export default function Header() {
                 </div>
               </div>
 
-              {/* Menu Links */}
+              {/* Menu Links (Account Settings removed as it is at the top gear icon) */}
               <div className="py-4 space-y-1 text-xs font-semibold">
                 <Link 
                   href={isCandidate ? "/passport" : "/home"} 
@@ -704,14 +693,6 @@ export default function Header() {
                 >
                   <Bookmark className="h-4.5 w-4.5 text-slate-400" />
                   <span>Saved Jobs</span>
-                </Link>
-                <Link 
-                  href="/passport" 
-                  onClick={() => setIsMobileProfileOpen(false)}
-                  className="flex items-center gap-3 p-2.5 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all"
-                >
-                  <Settings className="h-4.5 w-4.5 text-slate-400" />
-                  <span>Account Settings</span>
                 </Link>
                 <Link 
                   href="/home" 
