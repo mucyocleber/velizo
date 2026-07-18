@@ -393,83 +393,90 @@ export default function Home() {
           
 
           {/* Pinned System Update Card */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-5">
+          <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 space-y-6">
             {/* Header info */}
-            <div className="flex justify-between items-start border-b border-slate-100 pb-3">
+            <div className="flex justify-between items-center border-b border-slate-100 pb-3">
               <div>
-                <span className="text-[9px] font-extrabold uppercase tracking-widest text-primary bg-blue-50 px-2.5 py-0.5 rounded border border-blue-100">
+                <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-blue-50/80 px-3 py-1 rounded-lg border border-blue-100">
                   VELIZO Platform
                 </span>
-                <h3 className="text-xs font-extrabold text-slate-400 block mt-1 uppercase tracking-wider">
+                <h3 className="text-xs font-extrabold text-slate-400 block mt-1.5 uppercase tracking-wider">
                   System Update &bull; Pinned
                 </h3>
               </div>
-              <Bookmark className="h-4.5 w-4.5 text-primary" />
+              <Bookmark className="h-5 w-5 text-primary" />
             </div>
 
-            {/* Announcement Message Layout: Image left, Text right */}
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
+            {/* Announcement Message Layout: Speech bubble speaking woman */}
+            <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 items-center">
+              {/* Welcoming Woman Left Column */}
               <div className="sm:col-span-1 flex justify-center">
                 <img 
                   src="/welcome_announcement.png" 
                   alt="Welcome Announcement" 
-                  className="max-h-24 w-auto object-contain rounded-xl"
+                  className="max-h-36 w-auto object-contain rounded-xl drop-shadow-md"
                 />
               </div>
-              <div className="sm:col-span-3">
-                <p className="text-xs font-semibold text-slate-655 leading-relaxed bg-slate-50 p-4 rounded-xl border border-slate-155">
+              
+              {/* Speech Bubble Right Column */}
+              <div className="sm:col-span-3 relative pl-2">
+                <div className="relative bg-slate-50 p-5 rounded-2xl border border-slate-250 text-xs font-semibold text-slate-655 leading-relaxed shadow-3xs">
+                  {/* Speech bubble tail pointing left */}
+                  <div className="absolute top-1/2 -left-2 -translate-y-1/2 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-slate-250" />
+                  <div className="absolute top-1/2 -left-[7px] -translate-y-1/2 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-slate-50" />
+                  
                   Welcome to the new VELIZO workspace! We have upgraded the verification engine to synchronize with standard global employer trust rules. Complete your Education and Employment history to trigger automatic verification requests.
-                </p>
+                </div>
               </div>
             </div>
 
             {/* Verification Section Layout: Text left, Image right */}
-            <div className="p-4 rounded-xl border-2 border-primary/20 bg-blue-50/10 grid grid-cols-1 sm:grid-cols-4 gap-4 items-center">
+            <div className="p-5 rounded-2xl border border-slate-200 bg-gradient-to-br from-blue-50/30 to-indigo-50/10 grid grid-cols-1 sm:grid-cols-4 gap-6 items-center shadow-3xs">
               <div className="sm:col-span-3 space-y-4">
                 <div>
-                  <h4 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
-                    <ShieldCheck className="h-4.5 w-4.5 text-primary" /> Verify Your Credentials
+                  <h4 className="text-sm font-black text-slate-900 flex items-center gap-1.5">
+                    <ShieldCheck className="h-5 w-5 text-primary shrink-0" /> Verify Your Credentials
                   </h4>
-                  <p className="text-[10px] text-slate-500 font-semibold mt-1">
+                  <p className="text-[11px] text-slate-500 font-semibold mt-1">
                     Verified profiles receive 10x higher response rates from international employers.
                   </p>
                 </div>
 
                 {/* Steps Checklist */}
-                <div className="space-y-2">
-                  <h5 className="text-[9px] font-extrabold text-slate-450 uppercase tracking-widest">
+                <div className="space-y-2.5">
+                  <h5 className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
                     Verification Steps Checklist
                   </h5>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {isCandidate ? (
                       <>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${passport?.identity_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
-                          <span className="text-[9px] font-bold text-slate-700">Identity Check</span>
+                        <div className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-4 w-4 shrink-0 ${passport?.identity_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[10px] font-extrabold text-slate-700">Identity Check</span>
                         </div>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${passport?.education_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
-                          <span className="text-[9px] font-bold text-slate-700">Education Details</span>
+                        <div className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-4 w-4 shrink-0 ${passport?.education_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[10px] font-extrabold text-slate-700">Education Details</span>
                         </div>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${passport?.employment_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
-                          <span className="text-[9px] font-bold text-slate-700">Employment History</span>
+                        <div className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-4 w-4 shrink-0 ${passport?.employment_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[10px] font-extrabold text-slate-700">Employment History</span>
                         </div>
                       </>
                     ) : (
                       <>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${company?.is_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
-                          <span className="text-[9px] font-bold text-slate-700">Corporate Details</span>
+                        <div className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-4 w-4 shrink-0 ${company?.is_verified ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[10px] font-extrabold text-slate-700">Corporate Details</span>
                         </div>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${company?.website ? 'text-emerald-500' : 'text-slate-300'}`} />
-                          <span className="text-[9px] font-bold text-slate-700">Website Linked</span>
+                        <div className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-4 w-4 shrink-0 ${company?.website ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[10px] font-extrabold text-slate-700">Website Linked</span>
                         </div>
-                        <div className="flex items-center gap-2 p-2 rounded-lg border border-slate-150 bg-white shadow-3xs">
-                          <CheckCircle2 className={`h-3.5 w-3.5 shrink-0 ${company?.description ? 'text-emerald-500' : 'text-slate-300'}`} />
-                          <span className="text-[9px] font-bold text-slate-700">Business Summary</span>
+                        <div className="flex items-center gap-2.5 p-3 rounded-xl border border-slate-150 bg-white shadow-3xs">
+                          <CheckCircle2 className={`h-4 w-4 shrink-0 ${company?.description ? 'text-emerald-500' : 'text-slate-300'}`} />
+                          <span className="text-[10px] font-extrabold text-slate-700">Business Summary</span>
                         </div>
                       </>
                     )}
@@ -477,19 +484,22 @@ export default function Home() {
                 </div>
 
                 {/* Start CTA Button */}
-                <Link 
-                  href="/passport" 
-                  className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-primary hover:bg-[#084e96] text-white text-[11px] font-bold rounded-xl transition-all shadow-3xs cursor-pointer"
-                >
-                  Start Verification
-                </Link>
+                <div className="pt-1">
+                  <Link 
+                    href="/passport" 
+                    className="inline-flex items-center justify-center w-full sm:w-auto px-5 py-2.5 bg-primary hover:bg-[#084e96] text-white text-[11px] font-bold rounded-xl transition-all shadow-sm hover:shadow-md cursor-pointer"
+                  >
+                    Start Verification
+                  </Link>
+                </div>
               </div>
 
+              {/* Verification Illustration Right Column */}
               <div className="sm:col-span-1 flex justify-center">
                 <img 
                   src="/credentials_verification.png" 
                   alt="Credentials Verification" 
-                  className="max-h-28 w-auto object-contain rounded-xl"
+                  className="max-h-36 w-auto object-contain rounded-xl drop-shadow-md"
                 />
               </div>
             </div>
