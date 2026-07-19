@@ -636,7 +636,7 @@ export default function Home() {
                     </div>
 
                     <Link 
-                      href="/jobs" 
+                      href={`/jobs/${job.id}`} 
                       className="px-4 py-2 bg-gradient-to-r from-primary to-[#084e96] hover:from-[#084e96] hover:to-[#063f7a] text-white text-xs font-black rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 shadow-3xs hover:shadow-2xs flex items-center justify-center gap-1.5 shrink-0 cursor-pointer group"
                     >
                       <span>Apply Placement</span>

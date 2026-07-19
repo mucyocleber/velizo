@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import { supabase } from '@/lib/supabase';
 import { Briefcase, MapPin, Search, DollarSign, Filter, ChevronRight } from 'lucide-react';
@@ -83,9 +84,10 @@ export default function JobsPage() {
               </div>
             ) : (
               jobs.map((job) => (
-                <div 
+                <Link 
                   key={job.id}
-                  className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-primary/50 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 cursor-pointer"
+                  href={`/jobs/${job.id}`}
+                  className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-primary/50 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 cursor-pointer block"
                 >
                   <div className="space-y-2">
                     <span className="text-[10px] font-extrabold text-primary uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
@@ -99,7 +101,7 @@ export default function JobsPage() {
                     </div>
                   </div>
                   <ChevronRight className="h-5 w-5 text-slate-400 self-center hidden sm:block" />
-                </div>
+                </Link>
               ))
             )}
           </div>
