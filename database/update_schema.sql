@@ -18,15 +18,18 @@ create table if not exists public.admin_profiles (
 alter table public.admin_profiles enable row level security;
 
 -- Admin profiles RLS Policies
+DROP POLICY IF EXISTS "Allow admins to read all admin profiles" ON public.admin_profiles;
 create policy "Allow admins to read all admin profiles" on public.admin_profiles
     for select using (
         exists (select 1 from public.profiles where profiles.id = auth.uid() and profiles.role in ('admin', 'super_admin'))
     );
 
+DROP POLICY IF EXISTS "Allow super admins to manage admin profiles" ON public.admin_profiles;
 create policy "Allow super admins to manage admin profiles" on public.admin_profiles
     for all using (
         exists (select 1 from public.profiles where profiles.id = auth.uid() and profiles.role = 'super_admin')
     );
+
 
 -- 2. Update handles_new_user() trigger function to partition super_admin and admin profiles
 create or replace function public.handle_new_user()
@@ -59,3 +62,26 @@ begin
   return new;
 end;
 $$ language plpgsql security definer;
+
+-- 3. Add international recruitment and matching columns to public.jobs
+ALTER TABLE public.jobs 
+ADD COLUMN IF NOT EXISTS visa_sponsorship boolean DEFAULT false,
+ADD COLUMN IF NOT EXISTS relocation_support boolean DEFAULT false,
+ADD COLUMN IF NOT EXISTS skills_required text[],
+ADD COLUMN IF NOT EXISTS external_apply_url text;
+
+-- 4. Recreate the jobs_with_companies view to automatically pull the new columns
+DROP VIEW IF EXISTS public.jobs_with_companies;
+CREATE OR REPLACE VIEW public.jobs_with_companies AS
+SELECT 
+  j.*,
+  c.company_name,
+  c.logo_url,
+  c.website,
+  c.industry,
+  c.company_size,
+  c.description AS company_description,
+  c.is_verified AS company_verified
+FROM public.jobs j
+LEFT JOIN public.company_profiles c ON j.employer_id = c.employer_id;
+
