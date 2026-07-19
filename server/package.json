@@ -8,7 +8,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "db:setup": "tsx src/scripts/setup-db.ts",
-    "db:update": "tsx src/scripts/update-db.ts"
+    "db:update": "tsx src/scripts/update-db.ts",
+    "db:seed": "tsx src/scripts/seed-jobs.ts"
   },
   "keywords": [
     "velizo",
