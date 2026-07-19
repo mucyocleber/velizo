@@ -114,6 +114,7 @@ export default function JobDetailPage({ params }: Props) {
       return;
     }
 
+    if (submitting || applied || success) return;
     setSubmitting(true);
 
     try {
@@ -222,7 +223,9 @@ export default function JobDetailPage({ params }: Props) {
         </div>
 
         {/* Job Header Hero Section */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-3xs space-y-5">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-3xs space-y-5 relative overflow-hidden">
+          {/* Subtle colored top strip */}
+          <div className="absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-[#0a5fcc] via-indigo-500 to-[#0a5fcc]" />
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex items-center gap-4">
               <div className="h-12 w-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary font-bold shrink-0 overflow-hidden">
@@ -489,7 +492,7 @@ export default function JobDetailPage({ params }: Props) {
                   {/* Submission Button */}
                   <button 
                     type="submit"
-                    disabled={submitting}
+                    disabled={submitting || applied || success}
                     className="w-full py-2.5 bg-gradient-to-r from-primary to-[#084e96] hover:from-[#084e96] hover:to-[#063f7a] text-white text-xs font-black rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     {submitting ? (
