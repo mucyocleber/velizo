@@ -357,7 +357,9 @@ export default function Header() {
     router.push('/');
   };
 
-  const nameInitial = profile?.full_name ? profile.full_name.charAt(0).toUpperCase() : 'U';
+  const nameInitial = profile?.full_name 
+    ? profile.full_name.split(' ').map((n: any) => n[0]).join('').toUpperCase().slice(0, 2) 
+    : 'U';
   const isCandidate = profile?.role === 'candidate';
 
   // Shared Notifications Panel Card Component
@@ -1018,7 +1020,13 @@ export default function Header() {
               pathname === '/passport' ? 'text-primary font-bold' : 'text-slate-500 hover:text-primary'
             }`}
           >
-            <User className="h-5 w-5" />
+            <div className={`h-6 w-6 rounded-full flex items-center justify-center text-white text-[9px] font-black shrink-0 overflow-hidden border transition-all ${
+              pathname === '/passport' ? 'border-[#0a5fcc] ring-2 ring-blue-100 bg-[#0a5fcc]' : 'border-slate-200 bg-gradient-to-br from-[#0a5fcc] to-indigo-500'
+            }`}>
+              {profile?.avatar_url ? (
+                <img src={profile.avatar_url} alt="avatar" className="h-full w-full object-cover" />
+              ) : nameInitial}
+            </div>
             <span className="text-[9px] font-bold mt-1">Profile</span>
           </Link>
         </nav>
