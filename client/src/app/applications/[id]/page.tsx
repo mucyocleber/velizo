@@ -147,6 +147,18 @@ export default function ApplicationDetailPage({ params }: Props) {
     }
   };
 
+  const getFileName = (url: string | null) => {
+    if (!url) return 'VELIZO_Career_Passport.pdf';
+    try {
+      const decoded = decodeURIComponent(url);
+      const parts = decoded.split('/');
+      const last = parts[parts.length - 1];
+      return last.split('?')[0] || 'Career_Passport.pdf';
+    } catch {
+      return 'Career_Passport.pdf';
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col pb-20 md:pb-8">
       <Header />
@@ -265,24 +277,40 @@ export default function ApplicationDetailPage({ params }: Props) {
             </div>
 
             {/* Submitted Passport Credentials Summary */}
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-3xs space-y-4">
+            <div className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-3xs space-y-4">
               <h2 className="text-sm font-black text-slate-900 border-b border-slate-100 pb-2.5 uppercase tracking-wide">
                 Linked Credentials Passport
               </h2>
-              <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 bg-blue-50 border border-blue-150 rounded-lg flex items-center justify-center text-primary shrink-0">
+              <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-start sm:items-center gap-3 min-w-0">
+                  <div className="h-10 w-10 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center text-primary shrink-0">
                     <FileText className="h-5 w-5" />
                   </div>
-                  <div>
-                    <p className="text-xs font-black text-slate-800">VELIZO_Career_Passport.pdf</p>
-                    <p className="text-[10px] text-slate-450 font-semibold mt-0.5">Includes verified education & work history certifications.</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-black text-slate-800 break-all leading-snug">
+                      {getFileName(app.resume_url)}
+                    </p>
+                    <p className="text-[10px] text-slate-450 font-semibold mt-0.5 leading-normal">
+                      Includes verified education & work history certifications.
+                    </p>
                   </div>
                 </div>
                 
-                <span className="text-[9px] font-black uppercase text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100 shrink-0">
-                  Verified Active
-                </span>
+                <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
+                  <span className="text-[9px] font-black uppercase text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+                    Verified Active
+                  </span>
+                  {app.resume_url && (
+                    <a 
+                      href={app.resume_url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[9px] font-black uppercase tracking-wider text-[#0a5fcc] hover:text-blue-600 bg-white border border-slate-200 hover:border-blue-200 px-2 py-0.5 rounded transition-all shadow-3xs"
+                    >
+                      View <ExternalLink className="h-3 w-3" />
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
 
