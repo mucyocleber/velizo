@@ -23,8 +23,10 @@ export default function ApplicationsPage() {
           job_id,
           jobs (
             title,
-            company_profiles (
-              company_name
+            profiles (
+              company_profiles (
+                company_name
+              )
             )
           )
         `)
@@ -40,13 +42,22 @@ export default function ApplicationsPage() {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
+      case 'submitted':
+        return <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-blue-50 text-blue-650 border border-blue-200">Submitted</span>;
+      case 'reviewing':
+        return <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-amber-50 text-amber-655 border border-amber-200">In Review</span>;
       case 'shortlisted':
-        return <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-50 text-emerald-600 border border-emerald-200">Shortlisted</span>;
+        return <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-indigo-50 text-indigo-655 border border-indigo-200">Shortlisted</span>;
+      case 'interview':
+        return <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-purple-50 text-purple-650 border border-purple-200">Interviewing</span>;
+      case 'offered':
+        return <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-50 text-emerald-650 border border-emerald-200">Offered</span>;
+      case 'hired':
+        return <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-emerald-100 text-emerald-700 border border-emerald-300">Hired</span>;
       case 'rejected':
         return <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-red-50 text-red-500 border border-red-200">Rejected</span>;
-      case 'applied':
       default:
-        return <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-blue-50 text-blue-600 border border-blue-200">Applied</span>;
+        return <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase bg-slate-50 text-slate-650 border border-slate-200">Applied</span>;
     }
   };
 
@@ -85,7 +96,7 @@ export default function ApplicationsPage() {
             ) : (
               applications.map((app) => {
                 const jobTitle = (app.jobs as any)?.title || 'Job Position';
-                const companyName = (app.jobs as any)?.company_profiles?.company_name || 'Employer';
+                const companyName = (app.jobs as any)?.profiles?.company_profiles?.company_name || 'Employer';
                 return (
                   <div key={app.id} className="p-4 grid grid-cols-4 items-center text-xs font-semibold text-slate-700">
                     <div className="col-span-2 space-y-1">
