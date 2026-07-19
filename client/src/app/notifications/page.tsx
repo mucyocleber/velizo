@@ -59,11 +59,13 @@ function NotificationsContent() {
   // Auto-select notification if ?id= is provided in URL (from Header bell click)
   useEffect(() => {
     const idParam = searchParams?.get('id');
-    if (idParam && notifications.length > 0 && !selectedNotification) {
+    if (idParam && notifications.length > 0) {
       const target = notifications.find(n => n.id === idParam);
-      if (target) handleSelectNotification(target);
+      if (target && selectedNotification?.id !== idParam) {
+        handleSelectNotification(target);
+      }
     }
-  }, [searchParams, notifications]);
+  }, [searchParams, notifications, selectedNotification]);
 
   // 2. Real-time Subscription
   useEffect(() => {
