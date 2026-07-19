@@ -55,7 +55,8 @@ export default function Header() {
   const modalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const notificationsRef = useRef<HTMLDivElement>(null);
+  const desktopNotificationsRef = useRef<HTMLDivElement>(null);
+  const mobileNotificationsRef = useRef<HTMLDivElement>(null);
 
   // 1. Session and Profile Tracking
   useEffect(() => {
@@ -136,7 +137,9 @@ export default function Header() {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsProfileDropdownOpen(false);
       }
-      if (notificationsRef.current && !notificationsRef.current.contains(event.target as Node)) {
+      const clickedDesktopNotifications = desktopNotificationsRef.current && desktopNotificationsRef.current.contains(event.target as Node);
+      const clickedMobileNotifications = mobileNotificationsRef.current && mobileNotificationsRef.current.contains(event.target as Node);
+      if (!clickedDesktopNotifications && !clickedMobileNotifications) {
         setIsNotificationsOpen(false);
       }
     };
@@ -531,7 +534,7 @@ export default function Header() {
               {session ? (
                 <>
                   {/* Notifications Bell */}
-                  <div className="relative" ref={notificationsRef}>
+                  <div className="relative" ref={desktopNotificationsRef}>
                     <button
                       onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
                       className={`relative flex items-center justify-center h-8 w-8 rounded-xl transition-all duration-150 cursor-pointer focus:outline-none ${
@@ -652,7 +655,7 @@ export default function Header() {
 
             {/* ── MOBILE Right: Notifications + Settings ── */}
             {session && (
-              <div className="md:hidden flex items-center gap-2 relative" ref={notificationsRef}>
+              <div className="md:hidden flex items-center gap-2 relative" ref={mobileNotificationsRef}>
                 <button
                   onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
                   className="relative flex items-center justify-center h-8 w-8 rounded-xl text-slate-500 hover:bg-slate-100 cursor-pointer focus:outline-none"
