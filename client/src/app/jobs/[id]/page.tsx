@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
@@ -20,7 +20,8 @@ import {
   Clock,
   FileText,
   User,
-  Check
+  Check,
+  X
 } from 'lucide-react';
 
 interface Props {
@@ -29,6 +30,7 @@ interface Props {
 
 export default function JobDetailPage({ params }: Props) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [jobId, setJobId] = useState<string | null>(null);
   const [job, setJob] = useState<any>(null);
   const [user, setUser] = useState<any>(null);
@@ -39,7 +41,9 @@ export default function JobDetailPage({ params }: Props) {
   
   // Form State
   const [coverLetter, setCoverLetter] = useState('');
-  const [resumeUrl, setResumeUrl] = useState('https://ukwrryamwqaevgqnchfq.supabase.co/storage/v1/object/public/resumes/default_resume.pdf');
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [resumeUrl, setResumeUrl] = useState<string>('');
+  const [uploadingResume, setUploadingResume] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -107,6 +111,21 @@ export default function JobDetailPage({ params }: Props) {
     fetchJobAndApplication();
   }, [jobId]);
 
+  // Upload resume file to Supabase storage and return public URL
+  const uploadResume = async (file: File): Promise<string> => {
+    const ext = file.name.split('.').pop();
+    const path = `${user.id}/${Date.now()}_resume.${ext}`;
+    
+    const { error: uploadError } = await supabase.storage
+      .from('resumes')
+      .upload(path, file, { upsert: true });
+    
+    if (uploadError) throw new Error(`Upload failed: ${uploadError.message}`);
+    
+    const { data } = supabase.storage.from('resumes').getPublicUrl(path);
+    return data.publicUrl;
+  };
+
   const handleApply = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) {
@@ -118,13 +137,28 @@ export default function JobDetailPage({ params }: Props) {
     setSubmitting(true);
 
     try {
+      let finalResumeUrl = resumeUrl;
+
+      // If a file was selected, upload it first
+      if (resumeFile) {
+        setUploadingResume(true);
+        finalResumeUrl = await uploadResume(resumeFile);
+        setResumeUrl(finalResumeUrl);
+        setUploadingResume(false);
+      }
+
+      // Require at least a resume URL (uploaded file or passport URL)
+      if (!finalResumeUrl) {
+        throw new Error('Please attach your CV or credentials document before submitting.');
+      }
+
       // 1. Insert into job_applications table
       const { data, error } = await supabase
         .from('job_applications')
         .insert({
           job_id: jobId,
           candidate_id: user.id,
-          resume_url: resumeUrl,
+          resume_url: finalResumeUrl,
           cover_letter: coverLetter,
           status: 'submitted'
         })
@@ -133,7 +167,7 @@ export default function JobDetailPage({ params }: Props) {
 
       if (error) throw error;
 
-      // 2. Create notification for the employer/publisher
+      // 2. Create notification for the employer
       await supabase
         .from('notifications')
         .insert({
@@ -144,12 +178,12 @@ export default function JobDetailPage({ params }: Props) {
           is_read: false
         });
 
-      // 3. Update local state
       setApplied(true);
       setApplication(data);
       setSuccess(true);
     } catch (err: any) {
       console.error('Error submitting application:', err);
+      setUploadingResume(false);
       alert(err.message || 'Failed to submit application.');
     } finally {
       setSubmitting(false);
@@ -460,50 +494,77 @@ export default function JobDetailPage({ params }: Props) {
                 </div>
               ) : (
                 <form onSubmit={handleApply} className="space-y-4">
-                  {/* Resume box */}
-                  <div className="space-y-1">
+                  {/* Hidden file input */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf,.doc,.docx,image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) setResumeFile(file);
+                    }}
+                  />
+
+                  {/* Resume / CV Upload */}
+                  <div className="space-y-1.5">
                     <label className="block text-[9px] font-black text-slate-400 uppercase tracking-wider">
-                      Matching Credentials
+                      Credentials / CV Document
                     </label>
-                    <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-between text-xs font-semibold text-slate-700">
-                      <div className="flex items-center gap-2 overflow-hidden">
-                        <FileText className="h-4.5 w-4.5 text-slate-400 shrink-0" />
-                        <span className="truncate text-[10px]">VELIZO_Career_Passport.pdf</span>
+                    {resumeFile ? (
+                      <div className="p-3 bg-emerald-50 border border-emerald-100 rounded-xl flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <FileText className="h-4 w-4 text-emerald-500 shrink-0" />
+                          <span className="text-[10px] font-bold text-emerald-700 truncate">{resumeFile.name}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setResumeFile(null)}
+                          className="shrink-0 text-emerald-400 hover:text-red-500 transition-colors cursor-pointer"
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
                       </div>
-                      <span className="text-[8px] font-black uppercase text-emerald-600 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-100 shrink-0">
-                        Linked
-                      </span>
-                    </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full p-3.5 bg-slate-50 border border-dashed border-slate-300 hover:border-primary hover:bg-blue-50/30 rounded-xl flex items-center justify-center gap-2 text-xs font-bold text-slate-500 hover:text-primary transition-all cursor-pointer"
+                      >
+                        <Upload className="h-4 w-4" />
+                        <span>Upload CV / Credentials (PDF, DOC, Image)</span>
+                      </button>
+                    )}
                   </div>
 
                   {/* Cover Letter Input */}
                   <div className="space-y-1">
                     <label className="block text-[9px] font-black text-slate-400 uppercase tracking-wider">
-                      Message to Recruiter (Optional)
+                      Message to Recruiter <span className="text-slate-300">(Optional)</span>
                     </label>
                     <textarea 
                       value={coverLetter}
                       onChange={(e) => setCoverLetter(e.target.value)}
                       placeholder="Briefly pitch your interest in this role..."
-                      className="w-full p-3 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-primary min-h-[90px] placeholder-slate-400"
+                      className="w-full p-3 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-primary min-h-[90px] placeholder-slate-400 resize-none"
                     />
                   </div>
 
                   {/* Submission Button */}
                   <button 
                     type="submit"
-                    disabled={submitting || applied || success}
-                    className="w-full py-2.5 bg-gradient-to-r from-primary to-[#084e96] hover:from-[#084e96] hover:to-[#063f7a] text-white text-xs font-black rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md disabled:opacity-50 cursor-pointer flex items-center justify-center gap-1.5"
+                    disabled={submitting || applied || success || !resumeFile}
+                    className="w-full py-2.5 bg-gradient-to-r from-primary to-[#084e96] hover:from-[#084e96] hover:to-[#063f7a] text-white text-xs font-black rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center justify-center gap-1.5"
                   >
-                    {submitting ? (
+                    {submitting || uploadingResume ? (
                       <>
                         <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Submitting Application...</span>
+                        <span>{uploadingResume ? 'Uploading Document...' : 'Submitting Application...'}</span>
                       </>
                     ) : (
                       <>
                         <Check className="h-4 w-4 shrink-0" />
-                        <span>Submit Credentials</span>
+                        <span>{resumeFile ? 'Submit Application' : 'Attach CV to Submit'}</span>
                       </>
                     )}
                   </button>

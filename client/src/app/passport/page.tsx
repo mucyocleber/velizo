@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -122,12 +122,22 @@ export default function PassportPage() {
       const ext = file.name.split('.').pop();
       const path = `${profile.id}/${field === 'avatar_url' ? 'avatar' : 'banner'}.${ext}`;
       const { error: uploadError } = await supabase.storage.from('avatars').upload(path, file, { upsert: true });
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        // Friendly message for missing bucket
+        if (uploadError.message?.toLowerCase().includes('bucket') || (uploadError as any)?.statusCode === 404 || (uploadError as any)?.error === 'Bucket not found') {
+          alert('Storage is not set up yet. Please run the storage.sql migration in your Supabase SQL Editor to create the required buckets, then try again.');
+          return;
+        }
+        throw uploadError;
+      }
       const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(path);
       const publicUrl = `${urlData.publicUrl}?t=${Date.now()}`;
       await supabase.from('profiles').update({ [field]: publicUrl, updated_at: new Date().toISOString() }).eq('id', profile.id);
       setProfile((prev) => prev ? { ...prev, [field]: publicUrl } : prev);
-    } catch (err) { console.error('Upload error:', err); } finally { setUploading(null); }
+    } catch (err: any) {
+      console.error('Upload error:', err);
+      if (err?.message) alert(`Upload failed: ${err.message}`);
+    } finally { setUploading(null); }
   };
 
   const handleAvatarFileChange = (e: React.ChangeEvent<HTMLInputElement>) => { const file = e.target.files?.[0]; if (file) uploadFile(file, 'avatar_url'); };
