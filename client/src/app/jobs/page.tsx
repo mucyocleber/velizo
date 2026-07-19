@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import { supabase } from '@/lib/supabase';
 import { 
@@ -22,6 +23,7 @@ import {
 } from 'lucide-react';
 
 export default function JobsPage() {
+  const router = useRouter();
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -99,22 +101,31 @@ export default function JobsPage() {
       <div className="h-[2px] w-full bg-gradient-to-r from-[#0a5fcc] via-indigo-500 to-[#0a5fcc]" />
 
       <main className="max-w-6xl mx-auto px-4 py-8 w-full flex-1 flex flex-col">
-        {/* Page Title Row */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-          <div>
-            <h1 className="text-xl font-black text-slate-900 flex items-center gap-2">
-              <Briefcase className="h-5.5 w-5.5 text-primary" /> Browse Placements
-            </h1>
-            <p className="text-xs text-slate-455 font-bold mt-0.5">
-              Explore open positions and filter international roles targeting global candidates
-            </p>
+        {/* Banner Hero Section */}
+        <div className="w-full bg-gradient-to-r from-[#0b1329] to-indigo-950 rounded-3xl p-6 sm:p-8 mb-8 relative overflow-hidden border border-slate-800 shadow-md">
+          {/* Subtle overlay decorative elements */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#0a5fcc]/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="relative z-10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+            <div className="space-y-2 max-w-2xl text-left">
+              <span className="text-[9px] font-black text-[#0a5fcc] uppercase tracking-widest bg-blue-950/60 border border-blue-900/50 px-2.5 py-1 rounded-lg">
+                International Careers
+              </span>
+              <h1 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                Browse Placements
+              </h1>
+              <p className="text-xs sm:text-sm text-slate-350 font-semibold leading-relaxed">
+                Explore open positions and filter international roles targeting global candidates
+              </p>
+            </div>
+            <button 
+              onClick={() => setIsMobileFilterOpen(true)}
+              className="md:hidden flex items-center gap-1.5 px-4 py-2.5 bg-[#0a5fcc] text-white hover:bg-blue-600 text-xs font-black rounded-xl transition-all shadow-md shrink-0"
+            >
+              <SlidersHorizontal className="h-4 w-4" /> Filter Placements
+            </button>
           </div>
-          <button 
-            onClick={() => setIsMobileFilterOpen(true)}
-            className="md:hidden flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all shadow-3xs hover:bg-slate-50"
-          >
-            <SlidersHorizontal className="h-4 w-4" /> Filters
-          </button>
         </div>
 
         {/* Layout split: filters and results */}
@@ -279,25 +290,26 @@ export default function JobsPage() {
             ) : (
               <div className="space-y-4">
                 {filteredJobs.map((job) => (
-                  <Link 
+                  <div 
                     key={job.id}
-                    href={`/jobs/${job.id}`}
-                    className="bg-white p-5 rounded-2xl border border-slate-200 hover:border-primary/50 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 cursor-pointer block relative group overflow-hidden"
+                    onClick={() => router.push(`/jobs/${job.id}`)}
+                    className="bg-white rounded-2xl border border-slate-200 hover:border-[#0a5fcc]/50 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 p-4 sm:p-5 relative group overflow-hidden cursor-pointer"
                   >
-                    <div className="flex items-start gap-4 flex-1">
-                      {/* Company Logo Widget */}
-                      <div className="h-12 w-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0 overflow-hidden shadow-3xs">
+                    {/* Top Content Row: Logo + Metadata */}
+                    <div className="flex items-start gap-3.5 flex-1 min-w-0">
+                      {/* Company Logo */}
+                      <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-xl bg-blue-55 border border-blue-100/50 flex items-center justify-center shrink-0 overflow-hidden shadow-3xs">
                         {job.logo_url ? (
                           <img src={job.logo_url} alt={job.company_name} className="h-full w-full object-cover" />
                         ) : (
-                          <span className="text-primary font-black text-sm">{job.company_name?.charAt(0).toUpperCase()}</span>
+                          <span className="text-primary font-black text-xs uppercase">{job.company_name?.charAt(0)}</span>
                         )}
                       </div>
 
-                      {/* Job Metadata details */}
+                      {/* Job Info */}
                       <div className="space-y-1.5 flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-[10px] font-extrabold text-[#0a5fcc] tracking-wide uppercase">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[9px] sm:text-[10px] font-black text-[#0a5fcc] tracking-wider uppercase truncate max-w-[110px] sm:max-w-none">
                             {job.company_name}
                           </span>
                           {job.company_verified && (
@@ -312,25 +324,25 @@ export default function JobsPage() {
                           )}
                         </div>
 
-                        <h3 className="text-sm font-extrabold text-slate-900 group-hover:text-[#0a5fcc] transition-colors leading-snug truncate">
+                        <h3 className="text-xs sm:text-sm font-extrabold text-slate-900 group-hover:text-[#0a5fcc] transition-colors leading-snug break-words">
                           {job.title}
                         </h3>
 
                         {/* Attribute Badges */}
-                        <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-[10px] text-slate-500 font-semibold pt-0.5">
-                          <span className="flex items-center gap-1">
-                            <MapPin className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-[9px] sm:text-[10px] text-slate-500 font-semibold pt-0.5">
+                          <span className="flex items-center gap-1 truncate max-w-[130px] sm:max-w-none">
+                            <MapPin className="h-3 w-3 text-slate-400 shrink-0" />
                             {job.city || job.country} ({job.remote_type})
                           </span>
                           <span className="flex items-center gap-1 capitalize">
-                            <Briefcase className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                            <Briefcase className="h-3 w-3 text-slate-400 shrink-0" />
                             {job.employment_type?.replace('-', ' ') || 'Full Time'}
                           </span>
                           {(job.salary_min || job.salary_max) && (
-                            <span className="flex items-center gap-0.5">
-                              <DollarSign className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                            <span className="flex items-center gap-0.5 whitespace-nowrap">
+                              <DollarSign className="h-3 w-3 text-slate-400 shrink-0" />
                               {job.salary_min ? `${job.currency || '$'}${Number(job.salary_min).toLocaleString()}` : ''}
-                              {job.salary_min && job.salary_max ? ' - ' : ''}
+                              {job.salary_min && job.salary_max ? '-' : ''}
                               {job.salary_max ? `${job.currency || '$'}${Number(job.salary_max).toLocaleString()}` : ''}
                             </span>
                           )}
@@ -338,12 +350,24 @@ export default function JobsPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 self-stretch justify-end sm:self-center shrink-0">
-                      <span className="text-[10px] font-black text-primary group-hover:translate-x-0.5 transition-transform flex items-center gap-1 uppercase tracking-wider">
-                        View Details <ChevronRight className="h-4 w-4" />
-                      </span>
+                    {/* Bottom Action Row: Professional Button */}
+                    <div className="border-t border-slate-100 pt-3 flex items-center justify-between gap-3">
+                      <div className="hidden sm:block">
+                        <span className="text-[8px] text-slate-400 font-bold block uppercase tracking-wider">Deadline</span>
+                        <span className="text-[10px] text-slate-700 font-extrabold block">
+                          {job.application_deadline ? new Date(job.application_deadline).toLocaleDateString() : 'Open Recruitment'}
+                        </span>
+                      </div>
+                      <Link 
+                        href={`/jobs/${job.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-full sm:w-auto px-4 py-2 bg-slate-50 hover:bg-blue-50 text-[#0a5fcc] text-[10px] font-black uppercase tracking-wider rounded-xl border border-slate-200 hover:border-blue-200 transition-all text-center flex items-center justify-center gap-1 group/btn"
+                      >
+                        Apply / View Placement
+                        <ChevronRight className="h-3.5 w-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                      </Link>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             )}
