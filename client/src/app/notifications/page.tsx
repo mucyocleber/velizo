@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import Header from '@/components/layout/Header';
 import { 
@@ -20,8 +20,9 @@ import {
   ChevronRight
 } from 'lucide-react';
 
-export default function NotificationsPage() {
+function NotificationsContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [session, setSession] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -54,6 +55,15 @@ export default function NotificationsPage() {
 
     checkSession();
   }, []);
+
+  // Auto-select notification if ?id= is provided in URL (from Header bell click)
+  useEffect(() => {
+    const idParam = searchParams?.get('id');
+    if (idParam && notifications.length > 0 && !selectedNotification) {
+      const target = notifications.find(n => n.id === idParam);
+      if (target) handleSelectNotification(target);
+    }
+  }, [searchParams, notifications]);
 
   // 2. Real-time Subscription
   useEffect(() => {
@@ -390,5 +400,17 @@ export default function NotificationsPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function NotificationsPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="animate-pulse text-slate-455 font-bold text-xs">Loading Workspace...</div>
+      </div>
+    }>
+      <NotificationsContent />
+    </Suspense>
   );
 }

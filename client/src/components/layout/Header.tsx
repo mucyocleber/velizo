@@ -231,17 +231,9 @@ export default function Header() {
       await handleMarkAsRead(notification.id);
     }
     setIsNotificationsOpen(false);
-    
-    // Redirect based on type
-    if (notification.type === 'application_update') {
-      router.push(isCandidate ? '/applications' : '/employer/applications');
-    } else if (notification.type === 'message') {
-      router.push('/messages');
-    } else if (notification.type === 'job_alert') {
-      router.push('/jobs');
-    } else {
-      router.push('/home');
-    }
+    // Always navigate to the full notifications page with the notification ID
+    // so the detail view opens automatically on the right side
+    router.push(`/notifications?id=${notification.id}`);
   };
 
   // Helper to format timestamps to relative time
@@ -367,14 +359,20 @@ export default function Header() {
 
   // Shared Notifications Panel Card Component
   const renderNotificationsPanel = () => (
-    <div className="absolute right-0 mt-2.5 w-80 sm:w-96 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden z-50 animate-scaleUp text-left">
+    <div className="absolute right-0 mt-2.5 w-80 sm:w-96 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden z-[60] animate-scaleUp text-left">
       {/* Header */}
-      <div className="p-3.5 bg-slate-50 border-b border-slate-150 flex items-center justify-between">
-        <span className="text-xs font-extrabold text-slate-800">Notifications</span>
+      <div className="px-4 py-3 bg-gradient-to-r from-[#0a5fcc] to-indigo-700 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <Bell className="h-3.5 w-3.5 text-white/80" />
+          <span className="text-xs font-extrabold text-white tracking-wide">Notifications</span>
+          {unreadCount > 0 && (
+            <span className="bg-white/20 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full">{unreadCount} new</span>
+          )}
+        </div>
         {unreadCount > 0 && (
-          <button 
-            onClick={handleMarkAllAsRead}
-            className="text-[10px] text-primary hover:underline font-bold flex items-center gap-1 cursor-pointer"
+          <button
+            onClick={(e) => { e.stopPropagation(); handleMarkAllAsRead(); }}
+            className="text-[10px] text-blue-100 hover:text-white font-bold flex items-center gap-1 cursor-pointer transition-colors"
           >
             <CheckCheck className="h-3 w-3" /> Mark all read
           </button>
@@ -382,42 +380,47 @@ export default function Header() {
       </div>
 
       {/* Body List */}
-      <div className="max-h-[300px] overflow-y-auto custom-scrollbar divide-y divide-slate-100">
+      <div className="max-h-[320px] overflow-y-auto custom-scrollbar divide-y divide-slate-100">
         {notifications.length === 0 ? (
-          <div className="p-8 text-center text-slate-400 font-semibold text-xs">
-            <Bell className="h-8 w-8 mx-auto text-slate-350 mb-2" />
-            No notifications yet
+          <div className="p-10 text-center text-slate-400 font-semibold text-xs">
+            <Bell className="h-8 w-8 mx-auto text-slate-300 mb-3" />
+            <p className="font-extrabold text-slate-500">All caught up!</p>
+            <p className="mt-0.5 text-[10px]">No notifications yet</p>
           </div>
         ) : (
           notifications.map((notif) => (
-            <div 
+            <div
               key={notif.id}
               onClick={() => handleNotificationClick(notif)}
-              className={`p-3.5 flex items-start gap-3 hover:bg-slate-50 transition-colors cursor-pointer relative ${
-                !notif.is_read ? 'bg-blue-50/20' : ''
+              className={`group p-3.5 flex items-start gap-3 hover:bg-slate-50 transition-colors cursor-pointer relative ${
+                !notif.is_read ? 'bg-blue-50/30' : ''
               }`}
             >
-              {/* Unread Indicator dot */}
+              {/* Unread dot */}
               {!notif.is_read && (
-                <span className="absolute top-4 right-3 h-2 w-2 bg-primary rounded-full"></span>
+                <span className="absolute top-3.5 right-3 h-2 w-2 bg-[#0a5fcc] rounded-full ring-2 ring-white" />
               )}
 
-              {/* Icon based on Type */}
-              <div className={`p-1.5 rounded-lg shrink-0 ${
+              {/* Icon */}
+              <div className={`p-1.5 rounded-xl shrink-0 ${
                 notif.type === 'application_update' ? 'bg-emerald-50 text-emerald-600' :
-                notif.type === 'message' ? 'bg-blue-50 text-blue-600' : 'bg-amber-50 text-amber-600'
+                notif.type === 'message' ? 'bg-blue-50 text-blue-600' :
+                notif.type === 'job_alert' ? 'bg-indigo-50 text-indigo-600' :
+                'bg-amber-50 text-amber-600'
               }`}>
                 {notif.type === 'application_update' ? <ClipboardList className="h-4 w-4" /> :
                  notif.type === 'message' ? <MessageSquare className="h-4 w-4" /> :
                  <Bell className="h-4 w-4" />}
               </div>
 
-              {/* Text content */}
-              <div className="flex-1 min-w-0 pr-2">
-                <h4 className="text-[11px] font-extrabold text-slate-800 truncate leading-snug">
+              {/* Text */}
+              <div className="flex-1 min-w-0">
+                <h4 className={`text-[11px] font-extrabold truncate leading-snug ${
+                  !notif.is_read ? 'text-slate-900' : 'text-slate-600'
+                }`}>
                   {notif.title}
                 </h4>
-                <p className="text-[10px] text-slate-500 font-semibold leading-normal mt-0.5 line-clamp-2">
+                <p className="text-[10px] text-slate-500 font-medium leading-normal mt-0.5 line-clamp-2">
                   {notif.content}
                 </p>
                 <span className="text-[9px] text-slate-400 font-bold block mt-1">
@@ -425,11 +428,11 @@ export default function Header() {
                 </span>
               </div>
 
-              {/* Individual Mark as Read Trigger */}
+              {/* Mark as read button — always visible for unread, shows on hover for read */}
               {!notif.is_read && (
-                <button 
+                <button
                   onClick={(e) => handleMarkAsRead(notif.id, e)}
-                  className="self-center p-1 text-slate-350 hover:text-primary rounded-full hover:bg-slate-100 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="self-center shrink-0 p-1.5 text-slate-400 hover:text-[#0a5fcc] hover:bg-blue-50 rounded-lg transition-all"
                   title="Mark as read"
                 >
                   <CheckCheck className="h-3.5 w-3.5" />
@@ -441,14 +444,14 @@ export default function Header() {
       </div>
 
       {/* Footer */}
-      <div className="p-2.5 bg-slate-50 border-t border-slate-150 text-center">
-        <Link 
-          href="/notifications" 
-          onClick={() => setIsNotificationsOpen(false)}
-          className="text-[10px] text-slate-500 hover:text-primary font-bold hover:underline"
+      <div className="px-4 py-2.5 bg-slate-50 border-t border-slate-150 flex items-center justify-between">
+        <span className="text-[10px] text-slate-400 font-semibold">{notifications.length} total</span>
+        <button
+          onClick={(e) => { e.stopPropagation(); setIsNotificationsOpen(false); router.push('/notifications'); }}
+          className="text-[10px] text-[#0a5fcc] hover:underline font-extrabold flex items-center gap-1 cursor-pointer"
         >
-      View all notifications
-        </Link>
+          View all <ChevronRight className="h-3 w-3" />
+        </button>
       </div>
     </div>
   );
