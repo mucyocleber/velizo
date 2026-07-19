@@ -264,7 +264,9 @@ function NotificationsContent() {
 
       <main className="max-w-6xl mx-auto px-4 py-8 w-full flex-1 flex flex-col">
         {/* Page Hero Banner */}
-        <div className="w-full bg-gradient-to-r from-[#0b1329] to-indigo-950 rounded-3xl p-6 sm:p-8 mb-8 relative overflow-hidden border border-slate-800 shadow-md">
+        <div className={`w-full bg-gradient-to-r from-[#0b1329] to-indigo-950 rounded-3xl p-6 sm:p-8 mb-8 relative overflow-hidden border border-slate-800 shadow-md ${
+          mobileView === 'detail' ? 'hidden md:block' : 'block'
+        }`}>
           {/* Subtle overlay decorative elements */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#0a5fcc]/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
