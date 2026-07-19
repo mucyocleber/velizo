@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import { supabase } from '@/lib/supabase';
 import { ClipboardList, Calendar, MapPin, ExternalLink, CheckCircle } from 'lucide-react';
@@ -98,19 +99,23 @@ export default function ApplicationsPage() {
                 const jobTitle = (app.jobs as any)?.title || 'Job Position';
                 const companyName = (app.jobs as any)?.profiles?.company_profiles?.company_name || 'Employer';
                 return (
-                  <div key={app.id} className="p-4 grid grid-cols-4 items-center text-xs font-semibold text-slate-700">
+                  <Link 
+                    key={app.id} 
+                    href={`/applications/${app.id}`}
+                    className="p-4 grid grid-cols-4 items-center text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors block border-b border-slate-100 last:border-0"
+                  >
                     <div className="col-span-2 space-y-1">
                       <span className="font-extrabold text-slate-900 block">{jobTitle}</span>
-                      <span className="text-[10px] text-slate-450 block font-bold">{companyName}</span>
+                      <span className="text-[10px] text-slate-455 block font-bold">{companyName}</span>
                     </div>
-                    <span className="text-slate-450 flex items-center gap-1">
+                    <span className="text-slate-455 flex items-center gap-1">
                       <Calendar className="h-3.5 w-3.5 text-slate-400" />
                       {new Date(app.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                     <div className="text-right">
                       {getStatusBadge(app.status)}
                     </div>
-                  </div>
+                  </Link>
                 );
               })
             )}
