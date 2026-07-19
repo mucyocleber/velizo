@@ -154,6 +154,7 @@ create table if not exists public.jobs (
     relocation_support boolean default false,
     skills_required text[],
     external_apply_url text,
+    views_count integer default 0,
     status text default 'draft' check (status in ('draft', 'published', 'closed', 'archived')),
     application_deadline date,
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,

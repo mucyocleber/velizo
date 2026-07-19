@@ -89,7 +89,8 @@ async function seedJobs() {
         relocation_support: true,
         skills_required: ['React', 'Node.js', 'TypeScript', 'PostgreSQL'],
         external_apply_url: null,
-        status: 'published'
+        status: 'published',
+        views_count: 142
       },
       {
         employer_id: publisher.id,
@@ -120,7 +121,8 @@ async function seedJobs() {
         relocation_support: false,
         skills_required: ['Python', 'PyTorch', 'Machine Learning', 'AI', 'Transformers'],
         external_apply_url: 'https://careers.globaltech.example.com/jobs/ml-lead',
-        status: 'published'
+        status: 'published',
+        views_count: 389
       },
       {
         employer_id: publisher.id,
@@ -151,7 +153,8 @@ async function seedJobs() {
         relocation_support: true,
         skills_required: ['Figma', 'UI/UX Design', 'Wireframing', 'Prototyping'],
         external_apply_url: null,
-        status: 'published'
+        status: 'published',
+        views_count: 98
       },
       {
         employer_id: publisher.id,
@@ -182,26 +185,28 @@ async function seedJobs() {
         relocation_support: true,
         skills_required: ['Nursing', 'ICU', 'Patient Care', 'Clinical Healthcare'],
         external_apply_url: null,
-        status: 'published'
+        status: 'published',
+        views_count: 512
       }
     ];
 
     console.log('⚙️ Inserting new professional sample jobs...');
     for (const job of sampleJobs) {
+      const views = job.views_count || Math.floor(Math.random() * 100) + 10;
       await client.query(`
         INSERT INTO public.jobs (
           employer_id, title, category, employment_type, experience_level,
           salary_min, salary_max, currency, country, city, remote_type,
           description, requirements, benefits, visa_sponsorship,
-          relocation_support, skills_required, external_apply_url, status
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
+          relocation_support, skills_required, external_apply_url, status, views_count
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
       `, [
         job.employer_id, job.title, job.category, job.employment_type, job.experience_level,
         job.salary_min, job.salary_max, job.currency, job.country, job.city, job.remote_type,
         job.description, job.requirements, job.benefits, job.visa_sponsorship,
-        job.relocation_support, job.skills_required, job.external_apply_url, job.status
+        job.relocation_support, job.skills_required, job.external_apply_url, job.status, views
       ]);
-      console.log(`🚀 Seeded job: "${job.title}"`);
+      console.log(`🚀 Seeded job: "${job.title}" (Views: ${views})`);
     }
 
     console.log('✅ Seeding completed successfully!');

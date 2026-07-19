@@ -68,7 +68,8 @@ ALTER TABLE public.jobs
 ADD COLUMN IF NOT EXISTS visa_sponsorship boolean DEFAULT false,
 ADD COLUMN IF NOT EXISTS relocation_support boolean DEFAULT false,
 ADD COLUMN IF NOT EXISTS skills_required text[],
-ADD COLUMN IF NOT EXISTS external_apply_url text;
+ADD COLUMN IF NOT EXISTS external_apply_url text,
+ADD COLUMN IF NOT EXISTS views_count integer DEFAULT 0;
 
 -- 4. Recreate the jobs_with_companies view to automatically pull the new columns
 DROP VIEW IF EXISTS public.jobs_with_companies;
