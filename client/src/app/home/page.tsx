@@ -29,7 +29,8 @@ import {
   Mail,
   Share2,
   AtSign,
-  MessageCircle
+  MessageCircle,
+  Smartphone
 } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -804,57 +805,72 @@ export default function Home() {
     </div>
 
     {/* GLOBAL FOOTER */}
-    <footer className="bg-slate-900 text-white mt-0">
-      {/* Top wave divider */}
-      <div className="bg-slate-50 h-6 relative">
-        <div className="absolute inset-0 bg-slate-900" style={{ clipPath: 'polygon(0 100%, 100% 0, 100% 100%)' }} />
-      </div>
+    <footer className="bg-[#0b1329] text-slate-100 border-t border-slate-800 mt-12 relative overflow-hidden">
+      {/* Absolute background accent glows */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#0a5fcc]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-4 pt-12 pb-8 space-y-12">
+      {/* Decorative branding top line */}
+      <div className="h-[3px] w-full bg-gradient-to-r from-[#0a5fcc] via-indigo-500 to-[#0a5fcc]" />
 
-        {/* Top row: brand + nav columns */}
+      <div className="max-w-6xl mx-auto px-4 pt-16 pb-10 space-y-12 relative z-10">
+
+        {/* Top grid: brand + links columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
 
-          {/* Brand column */}
-          <div className="space-y-4 lg:col-span-1">
-            <div>
-              <h2 className="text-lg font-black tracking-tight text-white">VELIZO</h2>
-              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">International Placements Platform</p>
+          {/* Column 1: Brand & Live Database Stats */}
+          <div className="space-y-5 lg:col-span-1">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <img src="/logo-v.svg" alt="VELIZO" className="h-6 w-auto brightness-110" />
+                <span className="text-base font-black tracking-tight text-white">VELI<span className="text-[#0a5fcc]">ZO</span></span>
+              </div>
+              <p className="text-[9px] font-black text-[#0a5fcc]/80 uppercase tracking-widest leading-none">International Placements Ltd.</p>
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed font-medium max-w-[220px]">
+            <p className="text-xs text-slate-400 leading-relaxed font-medium">
               Connecting global talent with world-class employers through trusted, verifiable credentials.
             </p>
-            {/* Live Platform Stats in Footer */}
-            <div className="grid grid-cols-3 gap-3 pt-2">
-              <div className="text-center">
-                <p className="text-base font-black text-white">{stats.candidates.toLocaleString()}</p>
-                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Candidates</p>
-              </div>
-              <div className="text-center">
-                <p className="text-base font-black text-white">{stats.companies.toLocaleString()}</p>
-                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Partners</p>
-              </div>
-              <div className="text-center">
-                <p className="text-base font-black text-white">{stats.jobs.toLocaleString()}</p>
-                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Live Jobs</p>
+
+            {/* Glowing Live database stats card */}
+            <div className="bg-slate-900/80 border border-slate-800 rounded-xl p-3.5 shadow-2xl relative group overflow-hidden">
+              <div className="absolute inset-px bg-gradient-to-br from-blue-500/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="relative z-10 flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Global Platform Stats</span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-center">
+                  <div className="space-y-0.5">
+                    <span className="text-xs font-black text-white block">{stats.candidates.toLocaleString()}</span>
+                    <span className="text-[7px] text-slate-500 font-extrabold uppercase tracking-wider block">Candidates</span>
+                  </div>
+                  <div className="space-y-0.5 border-l border-slate-800">
+                    <span className="text-xs font-black text-white block">{stats.companies.toLocaleString()}</span>
+                    <span className="text-[7px] text-slate-500 font-extrabold uppercase tracking-wider block">Partners</span>
+                  </div>
+                  <div className="space-y-0.5 border-l border-slate-800">
+                    <span className="text-xs font-black text-white block">{stats.jobs.toLocaleString()}</span>
+                    <span className="text-[7px] text-slate-500 font-extrabold uppercase tracking-wider block">Placements</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Platform links */}
+          {/* Column 2: Platform Links */}
           <div className="space-y-4">
-            <h3 className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Platform</h3>
-            <ul className="space-y-2.5">
+            <h3 className="text-[10px] font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2">Platform</h3>
+            <ul className="space-y-2">
               {[
                 { label: 'Browse Placements', href: '/jobs' },
                 { label: 'My Applications', href: '/applications' },
                 { label: 'Career Passport', href: '/passport' },
-                { label: 'AI Career Coach', href: '/coach' },
+                { label: 'AI Career Assistant', href: '/coach' },
                 { label: 'Subscription Plans', href: '/subscription' },
               ].map(l => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-xs text-slate-400 hover:text-white font-semibold transition-colors flex items-center gap-1.5 group">
-                    <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-primary transition-colors" />
+                  <Link href={l.href} className="text-xs text-slate-400 hover:text-white font-semibold transition-all duration-150 flex items-center gap-1 group">
+                    <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-[#0a5fcc] group-hover:translate-x-0.5 transition-all shrink-0" />
                     {l.label}
                   </Link>
                 </li>
@@ -862,10 +878,10 @@ export default function Home() {
             </ul>
           </div>
 
-          {/* For Employers */}
+          {/* Column 3: For Employers */}
           <div className="space-y-4">
-            <h3 className="text-[10px] font-black text-slate-300 uppercase tracking-widest">For Employers</h3>
-            <ul className="space-y-2.5">
+            <h3 className="text-[10px] font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2">For Employers</h3>
+            <ul className="space-y-2">
               {[
                 { label: 'Post a Placement', href: '/employer/jobs' },
                 { label: 'View Applications', href: '/employer/applications' },
@@ -874,8 +890,8 @@ export default function Home() {
                 { label: 'Help Center', href: '/help' },
               ].map(l => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-xs text-slate-400 hover:text-white font-semibold transition-colors flex items-center gap-1.5 group">
-                    <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-primary transition-colors" />
+                  <Link href={l.href} className="text-xs text-slate-400 hover:text-white font-semibold transition-all duration-150 flex items-center gap-1 group">
+                    <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-[#0a5fcc] group-hover:translate-x-0.5 transition-all shrink-0" />
                     {l.label}
                   </Link>
                 </li>
@@ -883,54 +899,78 @@ export default function Home() {
             </ul>
           </div>
 
-          {/* Contact / Social */}
-          <div className="space-y-4">
-            <h3 className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Connect</h3>
-            <ul className="space-y-2.5">
-              <li className="flex items-center gap-2 text-xs text-slate-400 font-semibold">
-                <Mail className="h-3.5 w-3.5 text-slate-500 shrink-0" />
-                support@velizo.com
-              </li>
-              <li className="flex items-center gap-2 text-xs text-slate-400 font-semibold">
-                <Globe className="h-3.5 w-3.5 text-slate-500 shrink-0" />
-                velizo.com
-              </li>
-            </ul>
-            {/* Social Media Icons */}
-            <div className="flex items-center gap-3 pt-1">
-              {[
-                { icon: MessageCircle, label: 'Twitter', href: '#' },
-                { icon: AtSign, label: 'LinkedIn', href: '#' },
-                { icon: Share2, label: 'Instagram', href: '#' },
-              ].map(({ icon: Icon, label, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  aria-label={label}
-                  className="h-8 w-8 flex items-center justify-center rounded-lg bg-slate-800 border border-slate-700 text-slate-400 hover:bg-primary hover:text-white hover:border-primary transition-all duration-200"
-                >
-                  <Icon className="h-3.5 w-3.5" />
-                </a>
-              ))}
+          {/* Column 4: Connect & Mobile App */}
+          <div className="space-y-5">
+            <div className="space-y-4">
+              <h3 className="text-[10px] font-black text-white uppercase tracking-widest border-b border-slate-800 pb-2">Connect</h3>
+              <ul className="space-y-2">
+                <li className="flex items-center gap-2 text-xs text-slate-400 font-semibold">
+                  <Mail className="h-3.5 w-3.5 text-slate-500 shrink-0" />
+                  support@velizo.com
+                </li>
+                <li className="flex items-center gap-2 text-xs text-slate-400 font-semibold">
+                  <Globe className="h-3.5 w-3.5 text-slate-500 shrink-0" />
+                  velizo.com
+                </li>
+              </ul>
+              {/* Social links */}
+              <div className="flex items-center gap-2.5 pt-1">
+                {[
+                  { icon: MessageCircle, label: 'Twitter', href: '#' },
+                  { icon: AtSign, label: 'LinkedIn', href: '#' },
+                  { icon: Share2, label: 'Instagram', href: '#' },
+                ].map(({ icon: Icon, label, href }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    aria-label={label}
+                    className="h-8 w-8 flex items-center justify-center rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:bg-[#0a5fcc] hover:text-white hover:border-transparent transition-all duration-150 shadow-3xs"
+                  >
+                    <Icon className="h-3.5 w-3.5" />
+                  </a>
+                ))}
+              </div>
             </div>
 
-            {/* App store CTAs */}
-            <div className="space-y-2 pt-1">
-              <div className="flex items-center gap-2 px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-colors cursor-pointer">
-                <div className="text-left">
-                  <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Coming Soon</p>
-                  <p className="text-[11px] font-black text-white">Mobile App</p>
+            {/* Mobile App Coming Soon Widget */}
+            <div className="space-y-2.5 pt-2">
+              <div>
+                <span className="text-[9px] font-black text-[#0a5fcc] uppercase tracking-widest bg-blue-950/60 border border-blue-900/50 px-2 py-0.5 rounded-md inline-flex items-center gap-1.5 leading-none">
+                  <span className="h-1 w-1 rounded-full bg-emerald-400 animate-pulse" />
+                  Mobile App Coming Soon
+                </span>
+              </div>
+              <div className="flex gap-2">
+                {/* iOS Badge */}
+                <div className="flex-1 flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-900/60 border border-slate-800 rounded-xl opacity-60 cursor-not-allowed select-none">
+                  <Smartphone className="h-4 w-4 text-slate-400 shrink-0" />
+                  <div className="text-left">
+                    <span className="text-[6px] font-extrabold text-slate-500 uppercase tracking-wider block leading-none">App Store</span>
+                    <span className="text-[9px] font-black text-slate-300 block leading-none mt-0.5">iOS App</span>
+                  </div>
+                </div>
+                {/* Android Badge */}
+                <div className="flex-1 flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-900/60 border border-slate-800 rounded-xl opacity-60 cursor-not-allowed select-none">
+                  <Smartphone className="h-4 w-4 text-slate-400 shrink-0" />
+                  <div className="text-left">
+                    <span className="text-[6px] font-extrabold text-slate-500 uppercase tracking-wider block leading-none">Google Play</span>
+                    <span className="text-[9px] font-black text-slate-300 block leading-none mt-0.5">Android</span>
+                  </div>
                 </div>
               </div>
             </div>
+
           </div>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-[10px] text-slate-500 font-semibold">
-            © {new Date().getFullYear()} VELIZO International Placements Ltd. All rights reserved.
-          </p>
+        {/* Bottom row: Copyright & Links */}
+        <div className="border-t border-slate-850 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />
+            <p className="text-[10px] text-slate-500 font-semibold">
+              © {new Date().getFullYear()} VELIZO International Placements Ltd. All credentials dynamically verified.
+            </p>
+          </div>
           <div className="flex items-center gap-4">
             {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map(item => (
               <button key={item} className="text-[10px] text-slate-500 hover:text-slate-300 font-semibold transition-colors cursor-pointer">
@@ -939,6 +979,7 @@ export default function Home() {
             ))}
           </div>
         </div>
+
       </div>
     </footer>
     </>
