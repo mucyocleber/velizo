@@ -165,14 +165,18 @@ export default function ApplicationDetailPage({ params }: Props) {
         </div>
 
         {/* Application Header Card */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-3xs space-y-4">
+        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-3xs space-y-4 relative overflow-hidden">
+          {/* Subtle colored top strip */}
+          <div className="absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-[#0a5fcc] via-indigo-500 to-[#0a5fcc]" />
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex items-center gap-4">
               <div className="h-12 w-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary font-bold shrink-0 overflow-hidden">
                 {logoUrl ? (
                   <img src={logoUrl} alt={companyName} className="h-full w-full object-cover" />
                 ) : (
-                  <Building2 className="h-6 w-6 text-primary" />
+                  <div className="h-full w-full bg-gradient-to-br from-[#0a5fcc]/10 to-indigo-500/10 flex items-center justify-center text-[#0a5fcc] font-black text-sm uppercase">
+                    {companyName?.charAt(0)}
+                  </div>
                 )}
               </div>
               <div className="space-y-0.5">
