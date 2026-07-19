@@ -1011,14 +1011,16 @@ export default function Header() {
             <span className="text-[9px] font-bold mt-1">AI Assistant</span>
           </Link>
 
-          {/* Mobile Profile Trigger (Bottom Nav button) */}
-          <button 
-            onClick={() => setIsMobileProfileOpen(true)}
-            className="flex flex-col items-center justify-center flex-1 h-full py-1 text-center text-slate-500 hover:text-primary cursor-pointer focus:outline-none"
+          {/* Mobile Profile Link */}
+          <Link 
+            href="/passport" 
+            className={`flex flex-col items-center justify-center flex-1 h-full py-1 text-center transition-colors cursor-pointer ${
+              pathname === '/passport' ? 'text-primary font-bold' : 'text-slate-500 hover:text-primary'
+            }`}
           >
             <User className="h-5 w-5" />
             <span className="text-[9px] font-bold mt-1">Profile</span>
-          </button>
+          </Link>
         </nav>
       )}
 
