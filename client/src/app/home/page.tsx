@@ -14,10 +14,7 @@ import {
   ChevronLeft,
   Sparkles,
   CheckCircle2,
-  Image,
-  Video,
   Calendar,
-  Newspaper,
   Plus,
   Compass,
   Bookmark,
@@ -51,6 +48,10 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalJobs, setTotalJobs] = useState(0);
   const PAGE_SIZE = 15;
+  // Right sidebar dynamic data
+  const [topEmployers, setTopEmployers] = useState<any[]>([]);
+  const [hotCategories, setHotCategories] = useState<any[]>([]);
+  const [recentActivity, setRecentActivity] = useState<any[]>([]);
 
   const formatTimeAgo = (dateStr: string) => {
     if (!dateStr) return 'Just now';
@@ -122,11 +123,29 @@ export default function Home() {
         .eq('status', 'published');
       if (totalCount !== null) setTotalJobs(totalCount);
 
-      // Fetch platform counts
-      const [candRes, compRes, jobRes] = await Promise.all([
+      // Fetch platform counts + sidebar data in parallel
+      const [candRes, compRes, jobRes, employersRes, categoriesRes, recentRes] = await Promise.all([
         supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('role', 'candidate'),
         supabase.from('company_profiles').select('*', { count: 'exact', head: true }),
-        supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'published')
+        supabase.from('jobs').select('*', { count: 'exact', head: true }).eq('status', 'published'),
+        // Top verified employers by number of published jobs
+        supabase
+          .from('company_profiles')
+          .select('company_name, logo_url, industry, country, is_verified')
+          .eq('is_verified', true)
+          .limit(5),
+        // Hot job categories from published jobs
+        supabase
+          .from('jobs')
+          .select('category')
+          .eq('status', 'published'),
+        // Recent applications for the current user (if candidate)
+        user ? supabase
+          .from('job_applications')
+          .select(`id, status, created_at, jobs(title, category)`)
+          .eq('candidate_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(3) : Promise.resolve({ data: [] })
       ]);
 
       setStats({
@@ -134,6 +153,23 @@ export default function Home() {
         companies: compRes.count || 0,
         jobs: jobRes.count || 0
       });
+
+      if (employersRes.data) setTopEmployers(employersRes.data);
+
+      // Aggregate category counts client-side
+      if (categoriesRes.data) {
+        const catMap: Record<string, number> = {};
+        categoriesRes.data.forEach((j: any) => {
+          if (j.category) catMap[j.category] = (catMap[j.category] || 0) + 1;
+        });
+        const sorted = Object.entries(catMap)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 6)
+          .map(([name, count]) => ({ name, count }));
+        setHotCategories(sorted);
+      }
+
+      if (recentRes.data) setRecentActivity(recentRes.data);
 
       setLoading(false);
     };
@@ -751,86 +787,146 @@ export default function Home() {
 
         </section>
 
-        {/* ─── COLUMN 3: RIGHT SIDEBAR NEWS & IMMIGRATION (1/4) ────── */}
+        {/* COLUMN 3: RIGHT SIDEBAR (1/4) */}
         <section className="lg:col-span-1 space-y-4 lg:h-[calc(100vh-5.5rem)] lg:overflow-y-auto pb-6 pl-1 custom-scrollbar">
-          
-          {/* Live Platform Stats Widget */}
+
+          {/* 1. Live Platform Stats Widget — dynamic from DB */}
           <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
             <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-              <Sparkles className="h-4.5 w-4.5 text-slate-500" />
-              <h3 className="text-xs font-extrabold text-slate-900 tracking-tight uppercase">
-                Platform Statistics
-              </h3>
+              <Sparkles className="h-4 w-4 text-primary" />
+              <h3 className="text-xs font-extrabold text-slate-900 tracking-tight uppercase">Platform Statistics</h3>
             </div>
-
-            <div className="space-y-3 text-xs font-semibold text-slate-500">
-              <div className="flex justify-between items-center py-0.5">
-                <span>Active Candidates</span>
-                <span className="text-slate-800 font-bold">{stats.candidates}</span>
-              </div>
-              <div className="flex justify-between items-center py-0.5">
-                <span>Sponsor Partners</span>
-                <span className="text-slate-800 font-bold">{stats.companies}</span>
-              </div>
-              <div className="flex justify-between items-center py-0.5">
-                <span>Live Tech Jobs</span>
-                <span className="text-slate-800 font-bold">{stats.jobs}</span>
-              </div>
+            <div className="space-y-2.5 text-xs font-semibold text-slate-500">
+              {[
+                { label: 'Active Candidates', value: stats.candidates, color: 'bg-blue-500' },
+                { label: 'Sponsor Partners', value: stats.companies, color: 'bg-emerald-500' },
+                { label: 'Live Placements', value: stats.jobs, color: 'bg-indigo-500' },
+              ].map(({ label, value, color }) => (
+                <div key={label} className="flex justify-between items-center py-0.5">
+                  <span className="flex items-center gap-1.5">
+                    <span className={`h-1.5 w-1.5 rounded-full ${color} shrink-0`} />
+                    {label}
+                  </span>
+                  <span className="text-slate-800 font-extrabold tabular-nums">{value.toLocaleString()}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Global Immigration News Widget */}
+          {/* 2. Hot Job Categories — aggregated from DB */}
           <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
             <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
-              <Newspaper className="h-4.5 w-4.5 text-slate-500" />
-              <h3 className="text-xs font-extrabold text-slate-900 tracking-tight uppercase">
-                Immigration & Career News
-              </h3>
+              <Briefcase className="h-4 w-4 text-primary" />
+              <h3 className="text-xs font-extrabold text-slate-900 tracking-tight uppercase">Hot Categories</h3>
             </div>
-
-            <div className="space-y-3">
-              <div className="group cursor-pointer">
-                <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
-                  Global tech sectors expand international sponsor tracks
-                </h4>
-                <p className="text-[9px] text-slate-400 font-semibold mt-1">3 days ago • 1.2K readers</p>
+            {hotCategories.length === 0 ? (
+              <p className="text-[10px] text-slate-400 font-semibold">Loading categories...</p>
+            ) : (
+              <div className="flex flex-wrap gap-1.5">
+                {hotCategories.map(({ name, count }) => (
+                  <button
+                    key={name}
+                    onClick={() => {}}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:border-primary/30 hover:text-primary transition-all cursor-pointer text-[10px] font-extrabold text-slate-600"
+                  >
+                    {name}
+                    <span className="text-[9px] font-black text-slate-400 ml-0.5">({count})</span>
+                  </button>
+                ))}
               </div>
-              
-              <div className="group cursor-pointer">
-                <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
-                  How Trust Scores speed up work permits
-                </h4>
-                <p className="text-[9px] text-slate-400 font-semibold mt-1">1 day ago • 5.4K readers</p>
-              </div>
-
-              <div className="group cursor-pointer">
-                <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
-                  Global tech visa pathways update for remote developers
-                </h4>
-                <p className="text-[9px] text-slate-400 font-semibold mt-1">4 days ago • 912 readers</p>
-              </div>
-
-              <div className="group cursor-pointer">
-                <h4 className="text-xs font-bold text-slate-800 group-hover:text-primary leading-snug transition-colors line-clamp-2">
-                  Verifiable credentials: The new standard in tech recruitment
-                </h4>
-                <p className="text-[9px] text-slate-400 font-semibold mt-1">6h ago • 345 readers</p>
-              </div>
-            </div>
+            )}
           </div>
 
-          {/* Sponsor card / Promo */}
-          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm text-center space-y-3.5">
-            <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block text-right">ad</span>
+          {/* 3. Top Verified Employers — from company_profiles */}
+          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+            <div className="flex items-center gap-2 border-b border-slate-100 pb-3">
+              <ShieldCheck className="h-4 w-4 text-emerald-500" />
+              <h3 className="text-xs font-extrabold text-slate-900 tracking-tight uppercase">Verified Partners</h3>
+            </div>
+            {topEmployers.length === 0 ? (
+              <p className="text-[10px] text-slate-400 font-semibold italic">No verified partners yet.</p>
+            ) : (
+              <div className="space-y-2.5">
+                {topEmployers.map((emp: any, i: number) => (
+                  <div key={i} className="flex items-center gap-2.5">
+                    <div className="h-7 w-7 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center overflow-hidden shrink-0">
+                      {emp.logo_url ? (
+                        <img src={emp.logo_url} alt={emp.company_name} className="h-full w-full object-cover" />
+                      ) : (
+                        <Building2 className="h-3.5 w-3.5 text-primary" />
+                      )}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-extrabold text-slate-800 truncate">{emp.company_name}</p>
+                      <p className="text-[9px] text-slate-400 font-semibold truncate">{emp.industry || emp.country}</p>
+                    </div>
+                    <span className="ml-auto text-[8px] font-black uppercase text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 shrink-0">
+                      Verified
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 4. My Recent Activity — personal applications for candidates */}
+          {isCandidate && (
+            <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div className="flex items-center gap-2">
+                  <FileCheck className="h-4 w-4 text-primary" />
+                  <h3 className="text-xs font-extrabold text-slate-900 tracking-tight uppercase">My Applications</h3>
+                </div>
+                <Link href="/applications" className="text-[9px] font-black text-primary hover:underline uppercase tracking-wider">
+                  View All
+                </Link>
+              </div>
+              {recentActivity.length === 0 ? (
+                <p className="text-[10px] text-slate-400 font-semibold italic">No applications yet. Start applying!</p>
+              ) : (
+                <div className="space-y-2.5">
+                  {recentActivity.map((app: any) => (
+                    <Link key={app.id} href={`/applications/${app.id}`} className="flex items-start gap-2.5 group">
+                      <div className="h-6 w-6 rounded-md bg-blue-50 border border-blue-100 flex items-center justify-center shrink-0 mt-0.5">
+                        <Briefcase className="h-3 w-3 text-primary" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[11px] font-extrabold text-slate-800 group-hover:text-primary transition-colors truncate">
+                          {(app.jobs as any)?.title || 'Placement'}
+                        </p>
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                          <span className={`text-[8px] font-black uppercase px-1.5 py-0.2 rounded border ${
+                            app.status === 'submitted' ? 'bg-blue-50 text-blue-600 border-blue-200' :
+                            app.status === 'reviewing' || app.status === 'shortlisted' ? 'bg-amber-50 text-amber-600 border-amber-200' :
+                            app.status === 'offered' || app.status === 'hired' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' :
+                            app.status === 'rejected' ? 'bg-red-50 text-red-500 border-red-200' :
+                            'bg-slate-50 text-slate-500 border-slate-200'
+                          }`}>
+                            {app.status}
+                          </span>
+                          <span className="text-[9px] text-slate-400 font-semibold">{formatTimeAgo(app.created_at)}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 5. AI Career Coach Promo */}
+          <div className="bg-gradient-to-br from-slate-900 to-indigo-950 border border-indigo-900/40 rounded-xl p-4 text-center space-y-3.5">
             <div className="flex flex-col items-center">
-              <Sparkles className="h-6 w-6 text-purple-500 mb-2" />
-              <h4 className="text-xs font-extrabold text-slate-900 leading-snug">Prepare with AI</h4>
-              <p className="text-[10px] text-slate-500 mt-1 max-w-[180px] leading-relaxed">
-                Mock interview practice with real-time feedback.
+              <div className="h-10 w-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-2">
+                <Sparkles className="h-5 w-5 text-indigo-300" />
+              </div>
+              <h4 className="text-xs font-extrabold text-white leading-snug">Prepare with AI Coach</h4>
+              <p className="text-[10px] text-slate-400 mt-1.5 max-w-[160px] leading-relaxed">
+                Mock interview practice with real-time AI feedback on your responses.
               </p>
             </div>
-            <Link href="/coach" className="block w-full py-2 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer">
-              Start Practice
+            <Link href="/coach" className="block w-full py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black rounded-lg transition-colors cursor-pointer shadow-sm">
+              Start Practice Session
             </Link>
           </div>
 
