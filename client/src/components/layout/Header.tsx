@@ -447,7 +447,7 @@ export default function Header() {
           onClick={() => setIsNotificationsOpen(false)}
           className="text-[10px] text-slate-500 hover:text-primary font-bold hover:underline"
         >
-          View all notifications
+      View all notifications
         </Link>
       </div>
     </div>
@@ -455,263 +455,220 @@ export default function Header() {
 
   return (
     <>
-      {/* ─── MAIN NAV HEADER ────────────────────────────────────── */}
-      <header className="w-full border-b border-slate-200 bg-white sticky top-0 z-45 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
-          
-          {/* Logo & Search Trigger */}
-          <div className="flex items-center gap-3 shrink-0">
-            <Link href={session ? "/home" : "/"} className="flex items-center gap-1.5 shrink-0 group">
-              <img src="/logo-v.svg" alt="VELIZO" className="h-8 w-auto filter drop-shadow-[0_2px_8px_rgba(10,102,194,0.15)] group-hover:scale-105 transition-transform" />
-              <span className="text-sm font-extrabold tracking-tight inline-block">
-                VELI<span className="text-primary font-black">ZO</span>
-              </span>
-            </Link>
-            
-            {/* Desktop Search Trigger (Compact & Premium) */}
-            <div 
-              onClick={() => setIsSearchOpen(true)}
-              className="relative hidden md:block cursor-pointer w-44"
-            >
-              <span className="absolute inset-y-0 left-0 pl-2.5 flex items-center text-slate-400">
-                <Search className="h-3.5 w-3.5" />
-              </span>
-              <div className="w-full bg-[#EDF3F8]/60 pl-8 pr-1.5 py-1 rounded-lg text-xs font-semibold text-slate-400 border border-slate-200/50 hover:bg-[#EDF3F8]/90 transition-all flex items-center justify-between h-8">
-                <span>Search...</span>
-                <span className="bg-white text-[9px] text-slate-400 border border-slate-200 px-1 py-0.2 rounded shadow-3xs font-bold scale-90">
-                  Ctrl K
+      {/* ═══ MAIN NAVIGATION HEADER ═══ */}
+      <header className="w-full sticky top-0 z-45">
+        {/* Gradient Accent Strip — top 2px branding line */}
+        <div className="h-[3px] w-full bg-gradient-to-r from-[#0a5fcc] via-indigo-500 to-[#0a5fcc]" />
+
+        {/* Main nav bar */}
+        <div className="bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+          <div className="max-w-6xl mx-auto px-4 h-[52px] flex items-center justify-between gap-3">
+
+            {/* ── LEFT: Logo + Search ── */}
+            <div className="flex items-center gap-3 shrink-0">
+              <Link href={session ? "/home" : "/"} className="flex items-center gap-1.5 shrink-0 group">
+                <img src="/logo-v.svg" alt="VELIZO" className="h-7 w-auto drop-shadow-[0_2px_8px_rgba(10,95,204,0.20)] group-hover:scale-105 transition-transform duration-200" />
+                <span className="text-sm font-black tracking-tight leading-none">
+                  VELI<span className="text-[#0a5fcc]">ZO</span>
                 </span>
+              </Link>
+
+              {/* Desktop Search Trigger */}
+              <div
+                onClick={() => setIsSearchOpen(true)}
+                className="relative hidden md:flex cursor-pointer items-center w-48 h-8 bg-slate-100/80 hover:bg-slate-100 border border-slate-200/80 rounded-xl pl-8 pr-2 text-xs font-semibold text-slate-400 transition-all group"
+              >
+                <Search className="absolute left-2.5 h-3.5 w-3.5 text-slate-400 group-hover:text-[#0a5fcc] transition-colors" />
+                <span className="flex-1">Search jobs, companies...</span>
+                <kbd className="bg-white text-[9px] text-slate-400 border border-slate-200 px-1.5 py-0.5 rounded-md shadow-sm font-bold">⌘K</kbd>
               </div>
             </div>
-          </div>
 
-          {/* Centered Search Trigger (Mobile Only - fits between Logo and Notifications) */}
-          <div 
-            onClick={() => setIsSearchOpen(true)}
-            className="flex-1 max-w-[120px] md:hidden cursor-pointer"
-          >
-            <div className="relative w-full">
-              <span className="absolute inset-y-0 left-0 pl-2.5 flex items-center text-slate-400">
-                <Search className="h-3.5 w-3.5" />
-              </span>
-              <div className="w-full bg-[#EDF3F8]/60 pl-8 py-1 rounded-lg text-xs font-semibold text-slate-400 border border-slate-200/50 h-8 flex items-center">
+            {/* ── MOBILE Search ── */}
+            <div
+              onClick={() => setIsSearchOpen(true)}
+              className="flex-1 max-w-[120px] md:hidden cursor-pointer"
+            >
+              <div className="relative flex items-center h-8 bg-slate-100/80 border border-slate-200/80 rounded-xl pl-8 text-xs font-semibold text-slate-400">
+                <Search className="absolute left-2.5 h-3.5 w-3.5 text-slate-400" />
                 <span>Search...</span>
               </div>
             </div>
-          </div>
 
-          {/* RIGHT SIDE: Desktop Navigation Links & Desktop Profile Dropdown */}
-          <div className="hidden md:flex items-center gap-6">
-            {session ? (
-              // ─── AUTHENTICATED DESKTOP NAVBAR LINKS ───
-              <>
-                <Link href="/home" className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
-                  pathname === '/home' ? 'text-primary border-b-2 border-primary font-bold' : 'text-slate-500 hover:text-slate-805'
-                }`}>
-                  <HomeIcon className="h-5 w-5" />
-                  <span className="text-[9px] font-bold mt-0.5">Home</span>
-                </Link>
-                
-                <Link href="/jobs" className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
-                  pathname === '/jobs' ? 'text-primary border-b-2 border-primary font-bold' : 'text-slate-500 hover:text-slate-805'
-                }`}>
-                  <Briefcase className="h-5 w-5" />
-                  <span className="text-[9px] font-bold mt-0.5">Jobs</span>
-                </Link>
+            {/* ── RIGHT: Nav Links + Actions ── */}
+            <div className="hidden md:flex items-center gap-1">
+              {session ? (
+                <>
+                  {/* Nav Links */}
+                  {[
+                    { href: '/home', label: 'Home', icon: HomeIcon },
+                    { href: '/jobs', label: 'Jobs', icon: Briefcase },
+                    { href: isCandidate ? '/applications' : '/employer/applications', label: 'Applications', icon: ClipboardList },
+                    { href: '/coach', label: 'AI Assistant', icon: Sparkles },
+                  ].map(({ href, label, icon: Icon }) => {
+                    const active = pathname === href || (href !== '/home' && pathname.startsWith(href));
+                    return (
+                      <Link
+                        key={href}
+                        href={href}
+                        className={`flex flex-col items-center justify-center px-3 h-[52px] text-center transition-all duration-150 shrink-0 border-b-2 ${
+                          active
+                            ? 'border-[#0a5fcc] text-[#0a5fcc]'
+                            : 'border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50'
+                        }`}
+                      >
+                        <Icon className={`h-[18px] w-[18px] ${label === 'AI Assistant' ? 'text-purple-500' : ''}`} />
+                        <span className={`text-[9px] font-extrabold mt-0.5 uppercase tracking-wider ${active ? 'text-[#0a5fcc]' : ''}`}>{label}</span>
+                      </Link>
+                    );
+                  })}
 
-                <Link href={isCandidate ? "/applications" : "/employer/applications"} className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
-                  pathname === '/applications' || pathname.startsWith('/employer/applications') ? 'text-primary border-b-2 border-primary font-bold' : 'text-slate-500 hover:text-slate-805'
-                }`}>
-                  <ClipboardList className="h-5 w-5" />
-                  <span className="text-[9px] font-bold mt-0.5">My Applications</span>
-                </Link>
+                  {/* Divider */}
+                  <div className="h-6 w-px bg-slate-200 mx-2" />
 
-                <Link href="/coach" className={`flex flex-col items-center justify-center px-2 h-14 shrink-0 transition-colors ${
-                  pathname === '/coach' ? 'text-primary border-b-2 border-primary font-bold text-purple-700' : 'text-slate-500 hover:text-slate-805'
-                }`}>
-                  <Sparkles className="h-5 w-5 text-purple-500" />
-                  <span className="text-[9px] font-bold mt-0.5">AI Assistant</span>
-                </Link>
-
-                {/* Notifications & Settings & Profile Dropdown Trigger (Desktop) */}
-                <div className="flex items-center gap-3 border-l border-slate-200 pl-4">
-                  {/* Notifications Icon with active badge and popup toggler */}
+                  {/* Notifications Bell */}
                   <div className="relative" ref={notificationsRef}>
-                    <button 
+                    <button
                       onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                      className="relative p-1.5 text-slate-550 hover:text-slate-805 hover:bg-slate-50 rounded-full transition-colors shrink-0 focus:outline-none cursor-pointer" 
+                      className={`relative flex items-center justify-center h-8 w-8 rounded-xl transition-all duration-150 cursor-pointer focus:outline-none ${
+                        isNotificationsOpen ? 'bg-blue-50 text-[#0a5fcc]' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+                      }`}
                       title="Notifications"
                     >
-                      <Bell className="h-5 w-5" />
+                      <Bell className="h-[18px] w-[18px]" />
                       {unreadCount > 0 && (
-                        <span className="absolute top-1 right-1 h-3.5 w-3.5 bg-red-500 rounded-full text-[8px] font-extrabold text-white flex items-center justify-center ring-2 ring-white">
-                          {unreadCount}
+                        <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-red-500 rounded-full text-[8px] font-black text-white flex items-center justify-center ring-2 ring-white">
+                          {unreadCount > 9 ? '9+' : unreadCount}
                         </span>
                       )}
                     </button>
-
-                    {/* Desktop Notifications Panel */}
                     {isNotificationsOpen && renderNotificationsPanel()}
                   </div>
 
-                  {/* Settings Gear Icon */}
-                  <Link href="/passport" className="p-1.5 text-slate-550 hover:text-slate-805 hover:bg-slate-50 rounded-full transition-colors shrink-0" title="Account Settings">
-                    <Settings className="h-5 w-5" />
+                  {/* Settings */}
+                  <Link
+                    href="/passport"
+                    className="flex items-center justify-center h-8 w-8 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-all duration-150"
+                    title="Account Settings"
+                  >
+                    <Settings className="h-[18px] w-[18px]" />
                   </Link>
 
-                  {/* Profile Dropdown Container */}
+                  {/* Profile Pill */}
                   <div className="relative" ref={dropdownRef}>
-                    <button 
+                    <button
                       onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                      className="flex items-center gap-2 hover:opacity-90 transition-opacity focus:outline-none cursor-pointer"
+                      className="flex items-center gap-2 pl-1 pr-3 h-8 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-all duration-150 focus:outline-none cursor-pointer border border-slate-200/80"
                       title="Profile Menu"
                     >
-                      <div className="h-8 w-8 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-xs font-bold shrink-0 overflow-hidden shadow-2xs">
+                      <div className="h-6 w-6 rounded-full bg-gradient-to-br from-[#0a5fcc] to-indigo-500 flex items-center justify-center text-white text-[10px] font-black shrink-0 overflow-hidden">
                         {profile?.avatar_url ? (
                           <img src={profile.avatar_url} alt="avatar" className="h-full w-full object-cover" />
                         ) : nameInitial}
                       </div>
-                      <ChevronRight className="h-3 w-3 text-slate-400 rotate-90" />
+                      <div className="text-left hidden lg:block">
+                        <span className="text-[10px] font-extrabold text-slate-700 leading-none block truncate max-w-[80px]">
+                          {profile?.full_name?.split(' ')[0] || 'Account'}
+                        </span>
+                        <span className="text-[8px] font-bold text-slate-400 uppercase tracking-wider leading-none block">
+                          {isCandidate ? 'Candidate' : 'Employer'}
+                        </span>
+                      </div>
+                      <ChevronRight className="h-3 w-3 text-slate-400 rotate-90 shrink-0" />
                     </button>
 
-                    {/* Profile Dropdown Card */}
+                    {/* Profile Dropdown */}
                     {isProfileDropdownOpen && (
-                      <div className="absolute right-0 mt-2.5 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl py-3 px-2 z-50 animate-scaleUp">
-                        {/* User Summary Header */}
-                        <div className="px-3 py-2 border-b border-slate-100 flex items-start gap-2.5">
-                          <div className="h-10 w-10 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-sm font-extrabold shrink-0 overflow-hidden">
+                      <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl py-2 px-1.5 z-50 animate-scaleUp">
+                        {/* User Header */}
+                        <div className="px-3 py-2.5 border-b border-slate-100 flex items-center gap-3 mb-1">
+                          <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#0a5fcc] to-indigo-500 flex items-center justify-center text-white text-sm font-black shrink-0 overflow-hidden">
                             {profile?.avatar_url ? (
                               <img src={profile.avatar_url} alt="avatar" className="h-full w-full object-cover" />
                             ) : nameInitial}
                           </div>
-                          <div className="text-left overflow-hidden">
-                            <span className="text-xs font-extrabold text-slate-800 block truncate leading-tight">
-                              {profile?.full_name || 'User'}
-                            </span>
-                            <span className="text-[9px] font-bold text-slate-400 block capitalize leading-none mt-0.5">
-                              {profile?.role === 'candidate' ? 'Job Seeker' : 'Employer'}
-                            </span>
-                            <span className="text-[9px] text-slate-400 truncate block mt-1 font-semibold">
-                              {profile?.email}
+                          <div className="overflow-hidden">
+                            <span className="text-xs font-extrabold text-slate-800 block truncate leading-tight">{profile?.full_name || 'User'}</span>
+                            <span className="text-[9px] font-bold text-[#0a5fcc] bg-blue-50 px-1.5 py-0.5 rounded mt-0.5 inline-block capitalize">
+                              {isCandidate ? 'Job Seeker' : 'Employer'}
                             </span>
                           </div>
                         </div>
 
-                        {/* Dropdown Options */}
-                        <div className="py-2 border-b border-slate-100 text-xs font-semibold space-y-0.5">
-                          <Link 
-                            href={isCandidate ? "/passport" : "/home"} 
-                            onClick={() => setIsProfileDropdownOpen(false)}
-                            className="flex items-center gap-2.5 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
-                          >
-                            <User className="h-4 w-4 text-slate-400" />
-                            <span>My Profile</span>
-                          </Link>
-
-                          <Link 
-                            href="/passport" 
-                            onClick={() => setIsProfileDropdownOpen(false)}
-                            className="flex items-center gap-2.5 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
-                          >
-                            <FileText className="h-4 w-4 text-slate-400" />
-                            <span>Resume / CV</span>
-                          </Link>
-
-                          <Link 
-                            href="/passport" 
-                            onClick={() => setIsProfileDropdownOpen(false)}
-                            className="flex items-center gap-2.5 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
-                          >
-                            <FolderOpen className="h-4 w-4 text-slate-400" />
-                            <span>My Documents</span>
-                          </Link>
-
-                          <Link 
-                            href="/jobs" 
-                            onClick={() => setIsProfileDropdownOpen(false)}
-                            className="flex items-center gap-2.5 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
-                          >
-                            <Bookmark className="h-4 w-4 text-slate-400" />
-                            <span>Saved Jobs</span>
-                          </Link>
-
-                          <Link 
-                            href="/subscription" 
-                            onClick={() => setIsProfileDropdownOpen(false)}
-                            className="flex items-center gap-2.5 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
-                          >
-                            <CreditCard className="h-4 w-4 text-slate-400" />
-                            <span>Subscription</span>
-                          </Link>
-
-                          <Link 
-                            href="/help" 
-                            onClick={() => setIsProfileDropdownOpen(false)}
-                            className="flex items-center gap-2.5 px-3 py-2 text-slate-655 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
-                          >
-                            <HelpCircle className="h-4 w-4 text-slate-400" />
-                            <span>Help Center</span>
-                          </Link>
+                        {/* Menu items */}
+                        <div className="py-1 border-b border-slate-100 space-y-0.5">
+                          {[
+                            { href: isCandidate ? '/passport' : '/home', icon: User, label: 'My Profile' },
+                            { href: '/passport', icon: FileText, label: 'Resume / CV' },
+                            { href: '/passport', icon: FolderOpen, label: 'My Documents' },
+                            { href: '/jobs', icon: Bookmark, label: 'Saved Jobs' },
+                            { href: '/subscription', icon: CreditCard, label: 'Subscription' },
+                            { href: '/help', icon: HelpCircle, label: 'Help Center' },
+                          ].map(({ href, icon: Icon, label }) => (
+                            <Link
+                              key={label}
+                              href={href}
+                              onClick={() => setIsProfileDropdownOpen(false)}
+                              className="flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-colors"
+                            >
+                              <Icon className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                              {label}
+                            </Link>
+                          ))}
                         </div>
 
-                        {/* Sign Out Button */}
-                        <div className="pt-2">
-                          <button 
+                        <div className="pt-1">
+                          <button
                             onClick={handleSignOut}
                             className="w-full text-left px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-50 rounded-xl transition-colors flex items-center gap-2.5 cursor-pointer"
                           >
-                            <LogOut className="h-4 w-4" />
-                            <span>Logout</span>
+                            <LogOut className="h-3.5 w-3.5" />
+                            <span>Log Out</span>
                           </button>
                         </div>
                       </div>
                     )}
                   </div>
+                </>
+              ) : (
+                // Guest links
+                <div className="flex items-center gap-2">
+                  <Link href="/auth/login" className="text-xs font-bold text-slate-600 hover:text-slate-900 px-3 py-1.5 rounded-xl hover:bg-slate-100 transition-colors">
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/auth/register"
+                    className="px-4 py-1.5 rounded-xl text-xs font-bold text-white bg-[#0a5fcc] hover:bg-[#084e96] transition-all flex items-center gap-1.5 shadow-sm"
+                  >
+                    Create Account <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
                 </div>
-              </>
-            ) : (
-              // ─── GUEST/UNAUTHENTICATED PUBLIC LINKS ───
-              <div className="flex items-center gap-2">
-                <Link href="/auth/login" className="text-xs font-bold text-slate-655 hover:text-slate-900 px-2">
-                  Sign In
-                </Link>
-                <Link 
-                  href="/auth/register" 
-                  className="px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-primary hover:bg-[#084e96] transition-all flex items-center gap-1 shrink-0"
+              )}
+            </div>
+
+            {/* ── MOBILE Right: Notifications + Settings ── */}
+            {session && (
+              <div className="md:hidden flex items-center gap-2 relative" ref={notificationsRef}>
+                <button
+                  onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                  className="relative flex items-center justify-center h-8 w-8 rounded-xl text-slate-500 hover:bg-slate-100 cursor-pointer focus:outline-none"
+                  title="Notifications"
                 >
-                  Create Account <ArrowRight className="h-3.5 w-3.5" />
+                  <Bell className="h-5 w-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 bg-red-500 rounded-full text-[7px] font-black text-white flex items-center justify-center">
+                      {unreadCount}
+                    </span>
+                  )}
+                </button>
+                {isNotificationsOpen && renderNotificationsPanel()}
+                <Link href="/passport" className="flex items-center justify-center h-8 w-8 rounded-xl text-slate-500 hover:bg-slate-100" title="Settings">
+                  <Settings className="h-5 w-5" />
                 </Link>
               </div>
             )}
+
           </div>
-
-          {/* MOBILE SETTINGS & NOTIFICATIONS (Right side on Mobile, gear icon replaces top avatar profile) */}
-          {session && (
-            <div className="md:hidden flex items-center gap-2.5 relative" ref={notificationsRef}>
-              {/* Notification icon on mobile toggles dropdown */}
-              <button 
-                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                className="relative p-1 text-slate-500 focus:outline-none cursor-pointer" 
-                title="Notifications"
-              >
-                <Bell className="h-4.5 w-4.5" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 h-3 w-3 bg-red-500 rounded-full text-[7px] font-bold text-white flex items-center justify-center">
-                    {unreadCount}
-                  </span>
-                )}
-              </button>
-
-              {/* Mobile Notifications Panel */}
-              {isNotificationsOpen && renderNotificationsPanel()}
-
-              {/* Settings gear icon on mobile (links directly to passport settings) */}
-              <Link href="/passport" className="p-1 text-slate-500" title="Account Settings">
-                <Settings className="h-4.5 w-4.5" />
-              </Link>
-            </div>
-          )}
-
         </div>
       </header>
 

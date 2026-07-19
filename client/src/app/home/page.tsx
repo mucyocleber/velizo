@@ -139,11 +139,11 @@ export default function Home() {
           .from('jobs')
           .select('category')
           .eq('status', 'published'),
-        // Recent applications for the current user (if candidate)
-        user ? supabase
+        // Recent applications for the current user (candidates only)
+        profileData?.role === 'candidate' ? supabase
           .from('job_applications')
           .select(`id, status, created_at, jobs(title, category)`)
-          .eq('candidate_id', user.id)
+          .eq('candidate_id', session.user.id)
           .order('created_at', { ascending: false })
           .limit(3) : Promise.resolve({ data: [] })
       ]);
