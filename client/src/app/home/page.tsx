@@ -312,7 +312,7 @@ export default function Home() {
       <main className="flex-1 max-w-6xl mx-auto w-full px-4 pt-4 pb-20 lg:pb-4 grid grid-cols-1 lg:grid-cols-4 gap-6 items-stretch lg:h-[calc(100vh-3.5rem)] lg:overflow-hidden">
         
         {/* ─── COLUMN 1: LEFT USER SIDEBAR CARD (1/4) ──────────────── */}
-        <section className="lg:col-span-1 space-y-4 lg:h-[calc(100vh-5.5rem)] lg:overflow-y-auto pb-6 pr-1 custom-scrollbar">
+        <section className="hidden lg:block lg:col-span-1 space-y-4 lg:h-[calc(100vh-5.5rem)] lg:overflow-y-auto pb-6 pr-1 custom-scrollbar">
           <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
             {/* Banner Cover */}
             <div className="h-14 bg-gradient-to-r from-blue-700 to-indigo-800 relative" />
@@ -666,7 +666,7 @@ export default function Home() {
         </section>
 
         {/* ═══ COLUMN 3 — RIGHT SIDEBAR (1/4) ═══ */}
-        <section className="lg:col-span-1 space-y-3.5 lg:h-[calc(100vh-5.5rem)] lg:overflow-y-auto pb-6 pl-1 custom-scrollbar">
+        <section className="hidden lg:block lg:col-span-1 space-y-3.5 lg:h-[calc(100vh-5.5rem)] lg:overflow-y-auto pb-6 pl-1 custom-scrollbar">
 
           {/* Live Platform Stats */}
           <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm space-y-3">
