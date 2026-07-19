@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 import { 
@@ -11,6 +11,7 @@ import {
   ShieldCheck, 
   Globe, 
   ChevronRight,
+  ChevronLeft,
   Sparkles,
   CheckCircle2,
   Image,
@@ -27,7 +28,11 @@ import {
   Award,
   Check,
   AlertCircle,
-  MapPin
+  MapPin,
+  Mail,
+  Share2,
+  AtSign,
+  MessageCircle
 } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -42,6 +47,10 @@ export default function Home() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [stats, setStats] = useState<any>({ candidates: 0, companies: 0, jobs: 0 });
   const [loading, setLoading] = useState(true);
+  const [jobsLoading, setJobsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalJobs, setTotalJobs] = useState(0);
+  const PAGE_SIZE = 15;
 
   const formatTimeAgo = (dateStr: string) => {
     if (!dateStr) return 'Just now';
@@ -106,14 +115,12 @@ export default function Home() {
         }
       }
 
-      // Fetch latest jobs from view
-      const { data: jobsData } = await supabase
-        .from('jobs_with_companies')
-        .select('*')
-        .eq('status', 'published')
-        .order('created_at', { ascending: false })
-        .limit(10);
-      if (jobsData) setJobs(jobsData);
+      // Count total published jobs for pagination
+      const { count: totalCount } = await supabase
+        .from('jobs')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'published');
+      if (totalCount !== null) setTotalJobs(totalCount);
 
       // Fetch platform counts
       const [candRes, compRes, jobRes] = await Promise.all([
@@ -133,6 +140,26 @@ export default function Home() {
 
     fetchSessionAndProfile();
   }, [router]);
+
+  // Separate paginated jobs fetcher
+  const fetchJobs = useCallback(async (page: number) => {
+    setJobsLoading(true);
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    const { data: jobsData, count } = await supabase
+      .from('jobs_with_companies')
+      .select('*', { count: 'exact' })
+      .eq('status', 'published')
+      .order('created_at', { ascending: false })
+      .range(from, to);
+    if (jobsData) setJobs(jobsData);
+    if (count !== null) setTotalJobs(count);
+    setJobsLoading(false);
+  }, [PAGE_SIZE]);
+
+  useEffect(() => {
+    fetchJobs(currentPage);
+  }, [currentPage, fetchJobs]);
 
 
 
@@ -223,7 +250,8 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F3F4F6] font-sans text-slate-900">
+    <>
+      <div className="min-h-screen flex flex-col bg-[#F3F4F6] font-sans text-slate-900">
       <style dangerouslySetInnerHTML={{__html: `
         .custom-scrollbar::-webkit-scrollbar {
           width: 5px;
@@ -648,6 +676,79 @@ export default function Home() {
             );
           })}
 
+          {/* Pagination Controls */}
+          {totalJobs > PAGE_SIZE && (() => {
+            const totalPages = Math.ceil(totalJobs / PAGE_SIZE);
+            const getPageNumbers = () => {
+              const pages: (number | '...')[] = [];
+              if (totalPages <= 7) {
+                for (let i = 1; i <= totalPages; i++) pages.push(i);
+              } else {
+                pages.push(1);
+                if (currentPage > 3) pages.push('...');
+                for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+                if (currentPage < totalPages - 2) pages.push('...');
+                pages.push(totalPages);
+              }
+              return pages;
+            };
+            return (
+              <div className="flex flex-col items-center gap-3 pt-4 pb-2">
+                <div className="flex items-center gap-2">
+                  {/* Previous */}
+                  <button
+                    onClick={() => { setCurrentPage(p => Math.max(1, p - 1)); }}
+                    disabled={currentPage === 1 || jobsLoading}
+                    className="h-8 w-8 flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-blue-50 hover:text-primary hover:border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-3xs"
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                  </button>
+
+                  {/* Page numbers */}
+                  {getPageNumbers().map((page, i) =>
+                    page === '...' ? (
+                      <span key={`ellipsis-${i}`} className="h-8 w-8 flex items-center justify-center text-slate-400 text-xs font-bold">…</span>
+                    ) : (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page as number)}
+                        disabled={jobsLoading}
+                        className={`h-8 w-8 flex items-center justify-center rounded-xl text-xs font-black transition-all shadow-3xs ${
+                          currentPage === page
+                            ? 'bg-gradient-to-r from-primary to-[#084e96] text-white border border-blue-700/20 scale-105 shadow-md'
+                            : 'border border-slate-200 bg-white text-slate-600 hover:bg-blue-50 hover:text-primary hover:border-primary/30'
+                        } disabled:opacity-40`}
+                      >
+                        {page}
+                      </button>
+                    )
+                  )}
+
+                  {/* Next */}
+                  <button
+                    onClick={() => { setCurrentPage(p => Math.min(totalPages, p + 1)); }}
+                    disabled={currentPage === totalPages || jobsLoading}
+                    className="h-8 w-8 flex items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 hover:bg-blue-50 hover:text-primary hover:border-primary/30 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-3xs"
+                  >
+                    <ChevronRight className="h-4 w-4" />
+                  </button>
+                </div>
+
+                <p className="text-[10px] font-bold text-slate-400">
+                  Showing {((currentPage - 1) * PAGE_SIZE) + 1}–{Math.min(currentPage * PAGE_SIZE, totalJobs)} of {totalJobs} placements
+                </p>
+              </div>
+            );
+          })()}
+
+          {/* Inline loading overlay for page transitions */}
+          {jobsLoading && (
+            <div className="flex items-center justify-center py-10 gap-2 text-xs font-bold text-slate-400">
+              <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+              <span>Loading placements...</span>
+            </div>
+          )}
+
         </section>
 
         {/* ─── COLUMN 3: RIGHT SIDEBAR NEWS & IMMIGRATION (1/4) ────── */}
@@ -738,5 +839,145 @@ export default function Home() {
       </main>
 
     </div>
+
+    {/* GLOBAL FOOTER */}
+    <footer className="bg-slate-900 text-white mt-0">
+      {/* Top wave divider */}
+      <div className="bg-slate-50 h-6 relative">
+        <div className="absolute inset-0 bg-slate-900" style={{ clipPath: 'polygon(0 100%, 100% 0, 100% 100%)' }} />
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 pt-12 pb-8 space-y-12">
+
+        {/* Top row: brand + nav columns */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+
+          {/* Brand column */}
+          <div className="space-y-4 lg:col-span-1">
+            <div>
+              <h2 className="text-lg font-black tracking-tight text-white">VELIZO</h2>
+              <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">International Placements Platform</p>
+            </div>
+            <p className="text-xs text-slate-400 leading-relaxed font-medium max-w-[220px]">
+              Connecting global talent with world-class employers through trusted, verifiable credentials.
+            </p>
+            {/* Live Platform Stats in Footer */}
+            <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="text-center">
+                <p className="text-base font-black text-white">{stats.candidates.toLocaleString()}</p>
+                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Candidates</p>
+              </div>
+              <div className="text-center">
+                <p className="text-base font-black text-white">{stats.companies.toLocaleString()}</p>
+                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Partners</p>
+              </div>
+              <div className="text-center">
+                <p className="text-base font-black text-white">{stats.jobs.toLocaleString()}</p>
+                <p className="text-[9px] text-slate-500 font-bold uppercase tracking-wider mt-0.5">Live Jobs</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Platform links */}
+          <div className="space-y-4">
+            <h3 className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Platform</h3>
+            <ul className="space-y-2.5">
+              {[
+                { label: 'Browse Placements', href: '/jobs' },
+                { label: 'My Applications', href: '/applications' },
+                { label: 'Career Passport', href: '/passport' },
+                { label: 'AI Career Coach', href: '/coach' },
+                { label: 'Subscription Plans', href: '/subscription' },
+              ].map(l => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-xs text-slate-400 hover:text-white font-semibold transition-colors flex items-center gap-1.5 group">
+                    <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-primary transition-colors" />
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* For Employers */}
+          <div className="space-y-4">
+            <h3 className="text-[10px] font-black text-slate-300 uppercase tracking-widest">For Employers</h3>
+            <ul className="space-y-2.5">
+              {[
+                { label: 'Post a Placement', href: '/employer/jobs' },
+                { label: 'View Applications', href: '/employer/applications' },
+                { label: 'Verified Partners Program', href: '/subscription' },
+                { label: 'Talent Matching Engine', href: '/home' },
+                { label: 'Help Center', href: '/help' },
+              ].map(l => (
+                <li key={l.href}>
+                  <Link href={l.href} className="text-xs text-slate-400 hover:text-white font-semibold transition-colors flex items-center gap-1.5 group">
+                    <ChevronRight className="h-3 w-3 text-slate-600 group-hover:text-primary transition-colors" />
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact / Social */}
+          <div className="space-y-4">
+            <h3 className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Connect</h3>
+            <ul className="space-y-2.5">
+              <li className="flex items-center gap-2 text-xs text-slate-400 font-semibold">
+                <Mail className="h-3.5 w-3.5 text-slate-500 shrink-0" />
+                support@velizo.com
+              </li>
+              <li className="flex items-center gap-2 text-xs text-slate-400 font-semibold">
+                <Globe className="h-3.5 w-3.5 text-slate-500 shrink-0" />
+                velizo.com
+              </li>
+            </ul>
+            {/* Social Media Icons */}
+            <div className="flex items-center gap-3 pt-1">
+              {[
+                { icon: MessageCircle, label: 'Twitter', href: '#' },
+                { icon: AtSign, label: 'LinkedIn', href: '#' },
+                { icon: Share2, label: 'Instagram', href: '#' },
+              ].map(({ icon: Icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="h-8 w-8 flex items-center justify-center rounded-lg bg-slate-800 border border-slate-700 text-slate-400 hover:bg-primary hover:text-white hover:border-primary transition-all duration-200"
+                >
+                  <Icon className="h-3.5 w-3.5" />
+                </a>
+              ))}
+            </div>
+
+            {/* App store CTAs */}
+            <div className="space-y-2 pt-1">
+              <div className="flex items-center gap-2 px-3 py-2 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-colors cursor-pointer">
+                <div className="text-left">
+                  <p className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">Coming Soon</p>
+                  <p className="text-[11px] font-black text-white">Mobile App</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
+          <p className="text-[10px] text-slate-500 font-semibold">
+            © {new Date().getFullYear()} VELIZO International Placements Ltd. All rights reserved.
+          </p>
+          <div className="flex items-center gap-4">
+            {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map(item => (
+              <button key={item} className="text-[10px] text-slate-500 hover:text-slate-300 font-semibold transition-colors cursor-pointer">
+                {item}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </footer>
+    </>
   );
 }
