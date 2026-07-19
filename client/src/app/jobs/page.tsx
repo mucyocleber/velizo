@@ -115,7 +115,7 @@ export default function JobsPage() {
               <h1 className="text-xl sm:text-2xl font-black text-white leading-tight">
                 Browse Placements
               </h1>
-              <p className="text-xs sm:text-sm text-slate-350 font-semibold leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 font-semibold leading-relaxed">
                 Explore open positions and filter international roles targeting global candidates
               </p>
             </div>
@@ -298,7 +298,7 @@ export default function JobsPage() {
                     {/* Top Content Row: Logo + Metadata */}
                     <div className="flex items-start gap-3.5 flex-1 min-w-0">
                       {/* Company Logo */}
-                      <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-xl bg-blue-55 border border-blue-100/50 flex items-center justify-center shrink-0 overflow-hidden shadow-3xs">
+                      <div className="h-11 w-11 sm:h-12 sm:w-12 rounded-xl bg-blue-50 border border-blue-100/50 flex items-center justify-center shrink-0 overflow-hidden shadow-3xs">
                         {job.logo_url ? (
                           <img src={job.logo_url} alt={job.company_name} className="h-full w-full object-cover" />
                         ) : (

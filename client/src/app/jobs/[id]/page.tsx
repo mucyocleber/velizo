@@ -229,7 +229,9 @@ export default function JobDetailPage({ params }: Props) {
                 {job.logo_url ? (
                   <img src={job.logo_url} alt={job.company_name} className="h-full w-full object-cover" />
                 ) : (
-                  <Briefcase className="h-6 w-6 text-primary" />
+                  <div className="h-full w-full bg-gradient-to-br from-[#0a5fcc]/10 to-indigo-500/10 flex items-center justify-center text-[#0a5fcc] font-black text-sm uppercase">
+                    {job.company_name?.charAt(0)}
+                  </div>
                 )}
               </div>
               <div className="space-y-0.5">
