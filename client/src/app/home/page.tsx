@@ -26,7 +26,8 @@ import {
   ExternalLink,
   Award,
   Check,
-  AlertCircle
+  AlertCircle,
+  MapPin
 } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -41,6 +42,20 @@ export default function Home() {
   const [jobs, setJobs] = useState<any[]>([]);
   const [stats, setStats] = useState<any>({ candidates: 0, companies: 0, jobs: 0 });
   const [loading, setLoading] = useState(true);
+
+  const formatTimeAgo = (dateStr: string) => {
+    if (!dateStr) return 'Just now';
+    const date = new Date(dateStr);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    const diffHours = Math.floor(diffMins / 60);
+    if (diffHours < 24) return `${diffHours}h ago`;
+    const diffDays = Math.floor(diffHours / 24);
+    return `${diffDays}d ago`;
+  };
 
   useEffect(() => {
     const fetchSessionAndProfile = async () => {
@@ -517,68 +532,121 @@ export default function Home() {
           </div>
 
           {/* Dynamic Jobs Feed */}
-          {jobs.map((job) => (
-            <div key={job.id} className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4">
-              {/* Post Header */}
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-blue-50 border border-blue-150 flex items-center justify-center text-primary font-bold shrink-0">
-                    {job.logo_url ? (
-                      <img src={job.logo_url} alt={job.company_name} className="h-full w-full rounded-full object-cover" />
-                    ) : (
-                      job.company_name ? job.company_name.charAt(0).toUpperCase() : 'C'
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5">
-                      {job.company_name || 'Anonymous Recruiter'} 
-                      <span className="text-[10px] font-bold text-slate-400">• Verified Partner</span>
-                    </h3>
-                    <p className="text-[10px] text-slate-500 font-semibold mt-0.5">
-                      Just posted an opening in {job.department || job.category}
-                    </p>
-                  </div>
-                </div>
-                <span className="text-[9px] font-bold text-slate-450 bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0">
-                  {job.remote_type}
-                </span>
-              </div>
+          {jobs.map((job) => {
+            const timeAgo = formatTimeAgo(job.created_at);
+            const skills = job.skills_required || [];
 
-              {/* Post Text */}
-              <p className="text-xs text-slate-650 leading-relaxed font-medium">
-                {job.description}
-              </p>
-
-              {/* Job Card */}
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80 hover:bg-slate-100/50 transition-colors flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div className="space-y-1.5">
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <span className="inline-flex items-center gap-0.5 text-[9px] font-bold text-teal-700 bg-teal-50 px-1.5 py-0.5 rounded">
-                      <ShieldCheck className="h-3 w-3 text-teal-600" />
-                      95% Match Score
+            return (
+              <div key={job.id} className="bg-white border border-slate-200 rounded-2xl p-5 shadow-3xs hover:shadow-xs hover:border-slate-300 transition-all duration-300 space-y-4">
+                {/* Header: Publisher Info */}
+                <div className="flex justify-between items-start gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-primary font-bold shrink-0 overflow-hidden">
+                      {job.logo_url ? (
+                        <img src={job.logo_url} alt={job.company_name} className="h-full w-full object-cover" />
+                      ) : (
+                        <Building2 className="h-5 w-5 text-primary" />
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="text-xs font-black text-slate-900 flex items-center gap-1.5">
+                        {job.company_name || 'Anonymous Recruiter'} 
+                        {job.company_verified && (
+                          <span className="inline-flex items-center gap-0.5 text-[8px] font-black uppercase text-emerald-600 bg-emerald-50 px-1 py-0.2 rounded border border-emerald-100 shrink-0">
+                            Verified
+                          </span>
+                        )}
+                      </h3>
+                      <p className="text-[10px] text-slate-450 font-bold mt-0.5">
+                        Posted a placement in <span className="text-slate-655 font-extrabold">{job.category}</span>
+                      </p>
+                    </div>
+                  </div>
+                  
+                  {/* Right Header Side: Remote Tag & Time */}
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    <span className="text-[9px] font-black text-primary bg-blue-50/50 border border-blue-100 px-2 py-0.5 rounded-md uppercase tracking-wider">
+                      {job.remote_type}
                     </span>
-                    {job.skills_required && job.skills_required.slice(0, 3).map((skill: string) => (
-                      <span key={skill} className="text-[9px] font-bold text-slate-500 bg-slate-200/60 px-1.5 py-0.5 rounded">
-                        {skill}
-                      </span>
-                    ))}
+                    <span className="text-[9px] font-bold text-slate-400 flex items-center gap-1">
+                      <Calendar className="h-3 w-3" /> {timeAgo}
+                    </span>
                   </div>
-                  <h4 className="text-xs font-extrabold text-slate-900">{job.title}</h4>
-                  <p className="text-[11px] text-slate-500 font-semibold">
-                    {job.company_name} • {job.city || job.country}
-                  </p>
-                  <p className="text-[11px] text-primary font-extrabold">
-                    {job.salary_min && job.salary_max 
-                      ? `$${Number(job.salary_min).toLocaleString()} - $${Number(job.salary_max).toLocaleString()} ${job.currency || 'CAD'}`
-                      : 'Salary Competitive'}
-                  </p>
                 </div>
-                <Link href={`/jobs`} className="px-3.5 py-2 bg-primary hover:bg-[#084e96] text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1 shrink-0 cursor-pointer">
-                  Apply Now <ExternalLink className="h-3.5 w-3.5" />
-                </Link>
+
+                {/* Job Description Text */}
+                <p className="text-xs text-slate-650 leading-relaxed font-medium">
+                  {job.description}
+                </p>
+
+                {/* International Match Card Details */}
+                <div className="p-4 rounded-xl bg-slate-50/50 border border-slate-200/80 space-y-3.5 hover:bg-slate-100/50 transition-colors">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {/* Match Score Badge */}
+                      <span className="inline-flex items-center gap-0.5 text-[9px] font-black text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-150 shadow-3xs">
+                        <ShieldCheck className="h-3 w-3 text-teal-650 shrink-0" />
+                        95% Match Score
+                      </span>
+
+                      {/* Visa sponsorship badge */}
+                      {job.visa_sponsorship && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100 shadow-3xs">
+                          <Globe className="h-3 w-3 text-blue-550 shrink-0" />
+                          Visa Sponsored
+                        </span>
+                      )}
+
+                      {/* Relocation support badge */}
+                      {job.relocation_support && (
+                        <span className="inline-flex items-center gap-0.5 text-[9px] font-black text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100 shadow-3xs">
+                          <Compass className="h-3 w-3 text-indigo-550 shrink-0" />
+                          Relocation Support
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Location detail */}
+                    <span className="text-[10px] font-bold text-slate-500 flex items-center gap-1">
+                      <MapPin className="h-3.5 w-3.5 text-slate-400 shrink-0" />
+                      {job.city ? `${job.city}, ${job.country}` : job.country}
+                    </span>
+                  </div>
+
+                  {/* Skills required */}
+                  {skills.length > 0 && (
+                    <div className="flex flex-wrap gap-1">
+                      {skills.slice(0, 4).map((skill: string) => (
+                        <span key={skill} className="text-[9px] font-extrabold text-slate-500 bg-white border border-slate-200 px-2 py-0.5 rounded">
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Title & Placement Highlights */}
+                  <div className="border-t border-slate-200/60 pt-3 flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+                    <div className="space-y-0.5">
+                      <h4 className="text-xs font-black text-slate-900">{job.title}</h4>
+                      <p className="text-[11px] font-black text-primary flex items-center gap-0.5">
+                        {job.salary_min && job.salary_max 
+                          ? `${Number(job.salary_min).toLocaleString()} - ${Number(job.salary_max).toLocaleString()} ${job.currency || 'USD'}`
+                          : 'Salary Competitive'}
+                      </p>
+                    </div>
+
+                    <Link 
+                      href="/jobs" 
+                      className="px-4 py-2 bg-gradient-to-r from-primary to-[#084e96] hover:from-[#084e96] hover:to-[#063f7a] text-white text-xs font-black rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 shadow-3xs hover:shadow-2xs flex items-center justify-center gap-1.5 shrink-0 cursor-pointer group"
+                    >
+                      <span>Apply Placement</span>
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
 
         </section>
 
